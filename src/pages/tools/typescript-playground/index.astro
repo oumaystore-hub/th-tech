@@ -10,7 +10,7 @@ const description =
   "TypeScript Playground مجاني لتجربة وتشغيل أكواد TypeScript مباشرة من المتصفح مع Console لعرض النتائج والأخطاء.";
 
 const canonical =
-  `https://oumaystore-hub.github.io/Th-tech/tools/typescript-playground/`;
+  "https://oumaystore-hub.github.io/Th-tech/tools/typescript-playground/";
 ---
 
 <!doctype html>
@@ -32,6 +32,7 @@ const canonical =
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -133,22 +134,22 @@ const canonical =
           <!-- ACTION BAR -->
           <div class="action-bar">
 
-            <button class="run-btn" id="runBtn">
+            <button class="run-btn" id="runBtn" type="button">
               <i class="fa-solid fa-play"></i>
               تشغيل الكود
             </button>
 
-            <button class="secondary-btn" id="copyBtn">
+            <button class="secondary-btn" id="copyBtn" type="button">
               <i class="fa-regular fa-copy"></i>
               نسخ
             </button>
 
-            <button class="secondary-btn" id="formatBtn">
+            <button class="secondary-btn" id="formatBtn" type="button">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
               تنسيق
             </button>
 
-            <button class="danger-btn" id="clearBtn">
+            <button class="danger-btn" id="clearBtn" type="button">
               <i class="fa-solid fa-trash"></i>
               مسح
             </button>
@@ -253,7 +254,7 @@ console.log("المجموع:", total);</textarea>
 
                 </div>
 
-                <button id="clearConsole" class="console-clear">
+                <button id="clearConsole" class="console-clear" type="button">
                   <i class="fa-solid fa-broom"></i>
                   مسح
                 </button>
@@ -360,7 +361,7 @@ console.log("المجموع:", total);</textarea>
           <div class="info-card">
 
             <div class="info-icon">
-              <i class="fa-brands fa-js"></i>
+              <span class="ts-info-mark">TS</span>
             </div>
 
             <div>
@@ -385,6 +386,7 @@ console.log("المجموع:", total);</textarea>
 
           <!-- FEATURES -->
           <div class="section-heading">
+
             <span class="heading-icon">
               <i class="fa-solid fa-star"></i>
             </span>
@@ -393,6 +395,7 @@ console.log("المجموع:", total);</textarea>
               <h2>مميزات الأداة</h2>
               <p>كل ما تحتاجه لتجربة TypeScript بسرعة</p>
             </div>
+
           </div>
 
 
@@ -610,11 +613,9 @@ console.log("المجموع:", total);</textarea>
           0 20px 60px rgba(15, 23, 42, 0.08);
       }
 
-
       * {
         box-sizing: border-box;
       }
-
 
       body {
         margin: 0;
@@ -623,22 +624,18 @@ console.log("المجموع:", total);</textarea>
         color: var(--text);
       }
 
-
       button,
       textarea {
         font-family: inherit;
       }
 
-
       button {
         cursor: pointer;
       }
 
-
       .playground-page {
         overflow: hidden;
       }
-
 
       /* HERO */
 
@@ -665,7 +662,6 @@ console.log("المجموع:", total);</textarea>
         color: white;
       }
 
-
       .hero-inner {
         position: relative;
         z-index: 2;
@@ -673,7 +669,6 @@ console.log("المجموع:", total);</textarea>
         margin: auto;
         text-align: center;
       }
-
 
       .hero-orb {
         position: absolute;
@@ -684,20 +679,17 @@ console.log("المجموع:", total);</textarea>
         opacity: 0.18;
       }
 
-
       .orb-one {
         top: -100px;
         left: 10%;
         background: var(--ts-primary);
       }
 
-
       .orb-two {
         bottom: -120px;
         right: 10%;
         background: var(--ts-secondary);
       }
-
 
       .tool-icon {
         width: 86px;
@@ -717,14 +709,12 @@ console.log("المجموع:", total);</textarea>
           0 15px 45px rgba(6, 182, 212, 0.35);
       }
 
-
       .tool-icon span {
         font-family: Arial, sans-serif;
         font-weight: 900;
         font-size: 31px;
         letter-spacing: -3px;
       }
-
 
       .tool-icon i {
         position: absolute;
@@ -742,7 +732,6 @@ console.log("المجموع:", total);</textarea>
         border: 2px solid rgba(103, 232, 249, 0.3);
       }
 
-
       .badge {
         width: fit-content;
         margin: 0 auto 18px;
@@ -755,11 +744,9 @@ console.log("المجموع:", total);</textarea>
         font-weight: 700;
       }
 
-
       .badge i {
         margin-left: 6px;
       }
-
 
       .hero h1 {
         margin: 0;
@@ -769,11 +756,9 @@ console.log("المجموع:", total);</textarea>
         letter-spacing: -1px;
       }
 
-
       .hero h1 span {
         color: #67e8f9;
       }
-
 
       .hero p {
         max-width: 720px;
@@ -783,7 +768,6 @@ console.log("المجموع:", total);</textarea>
         line-height: 2;
       }
 
-
       .hero-features {
         margin-top: 30px;
         display: flex;
@@ -791,7 +775,6 @@ console.log("المجموع:", total);</textarea>
         flex-wrap: wrap;
         gap: 10px;
       }
-
 
       .hero-features span {
         padding: 8px 13px;
@@ -802,12 +785,10 @@ console.log("المجموع:", total);</textarea>
         font-size: 12px;
       }
 
-
       .hero-features i {
         color: #67e8f9;
         margin-left: 5px;
       }
-
 
       /* TOOL */
 
@@ -818,12 +799,10 @@ console.log("المجموع:", total);</textarea>
         padding: 0 20px 70px;
       }
 
-
       .tool-container {
         max-width: 1250px;
         margin: auto;
       }
-
 
       .workspace-header {
         padding: 20px;
@@ -837,14 +816,12 @@ console.log("المجموع:", total);</textarea>
         border-radius: 20px 20px 0 0;
       }
 
-
       .workspace-title,
       .panel-left {
         display: flex;
         align-items: center;
         gap: 12px;
       }
-
 
       .workspace-logo {
         width: 46px;
@@ -860,19 +837,16 @@ console.log("المجموع:", total);</textarea>
         font-weight: 900;
       }
 
-
       .workspace-title h2 {
         margin: 0;
         font-size: 16px;
       }
-
 
       .workspace-title p {
         margin: 3px 0 0;
         color: var(--muted);
         font-size: 11px;
       }
-
 
       .workspace-status {
         display: flex;
@@ -886,14 +860,12 @@ console.log("المجموع:", total);</textarea>
         font-weight: 700;
       }
 
-
       .status-dot {
         width: 7px;
         height: 7px;
         border-radius: 50%;
         background: var(--success);
       }
-
 
       .action-bar {
         padding: 14px 18px;
@@ -905,7 +877,6 @@ console.log("المجموع:", total);</textarea>
         border-bottom: 0;
       }
 
-
       .action-bar button {
         min-height: 40px;
         padding: 0 16px;
@@ -916,48 +887,40 @@ console.log("المجموع:", total);</textarea>
         transition: 0.2s ease;
       }
 
-
       .run-btn {
         border-color: var(--ts-primary) !important;
         background: var(--ts-primary);
         color: white;
       }
 
-
       .run-btn:hover {
         background: var(--ts-primary-dark);
         transform: translateY(-1px);
       }
-
 
       .secondary-btn {
         background: white;
         color: #334155;
       }
 
-
       .secondary-btn:hover {
         border-color: var(--ts-primary);
         color: var(--ts-primary-dark);
       }
-
 
       .danger-btn {
         background: white;
         color: #dc2626;
       }
 
-
       .danger-btn:hover {
         border-color: #fecaca !important;
         background: #fff7f7;
       }
 
-
       .action-bar i {
         margin-left: 5px;
       }
-
 
       /* EDITORS */
 
@@ -967,7 +930,6 @@ console.log("المجموع:", total);</textarea>
         min-height: 580px;
       }
 
-
       .editor-card,
       .console-card {
         min-width: 0;
@@ -975,20 +937,17 @@ console.log("المجموع:", total);</textarea>
         border: 1px solid var(--border);
       }
 
-
       .editor-card {
         border-radius: 0 0 0 18px;
         background: var(--editor);
         border-color: #1e293b;
       }
 
-
       .console-card {
         border-radius: 0 0 18px 0;
         background: var(--console);
         border-color: #1e293b;
       }
-
 
       .panel-header {
         min-height: 62px;
@@ -1001,12 +960,10 @@ console.log("المجموع:", total);</textarea>
         color: #e2e8f0;
       }
 
-
       .panel-left strong {
         display: block;
         font-size: 12px;
       }
-
 
       .panel-left small {
         display: block;
@@ -1017,7 +974,6 @@ console.log("المجموع:", total);</textarea>
         text-align: right;
       }
 
-
       .panel-icon {
         width: 34px;
         height: 34px;
@@ -1027,7 +983,6 @@ console.log("المجموع:", total);</textarea>
         justify-content: center;
       }
 
-
       .ts-icon {
         background: #3178c6;
         color: white;
@@ -1036,18 +991,15 @@ console.log("المجموع:", total);</textarea>
         font-size: 13px;
       }
 
-
       .terminal-icon {
         background: rgba(6, 182, 212, 0.12);
         color: #67e8f9;
       }
 
-
       .panel-tools {
         color: #64748b;
         font-size: 10px;
       }
-
 
       .editor-wrapper {
         position: relative;
@@ -1056,7 +1008,6 @@ console.log("المجموع:", total);</textarea>
         direction: ltr;
         overflow: hidden;
       }
-
 
       .line-numbers {
         width: 48px;
@@ -1071,15 +1022,15 @@ console.log("المجموع:", total);</textarea>
         text-align: right;
         overflow: hidden;
         user-select: none;
+        white-space: pre;
       }
-
 
       #codeEditor {
         flex: 1;
         width: 100%;
         height: 100%;
         resize: none;
-        padding: 18px 18px;
+        padding: 18px;
         border: 0;
         outline: none;
         background: var(--editor);
@@ -1094,11 +1045,9 @@ console.log("المجموع:", total);</textarea>
         overflow: auto;
       }
 
-
       #codeEditor::selection {
         background: rgba(6, 182, 212, 0.3);
       }
-
 
       .editor-footer,
       .console-footer {
@@ -1114,12 +1063,10 @@ console.log("المجموع:", total);</textarea>
         font-size: 10px;
       }
 
-
       .editor-footer i {
         color: #67e8f9;
         margin-left: 4px;
       }
-
 
       /* CONSOLE */
 
@@ -1134,7 +1081,6 @@ console.log("المجموع:", total);</textarea>
         color: #cbd5e1;
       }
 
-
       .console-welcome {
         min-height: 100%;
         display: flex;
@@ -1144,7 +1090,6 @@ console.log("المجموع:", total);</textarea>
         text-align: center;
         color: #64748b;
       }
-
 
       .welcome-icon {
         width: 55px;
@@ -1159,7 +1104,6 @@ console.log("المجموع:", total);</textarea>
         font-size: 20px;
       }
 
-
       .console-welcome h3 {
         margin: 0;
         color: #cbd5e1;
@@ -1167,13 +1111,11 @@ console.log("المجموع:", total);</textarea>
         font-size: 14px;
       }
 
-
       .console-welcome p {
         margin: 6px 0;
         font-family: Cairo, sans-serif;
         font-size: 11px;
       }
-
 
       .console-line {
         padding: 8px 10px;
@@ -1184,11 +1126,9 @@ console.log("المجموع:", total);</textarea>
         word-break: break-word;
       }
 
-
       .console-line.log {
         border-left: 2px solid #22d3ee;
       }
-
 
       .console-line.error {
         border-left: 2px solid #ef4444;
@@ -1196,12 +1136,10 @@ console.log("المجموع:", total);</textarea>
         background: rgba(239, 68, 68, 0.06);
       }
 
-
       .console-line.info {
         border-left: 2px solid #60a5fa;
         color: #93c5fd;
       }
-
 
       .console-clear {
         border: 0;
@@ -1211,18 +1149,15 @@ console.log("المجموع:", total);</textarea>
         font-size: 10px;
       }
 
-
       .console-clear:hover {
         color: #67e8f9;
       }
-
 
       .console-footer i {
         margin-left: 4px;
         color: #64748b;
         font-size: 7px;
       }
-
 
       /* STATS */
 
@@ -1233,7 +1168,6 @@ console.log("المجموع:", total);</textarea>
         margin-top: 15px;
       }
 
-
       .stat-card {
         padding: 16px;
         display: flex;
@@ -1243,7 +1177,6 @@ console.log("المجموع:", total);</textarea>
         border: 1px solid var(--border);
         border-radius: 14px;
       }
-
 
       .stat-icon {
         width: 39px;
@@ -1257,13 +1190,11 @@ console.log("المجموع:", total);</textarea>
         color: var(--ts-primary-dark);
       }
 
-
       .stat-card span {
         display: block;
         color: var(--muted);
         font-size: 10px;
       }
-
 
       .stat-card strong {
         display: block;
@@ -1271,19 +1202,16 @@ console.log("المجموع:", total);</textarea>
         font-size: 16px;
       }
 
-
       /* CONTENT */
 
       .content-section {
         padding: 20px 20px 90px;
       }
 
-
       .content-container {
         max-width: 1050px;
         margin: auto;
       }
-
 
       .info-card {
         display: flex;
@@ -1296,7 +1224,6 @@ console.log("المجموع:", total);</textarea>
         box-shadow: var(--shadow);
       }
 
-
       .info-icon {
         width: 54px;
         height: 54px;
@@ -1307,15 +1234,18 @@ console.log("المجموع:", total);</textarea>
         border-radius: 15px;
         background: var(--ts-soft);
         color: var(--ts-primary-dark);
-        font-size: 22px;
+        font-size: 20px;
       }
 
+      .ts-info-mark {
+        font-family: Arial, sans-serif;
+        font-weight: 900;
+      }
 
       .info-card h2 {
         margin: 0 0 9px;
         font-size: 19px;
       }
-
 
       .info-card p {
         margin: 6px 0;
@@ -1324,14 +1254,12 @@ console.log("المجموع:", total);</textarea>
         font-size: 13px;
       }
 
-
       .section-heading {
         display: flex;
         align-items: center;
         gap: 13px;
         margin: 0 0 24px;
       }
-
 
       .heading-icon {
         width: 43px;
@@ -1344,12 +1272,10 @@ console.log("المجموع:", total);</textarea>
         color: var(--ts-primary-dark);
       }
 
-
       .section-heading h2 {
         margin: 0;
         font-size: 19px;
       }
-
 
       .section-heading p {
         margin: 3px 0 0;
@@ -1357,14 +1283,12 @@ console.log("المجموع:", total);</textarea>
         font-size: 11px;
       }
 
-
       .features-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
         margin-bottom: 70px;
       }
-
 
       .feature-card {
         padding: 22px;
@@ -1374,13 +1298,11 @@ console.log("المجموع:", total);</textarea>
         transition: 0.25s ease;
       }
 
-
       .feature-card:hover {
         transform: translateY(-4px);
         border-color: rgba(6, 182, 212, 0.35);
         box-shadow: var(--shadow);
       }
-
 
       .feature-icon {
         width: 42px;
@@ -1394,12 +1316,10 @@ console.log("المجموع:", total);</textarea>
         color: var(--ts-primary-dark);
       }
 
-
       .feature-card h3 {
         margin: 0 0 7px;
         font-size: 14px;
       }
-
 
       .feature-card p {
         margin: 0;
@@ -1407,7 +1327,6 @@ console.log("المجموع:", total);</textarea>
         font-size: 11px;
         line-height: 1.9;
       }
-
 
       /* STEPS */
 
@@ -1418,7 +1337,6 @@ console.log("المجموع:", total);</textarea>
         margin-bottom: 70px;
       }
 
-
       .step {
         padding: 22px;
         display: flex;
@@ -1427,7 +1345,6 @@ console.log("المجموع:", total);</textarea>
         border: 1px solid var(--border);
         border-radius: 17px;
       }
-
 
       .step-number {
         width: 35px;
@@ -1443,12 +1360,10 @@ console.log("المجموع:", total);</textarea>
         font-size: 13px;
       }
 
-
       .step h3 {
         margin: 0 0 4px;
         font-size: 13px;
       }
-
 
       .step p {
         margin: 0;
@@ -1457,7 +1372,6 @@ console.log("المجموع:", total);</textarea>
         line-height: 1.8;
       }
 
-
       /* FAQ */
 
       .faq {
@@ -1465,14 +1379,12 @@ console.log("المجموع:", total);</textarea>
         gap: 10px;
       }
 
-
       .faq details {
         padding: 0 20px;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 14px;
       }
-
 
       .faq summary {
         padding: 17px 0;
@@ -1485,22 +1397,18 @@ console.log("المجموع:", total);</textarea>
         font-weight: 700;
       }
 
-
       .faq summary::-webkit-details-marker {
         display: none;
       }
-
 
       .faq summary i {
         color: var(--ts-primary-dark);
         transition: 0.2s;
       }
 
-
       .faq details[open] summary i {
         transform: rotate(180deg);
       }
-
 
       .faq details p {
         margin: 0;
@@ -1509,7 +1417,6 @@ console.log("المجموع:", total);</textarea>
         font-size: 12px;
         line-height: 2;
       }
-
 
       /* RESPONSIVE */
 
@@ -1541,7 +1448,6 @@ console.log("المجموع:", total);</textarea>
         }
 
       }
-
 
       @media (max-width: 600px) {
 
@@ -1626,7 +1532,6 @@ console.log("المجموع:", total);</textarea>
 
       }
 
-
       /* DARK MODE */
 
       @media (prefers-color-scheme: dark) {
@@ -1662,7 +1567,6 @@ console.log("المجموع:", total);</textarea>
 
     <script is:inline>
       (() => {
-
         const editor = document.getElementById("codeEditor");
         const lineNumbers = document.getElementById("lineNumbers");
 
@@ -1671,7 +1575,8 @@ console.log("المجموع:", total);</textarea>
         const formatBtn = document.getElementById("formatBtn");
         const clearBtn = document.getElementById("clearBtn");
 
-        const clearConsole = document.getElementById("clearConsole");
+        const clearConsole =
+          document.getElementById("clearConsole");
 
         const consoleOutput =
           document.getElementById("consoleOutput");
@@ -1703,12 +1608,14 @@ console.log("المجموع:", total);</textarea>
         const statTime =
           document.getElementById("statTime");
 
-
         if (!editor) return;
 
 
-        function updateStats() {
+        /* ---------------------------------
+           STATS
+        --------------------------------- */
 
+        function updateStats() {
           const code = editor.value;
 
           const lines =
@@ -1741,273 +1648,364 @@ console.log("المجموع:", total);</textarea>
           lineNumbers.textContent =
             Array.from(
               { length: lines },
-              (_, i) => i + 1
+              (_, index) => index + 1
             ).join("\n");
 
+          syncScroll();
         }
 
 
-        function escapeHtml(value) {
+        /* ---------------------------------
+           HTML ESCAPE
+        --------------------------------- */
 
+        function escapeHtml(value) {
           return String(value)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
-
         }
 
 
-        function addConsole(type, value) {
+        /* ---------------------------------
+           CONSOLE
+        --------------------------------- */
 
-          const line =
-            document.createElement("div");
+        function addConsole(type, value) {
+          const line = document.createElement("div");
 
           line.className =
             `console-line ${type}`;
 
-          line.innerHTML =
-            escapeHtml(value);
+          line.textContent =
+            String(value);
 
           consoleOutput.appendChild(line);
 
           consoleOutput.scrollTop =
             consoleOutput.scrollHeight;
-
         }
 
 
         function resetConsole() {
-
           consoleOutput.innerHTML = "";
-
         }
 
 
         function setStatus(text, running = false) {
-
-          runtimeStatus.innerHTML = `
-            <span class="status-dot"></span>
-            ${text}
-          `;
+          runtimeStatus.innerHTML =
+            `<span class="status-dot"></span>${escapeHtml(text)}`;
 
           const dot =
             runtimeStatus.querySelector(".status-dot");
 
           if (dot) {
-
             dot.style.background =
               running
                 ? "#f59e0b"
                 : "#22c55e";
-
           }
-
         }
 
 
-        /*
-         * TypeScript transpiler.
-         *
-         * The playground intentionally supports
-         * common TypeScript syntax so simple
-         * TypeScript examples can be executed
-         * directly in the browser.
-         */
+        /* ---------------------------------
+           SIMPLE TYPESCRIPT TRANSPILER
+        --------------------------------- */
 
         function transpileTS(code) {
-
           let output = code;
 
-          /*
-           * Interfaces
-           */
-          output =
-            output.replace(
-              /interface\s+\w+(?:\s+extends\s+[^{]+)?\s*\{[\s\S]*?\}/g,
-              ""
-            );
+
+          /* Interfaces */
+
+          output = output.replace(
+            /interface\s+[A-Za-z_$][\w$]*(?:\s+extends\s+[^{]+)?\s*\{[\s\S]*?\}/g,
+            ""
+          );
+
+
+          /* Type aliases */
+
+          output = output.replace(
+            /type\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?\s*=\s*[^;]+;/g,
+            ""
+          );
+
+
+          /* Access modifiers */
+
+          output = output.replace(
+            /\b(public|private|protected|readonly|abstract)\s+/g,
+            ""
+          );
+
+
+          /* Generic function declarations */
+
+          output = output.replace(
+            /function\s+([A-Za-z_$][\w$]*)\s*<[^>]+>/g,
+            "function $1"
+          );
+
+
+          /* Generic calls */
+
+          output = output.replace(
+            /([A-Za-z_$][\w$]*)\s*<([A-Za-z_$][\w$]*(?:\[\])?(?:\s*,\s*[A-Za-z_$][\w$]*(?:\[\])?)*)>\s*\(/g,
+            "$1("
+          );
 
 
           /*
-           * Type aliases
+           * Variable annotations
+           * const value: number = 10
            */
-          output =
-            output.replace(
-              /type\s+\w+(?:<[^>]+>)?\s*=\s*[^;]+;/g,
-              ""
-            );
+
+          output = output.replace(
+            /(\b(?:const|let|var)\s+[A-Za-z_$][\w$]*)\s*\??\s*:\s*([A-Za-z_$][\w$]*(?:<[^;=]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*(?:\[\])?)*)\s*(?==)/g,
+            "$1"
+          );
 
 
           /*
-           * Access modifiers
+           * Function parameter annotations
            */
-          output =
-            output.replace(
-              /\b(public|private|protected|readonly|abstract)\s+/g,
-              ""
-            );
+
+          output = output.replace(
+            /([A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*/g,
+            "$1"
+          );
 
 
           /*
-           * Generic function declarations.
+           * Return types
            */
-          output =
-            output.replace(
-              /function\s+([A-Za-z_$][\w$]*)\s*<[^>]+>/g,
-              "function $1"
-            );
+
+          output = output.replace(
+            /\)\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*\s*\{/g,
+            ") {"
+          );
 
 
           /*
-           * Generic calls:
-           * identity<string>(...)
+           * Type assertions
            */
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\s*<([A-Za-z_$][\w$]*(?:\[\])?(?:\s*,\s*[A-Za-z_$][\w$]*(?:\[\])?)*)>\s*\(/g,
-              "$1("
-            );
+
+          output = output.replace(
+            /\s+as\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?/g,
+            ""
+          );
 
 
           /*
-           * Variable type annotations.
+           * Non-null assertion
            */
-          output =
-            output.replace(
-              /(\b(?:const|let|var)\s+[A-Za-z_$][\w$]*)\s*\??\s*:\s*([A-Za-z_$][\w$]*(?:<[^;=]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*)\s*(?==)/g,
-              "$1"
-            );
+
+          output = output.replace(
+            /([A-Za-z_$][\w$]*)!(?=[.;,\)\]])/g,
+            "$1"
+          );
 
 
           /*
-           * Function parameter annotations.
+           * Optional parameter marker
            */
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*/g,
-              "$1"
-            );
+
+          output = output.replace(
+            /([A-Za-z_$][\w$]*)\?(?=\s*[:,)=])/g,
+            "$1"
+          );
 
 
           /*
-           * Return types.
+           * Basic enum support
            */
-          output =
-            output.replace(
-              /\)\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*\s*\{/g,
-              ") {"
-            );
 
+          output = output.replace(
+            /enum\s+([A-Za-z_$][\w$]*)\s*\{([\s\S]*?)\}/g,
+            function(_, name, body) {
+              const items =
+                body
+                  .split(",")
+                  .map(function(item) {
+                    return item.trim();
+                  })
+                  .filter(Boolean);
 
-          /*
-           * Type assertions:
-           * value as string
-           */
-          output =
-            output.replace(
-              /\s+as\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?/g,
-              ""
-            );
+              let value = 0;
 
+              const properties =
+                items.map(function(item) {
+                  const parts = item.split("=");
 
-          /*
-           * Non-null assertion.
-           */
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)!(?=[.;,\)\]])/g,
-              "$1"
-            );
+                  const key =
+                    parts[0].trim();
 
+                  let val;
 
-          /*
-           * Optional parameter marker.
-           */
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\?(?=\s*[:,)=])/g,
-              "$1"
-            );
+                  if (parts[1]) {
+                    val = parts[1].trim();
+                  } else {
+                    val = String(value);
+                  }
 
+                  value++;
 
-          /*
-           * Enum - simple numeric/string enum support.
-           */
-          output =
-            output.replace(
-              /enum\s+([A-Za-z_$][\w$]*)\s*\{([\s\S]*?)\}/g,
-              (_, name, body) => {
+                  return (
+                    name +
+                    "[" +
+                    JSON.stringify(key) +
+                    "] = " +
+                    val +
+                    ";"
+                  );
+                }).join("\n");
 
-                const items =
-                  body
-                    .split(",")
-                    .map(x => x.trim())
-                    .filter(Boolean);
-
-                let value = 0;
-
-                const properties =
-                  items.map(item => {
-
-                    const parts =
-                      item.split("=");
-
-                    const key =
-                      parts[0].trim();
-
-                    let val;
-
-                    if (parts[1]) {
-
-                      val =
-                        parts[1].trim();
-
-                    } else {
-
-                      val = String(value);
-
-                    }
-
-                    value++;
-
-                    return `${name}[${JSON.stringify(key)}] = ${val};`;
-
-                  }).join("\n");
-
-                return `
-                  const ${name} = {};
-                  ${properties}
-                `;
-
-              }
-            );
+              return (
+                "const " +
+                name +
+                " = {};\n" +
+                properties
+              );
+            }
+          );
 
 
           return output;
-
         }
 
 
-        async function runCode() {
+        /* ---------------------------------
+           WORKER SOURCE
+           Build-safe version
+        --------------------------------- */
 
-          const code =
-            editor.value;
+        function createWorkerSource() {
+          const lines = [
+            "self.onmessage = function(event) {",
+            "  const code = event.data;",
+            "",
+            "  const send = function(type, value) {",
+            "    self.postMessage({",
+            "      type: type,",
+            "      value: value",
+            "    });",
+            "  };",
+            "",
+            "  const format = function(value) {",
+            "    if (typeof value === 'string') return value;",
+            "",
+            "    if (",
+            "      typeof value === 'number' ||",
+            "      typeof value === 'boolean' ||",
+            "      typeof value === 'bigint'",
+            "    ) {",
+            "      return String(value);",
+            "    }",
+            "",
+            "    if (value === null) return 'null';",
+            "    if (value === undefined) return 'undefined';",
+            "",
+            "    try {",
+            "      return JSON.stringify(value, null, 2);",
+            "    } catch (_) {",
+            "      return String(value);",
+            "    }",
+            "  };",
+            "",
+            "  console.log = function() {",
+            "    const args = Array.prototype.slice.call(arguments);",
+            "    send('log', args.map(format).join(' '));",
+            "  };",
+            "",
+            "  console.info = function() {",
+            "    const args = Array.prototype.slice.call(arguments);",
+            "    send('info', args.map(format).join(' '));",
+            "  };",
+            "",
+            "  console.warn = function() {",
+            "    const args = Array.prototype.slice.call(arguments);",
+            "    send('info', 'WARNING: ' + args.map(format).join(' '));",
+            "  };",
+            "",
+            "  console.error = function() {",
+            "    const args = Array.prototype.slice.call(arguments);",
+            "    send('error', args.map(format).join(' '));",
+            "  };",
+            "",
+            "  try {",
+            "    const fn = new Function(",
+            "      '\"use strict\";\\n' + code",
+            "    );",
+            "",
+            "    fn();",
+            "",
+            "    send('done', '');",
+            "  } catch (error) {",
+            "    send(",
+            "      'error',",
+            "      error && error.stack",
+            "        ? error.stack",
+            "        : String(error)",
+            "    );",
+            "  }",
+            "};"
+          ];
+
+          return lines.join("\n");
+        }
+
+
+        /* ---------------------------------
+           RUN CODE
+        --------------------------------- */
+
+        let activeWorker = null;
+        let activeWorkerUrl = null;
+        let executionTimer = null;
+        let executionFinished = false;
+
+
+        function stopActiveWorker() {
+          if (activeWorker) {
+            activeWorker.terminate();
+            activeWorker = null;
+          }
+
+          if (activeWorkerUrl) {
+            URL.revokeObjectURL(activeWorkerUrl);
+            activeWorkerUrl = null;
+          }
+
+          if (executionTimer) {
+            clearTimeout(executionTimer);
+            executionTimer = null;
+          }
+        }
+
+
+        function runCode() {
+          const code = editor.value;
 
           resetConsole();
 
           if (!code.trim()) {
-
             addConsole(
               "info",
               "لا يوجد كود للتنفيذ."
             );
 
-            return;
+            setStatus("جاهز");
 
+            return;
           }
 
+
+          stopActiveWorker();
+
+          executionFinished = false;
 
           setStatus(
             "جاري التنفيذ...",
@@ -2015,10 +2013,16 @@ console.log("المجموع:", total);</textarea>
           );
 
 
-          executionStatus.innerHTML = `
-            <i class="fa-solid fa-circle"></i>
-            جاري التنفيذ
-          `;
+          executionStatus.innerHTML =
+            '<i class="fa-solid fa-circle" style="color:#f59e0b"></i> جاري التنفيذ';
+
+
+          executionTime.textContent =
+            "0 ms";
+
+
+          statTime.textContent =
+            "0 ms";
 
 
           const start =
@@ -2026,119 +2030,12 @@ console.log("المجموع:", total);</textarea>
 
 
           try {
-
             const jsCode =
               transpileTS(code);
 
 
-            /*
-             * Web Worker keeps the main UI
-             * responsive and allows us to stop
-             * endless loops.
-             */
-
-            const workerSource = `
-              self.onmessage = function(event) {
-
-                const code = event.data;
-
-                const send = (type, value) => {
-
-                  self.postMessage({
-                    type,
-                    value
-                  });
-
-                };
-
-                const format = (value) => {
-
-                  if (typeof value === "string")
-                    return value;
-
-                  if (
-                    typeof value === "number" ||
-                    typeof value === "boolean" ||
-                    typeof value === "bigint"
-                  )
-                    return String(value);
-
-                  if (value === null)
-                    return "null";
-
-                  if (value === undefined)
-                    return "undefined";
-
-                  try {
-                    return JSON.stringify(
-                      value,
-                      null,
-                      2
-                    );
-                  } catch {
-                    return String(value);
-                  }
-
-                };
-
-                console.log = (...args) => {
-                  send(
-                    "log",
-                    args.map(format).join(" ")
-                  );
-                };
-
-                console.info = (...args) => {
-                  send(
-                    "info",
-                    args.map(format).join(" ")
-                  );
-                };
-
-                console.warn = (...args) => {
-                  send(
-                    "info",
-                    "⚠ " +
-                    args.map(format).join(" ")
-                  );
-                };
-
-                console.error = (...args) => {
-                  send(
-                    "error",
-                    args.map(format).join(" ")
-                  );
-                };
-
-                try {
-
-                  const fn =
-                    new Function(
-                      '"use strict";\\n' +
-                      code
-                    );
-
-                  fn();
-
-                  send(
-                    "done",
-                    ""
-                  );
-
-                } catch(error) {
-
-                  send(
-                    "error",
-                    error &&
-                    error.stack
-                      ? error.stack
-                      : String(error)
-                  );
-
-                }
-
-              };
-            `;
+            const workerSource =
+              createWorkerSource();
 
 
             const blob =
@@ -2150,69 +2047,112 @@ console.log("المجموع:", total);</textarea>
               );
 
 
-            const worker =
-              new Worker(
-                URL.createObjectURL(blob)
-              );
+            activeWorkerUrl =
+              URL.createObjectURL(blob);
 
 
-            let finished = false;
+            activeWorker =
+              new Worker(activeWorkerUrl);
 
 
-            const finish = () => {
+            activeWorker.onmessage =
+              function(event) {
 
-              if (finished) return;
+                const type =
+                  event.data.type;
 
-              finished = true;
-
-              worker.terminate();
-
-              URL.revokeObjectURL(
-                worker.objectURL
-              );
-
-            };
+                const value =
+                  event.data.value;
 
 
-            worker.onmessage = (event) => {
-
-              const {
-                type,
-                value
-              } = event.data;
-
-
-              if (type === "log") {
-
-                addConsole(
-                  "log",
-                  value
-                );
-
-              }
+                if (type === "log") {
+                  addConsole(
+                    "log",
+                    value
+                  );
+                }
 
 
-              if (type === "info") {
-
-                addConsole(
-                  "info",
-                  value
-                );
-
-              }
+                if (type === "info") {
+                  addConsole(
+                    "info",
+                    value
+                  );
+                }
 
 
-              if (type === "error") {
+                if (type === "error") {
+                  addConsole(
+                    "error",
+                    value
+                  );
 
-                addConsole(
-                  "error",
-                  value
-                );
+                  const elapsed =
+                    Math.round(
+                      performance.now() - start
+                    );
 
-              }
+                  executionTime.textContent =
+                    `${elapsed} ms`;
+
+                  statTime.textContent =
+                    `${elapsed} ms`;
+
+                  executionStatus.innerHTML =
+                    '<i class="fa-solid fa-circle" style="color:#ef4444"></i> خطأ';
+
+                  setStatus("حدث خطأ");
+
+                  executionFinished = true;
+
+                  stopActiveWorker();
+                }
 
 
-              if (type === "done") {
+                if (type === "done") {
+
+                  if (executionFinished) {
+                    return;
+                  }
+
+                  executionFinished = true;
+
+                  const elapsed =
+                    Math.round(
+                      performance.now() - start
+                    );
+
+
+                  executionTime.textContent =
+                    `${elapsed} ms`;
+
+
+                  statTime.textContent =
+                    `${elapsed} ms`;
+
+
+                  executionStatus.innerHTML =
+                    '<i class="fa-solid fa-circle" style="color:#22c55e"></i> تم التنفيذ';
+
+
+                  setStatus(
+                    "تم التنفيذ"
+                  );
+
+
+                  stopActiveWorker();
+                }
+              };
+
+
+            activeWorker.onerror =
+              function(error) {
+
+                if (executionFinished) {
+                  return;
+                }
+
+                executionFinished = true;
 
                 const elapsed =
                   Math.round(
@@ -2223,99 +2163,119 @@ console.log("المجموع:", total);</textarea>
                 executionTime.textContent =
                   `${elapsed} ms`;
 
+
                 statTime.textContent =
                   `${elapsed} ms`;
 
-                executionStatus.innerHTML = `
-                  <i
-                    class="fa-solid fa-circle"
-                    style="color:#22c55e"
-                  ></i>
-                  تم التنفيذ
-                `;
-
-                setStatus("تم التنفيذ");
-
-                worker.terminate();
-
-              }
-
-            };
-
-
-            worker.onerror = (error) => {
-
-              addConsole(
-                "error",
-                error.message ||
-                "حدث خطأ أثناء التنفيذ."
-              );
-
-              setStatus("خطأ");
-
-              worker.terminate();
-
-            };
-
-
-            worker.postMessage(
-              jsCode
-            );
-
-
-            setTimeout(() => {
-
-              if (!finished) {
-
-                worker.terminate();
 
                 addConsole(
                   "error",
-                  "تم إيقاف التنفيذ لأنه تجاوز الحد الزمني المسموح."
+                  error.message ||
+                  "حدث خطأ أثناء تنفيذ الكود."
                 );
 
-                setStatus("تم إيقاف التنفيذ");
 
-                executionStatus.innerHTML = `
-                  <i
-                    class="fa-solid fa-circle"
-                    style="color:#ef4444"
-                  ></i>
-                  توقف
-                `;
+                executionStatus.innerHTML =
+                  '<i class="fa-solid fa-circle" style="color:#ef4444"></i> خطأ';
 
-              }
 
-            }, 5000);
+                setStatus("خطأ");
 
-          } catch(error) {
+
+                stopActiveWorker();
+              };
+
+
+            executionTimer =
+              setTimeout(
+                function() {
+
+                  if (executionFinished) {
+                    return;
+                  }
+
+                  executionFinished = true;
+
+                  stopActiveWorker();
+
+
+                  const elapsed =
+                    Math.round(
+                      performance.now() - start
+                    );
+
+
+                  executionTime.textContent =
+                    `${elapsed} ms`;
+
+
+                  statTime.textContent =
+                    `${elapsed} ms`;
+
+
+                  addConsole(
+                    "error",
+                    "تم إيقاف التنفيذ لأنه تجاوز الحد الزمني المسموح (5 ثوانٍ)."
+                  );
+
+
+                  executionStatus.innerHTML =
+                    '<i class="fa-solid fa-circle" style="color:#ef4444"></i> توقف';
+
+
+                  setStatus(
+                    "تم إيقاف التنفيذ"
+                  );
+
+                },
+                5000
+              );
+
+
+            activeWorker.postMessage(
+              jsCode
+            );
+
+          } catch (error) {
 
             const elapsed =
               Math.round(
                 performance.now() - start
               );
 
+
             executionTime.textContent =
               `${elapsed} ms`;
+
 
             statTime.textContent =
               `${elapsed} ms`;
 
+
             addConsole(
               "error",
-              error.stack ||
-              String(error)
+              error && error.stack
+                ? error.stack
+                : String(error)
             );
+
+
+            executionStatus.innerHTML =
+              '<i class="fa-solid fa-circle" style="color:#ef4444"></i> خطأ';
+
 
             setStatus("خطأ");
 
+            stopActiveWorker();
           }
-
         }
 
 
-        function formatCode() {
+        /* ---------------------------------
+           FORMAT
+        --------------------------------- */
 
+        function formatCode() {
           let code =
             editor.value;
 
@@ -2323,11 +2283,7 @@ console.log("المجموع:", total);</textarea>
             code
               .replace(/\r\n/g, "\n")
               .replace(/[ \t]+$/gm, "")
-              .replace(/\n{3,}/g, "\n\n")
-              .replace(
-                /\{\s*\n/g,
-                "{\n"
-              );
+              .replace(/\n{3,}/g, "\n\n");
 
 
           editor.value =
@@ -2335,44 +2291,54 @@ console.log("المجموع:", total);</textarea>
 
 
           updateStats();
-
         }
 
 
-        async function copyCode() {
+        /* ---------------------------------
+           COPY
+        --------------------------------- */
 
+        async function copyCode() {
           try {
 
             await navigator.clipboard.writeText(
               editor.value
             );
 
-            copyBtn.innerHTML = `
-              <i class="fa-solid fa-check"></i>
-              تم النسخ
-            `;
 
-            setTimeout(() => {
+            copyBtn.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
 
-              copyBtn.innerHTML = `
-                <i class="fa-regular fa-copy"></i>
-                نسخ
-              `;
 
-            }, 1500);
+            setTimeout(
+              function() {
 
-          } catch {
+                copyBtn.innerHTML =
+                  '<i class="fa-regular fa-copy"></i> نسخ';
+
+              },
+              1500
+            );
+
+          } catch (_) {
+
+            editor.focus();
 
             editor.select();
 
             document.execCommand("copy");
-
           }
-
         }
 
 
+        /* ---------------------------------
+           CLEAR
+        --------------------------------- */
+
         function clearCode() {
+          stopActiveWorker();
+
+          executionFinished = true;
 
           editor.value = "";
 
@@ -2382,27 +2348,30 @@ console.log("المجموع:", total);</textarea>
 
           setStatus("جاهز");
 
-          executionStatus.innerHTML = `
-            <i class="fa-solid fa-circle"></i>
-            لم يتم التنفيذ
-          `;
+          executionStatus.innerHTML =
+            '<i class="fa-solid fa-circle"></i> لم يتم التنفيذ';
 
           executionTime.textContent =
             "0 ms";
 
           statTime.textContent =
             "0 ms";
-
         }
 
+
+        /* ---------------------------------
+           SCROLL
+        --------------------------------- */
 
         function syncScroll() {
-
           lineNumbers.scrollTop =
             editor.scrollTop;
-
         }
 
+
+        /* ---------------------------------
+           EVENTS
+        --------------------------------- */
 
         editor.addEventListener(
           "input",
@@ -2418,7 +2387,7 @@ console.log("المجموع:", total);</textarea>
 
         editor.addEventListener(
           "keydown",
-          (event) => {
+          function(event) {
 
             if (event.key === "Tab") {
 
@@ -2430,6 +2399,7 @@ console.log("المجموع:", total);</textarea>
               const end =
                 editor.selectionEnd;
 
+
               editor.value =
                 editor.value.substring(
                   0,
@@ -2440,12 +2410,13 @@ console.log("المجموع:", total);</textarea>
                   end
                 );
 
+
               editor.selectionStart =
                 editor.selectionEnd =
                   start + 2;
 
-              updateStats();
 
+              updateStats();
             }
 
 
@@ -2457,7 +2428,6 @@ console.log("المجموع:", total);</textarea>
               event.preventDefault();
 
               runCode();
-
             }
 
           }
@@ -2493,6 +2463,8 @@ console.log("المجموع:", total);</textarea>
           resetConsole
         );
 
+
+        /* INITIAL */
 
         updateStats();
 
