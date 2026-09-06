@@ -15,252 +15,190 @@ const canonical =
 
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{title}</title>
+  <title>{title}</title>
 
-    <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={canonical} />
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
 
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-  </head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
 
-  <body>
-    <Header />
+<body>
 
-    <main class="playground-page">
+  <Header />
 
-      <!-- =====================================================
-           HERO
-      ====================================================== -->
+  <main class="playground-page">
 
-      <section class="hero">
+    <!-- HERO -->
+    <section class="hero">
 
-        <div class="hero-orb orb-one"></div>
-        <div class="hero-orb orb-two"></div>
+      <div class="hero-glow glow-one"></div>
+      <div class="hero-glow glow-two"></div>
 
-        <div class="hero-grid"></div>
+      <div class="hero-inner">
 
-        <div class="hero-inner">
+        <div class="tool-icon">
+          <span>TS</span>
+          <i class="fa-solid fa-terminal"></i>
+        </div>
 
-          <div class="tool-icon">
+        <div class="badge">
+          <i class="fa-solid fa-bolt"></i>
+          TypeScript Playground
+        </div>
 
-            <span>TS</span>
+        <h1>
+          TypeScript
+          <span>Playground</span>
+        </h1>
 
+        <p>
+          اكتب وجرب وشغّل أكواد TypeScript مباشرة من المتصفح
+          مع Console احترافي لعرض النتائج والأخطاء.
+        </p>
+
+        <div class="hero-features">
+
+          <span>
+            <i class="fa-solid fa-play"></i>
+            تشغيل مباشر
+          </span>
+
+          <span>
             <i class="fa-solid fa-terminal"></i>
+            Console
+          </span>
+
+          <span>
+            <i class="fa-solid fa-shield-halved"></i>
+            معالجة محلية
+          </span>
+
+          <span>
+            <i class="fa-solid fa-mobile-screen"></i>
+            متجاوب
+          </span>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- PLAYGROUND -->
+    <section class="tool-section">
+
+      <div class="tool-container">
+
+        <div class="workspace-header">
+
+          <div class="workspace-title">
+
+            <div class="workspace-logo">
+              TS
+            </div>
+
+            <div>
+              <h2>TypeScript Playground</h2>
+              <p>بيئة تجريبية لتشغيل TypeScript</p>
+            </div>
 
           </div>
 
-          <div class="badge">
-
-            <i class="fa-solid fa-bolt"></i>
-
-            TypeScript Playground
-
-          </div>
-
-          <h1>
-            TypeScript
-            <span>Playground</span>
-          </h1>
-
-          <p>
-            اكتب وجرب وشغّل أكواد TypeScript مباشرة من المتصفح
-            مع Console احترافي لعرض النتائج والأخطاء.
-          </p>
-
-          <div class="hero-features">
-
-            <span>
-              <i class="fa-solid fa-play"></i>
-              تشغيل مباشر
-            </span>
-
-            <span>
-              <i class="fa-solid fa-terminal"></i>
-              Console
-            </span>
-
-            <span>
-              <i class="fa-solid fa-shield-halved"></i>
-              معالجة محلية
-            </span>
-
-            <span>
-              <i class="fa-solid fa-mobile-screen"></i>
-              متجاوب
-            </span>
-
+          <div class="workspace-status" id="runtimeStatus">
+            <span class="status-dot"></span>
+            جاهز
           </div>
 
         </div>
 
-      </section>
+
+        <!-- ACTION BAR -->
+        <div class="action-bar">
+
+          <button class="run-btn" id="runBtn" type="button">
+            <i class="fa-solid fa-play"></i>
+            تشغيل الكود
+          </button>
+
+          <button class="secondary-btn" id="copyBtn" type="button">
+            <i class="fa-regular fa-copy"></i>
+            نسخ
+          </button>
+
+          <button class="secondary-btn" id="formatBtn" type="button">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            تنسيق
+          </button>
+
+          <button class="danger-btn" id="clearBtn" type="button">
+            <i class="fa-solid fa-trash"></i>
+            مسح
+          </button>
+
+        </div>
 
 
-      <!-- =====================================================
-           TOOL
-      ====================================================== -->
+        <!-- EDITORS -->
+        <div class="editor-grid">
 
-      <section class="tool-section">
+          <!-- TYPESCRIPT -->
+          <div class="editor-card">
 
-        <div class="tool-container">
+            <div class="panel-header">
 
-          <!-- WORKSPACE HEADER -->
+              <div class="panel-left">
 
-          <div class="workspace-header">
+                <div class="panel-icon ts-icon">
+                  TS
+                </div>
 
-            <div class="workspace-title">
+                <div>
+                  <strong>TypeScript</strong>
+                  <small>source.ts</small>
+                </div>
 
-              <div class="workspace-logo">
-                <span>TS</span>
               </div>
 
-              <div>
-
-                <h2>
-                  TypeScript Playground
-                </h2>
-
-                <p>
-                  بيئة تجريبية لتشغيل TypeScript
-                </p>
-
+              <div class="panel-tools" id="lineCount">
+                1 سطر
               </div>
 
             </div>
 
-            <div
-              class="workspace-status"
-              id="runtimeStatus"
-            >
-              <span class="status-dot"></span>
-              جاهز
-            </div>
 
-          </div>
+            <div class="editor-wrapper">
 
+              <div class="line-numbers" id="lineNumbers">1</div>
 
-          <!-- ACTION BAR -->
-
-          <div class="action-bar">
-
-            <button
-              type="button"
-              class="run-btn"
-              id="runBtn"
-            >
-              <i class="fa-solid fa-play"></i>
-              تشغيل الكود
-            </button>
-
-            <button
-              type="button"
-              class="secondary-btn"
-              id="copyBtn"
-            >
-              <i class="fa-regular fa-copy"></i>
-              نسخ
-            </button>
-
-            <button
-              type="button"
-              class="secondary-btn"
-              id="formatBtn"
-            >
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              تنسيق
-            </button>
-
-            <button
-              type="button"
-              class="danger-btn"
-              id="clearBtn"
-            >
-              <i class="fa-solid fa-trash"></i>
-              مسح
-            </button>
-
-          </div>
-
-
-          <!-- EDITOR GRID -->
-
-          <div class="editor-grid">
-
-            <!-- CODE EDITOR -->
-
-            <div class="editor-card">
-
-              <div class="panel-header">
-
-                <div class="panel-left">
-
-                  <div class="panel-icon ts-icon">
-                    TS
-                  </div>
-
-                  <div>
-
-                    <strong>
-                      TypeScript
-                    </strong>
-
-                    <small>
-                      source.ts
-                    </small>
-
-                  </div>
-
-                </div>
-
-                <div class="panel-tools">
-
-                  <span id="lineCount">
-                    1 سطر
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div class="editor-wrapper">
-
-                <div
-                  class="line-numbers"
-                  id="lineNumbers"
-                >
-                  1
-                </div>
-
-                <textarea
-                  id="codeEditor"
-                  spellcheck="false"
-                  autocomplete="off"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  aria-label="TypeScript code editor"
-                >interface User {
+              <textarea
+                id="codeEditor"
+                spellcheck="false"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+              >interface User {
   name: string;
   age: number;
 }
@@ -276,400 +214,73 @@ console.log("العمر:", user.age);
 const numbers: number[] = [10, 20, 30, 40, 50];
 
 const total: number = numbers.reduce(
-  (sum: number, number: number) => sum + number,
+  (sum: number, value: number) => sum + value,
   0
 );
 
 console.log("المجموع:", total);</textarea>
 
-              </div>
-
-
-              <div class="editor-footer">
-
-                <span>
-                  <i class="fa-solid fa-code"></i>
-                  TypeScript
-                </span>
-
-                <span id="charCount">
-                  0 حرف
-                </span>
-
-              </div>
-
             </div>
 
 
-            <!-- CONSOLE -->
+            <div class="editor-footer">
 
-            <div class="console-card">
-
-              <div class="panel-header console-header">
-
-                <div class="panel-left">
-
-                  <div class="panel-icon terminal-icon">
-
-                    <i class="fa-solid fa-terminal"></i>
-
-                  </div>
-
-                  <div>
-
-                    <strong>
-                      Console
-                    </strong>
-
-                    <small>
-                      output
-                    </small>
-
-                  </div>
-
-                </div>
-
-                <button
-                  type="button"
-                  id="clearConsole"
-                  class="console-clear"
-                >
-                  <i class="fa-solid fa-broom"></i>
-                  مسح
-                </button>
-
-              </div>
-
-
-              <div
-                class="console-output"
-                id="consoleOutput"
-              >
-
-                <div class="console-welcome">
-
-                  <div class="welcome-icon">
-
-                    <i class="fa-solid fa-terminal"></i>
-
-                  </div>
-
-                  <h3>
-                    Console جاهز
-                  </h3>
-
-                  <p>
-                    اضغط على «تشغيل الكود» لرؤية النتائج هنا.
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              <div class="console-footer">
-
-                <span id="executionStatus">
-
-                  <i class="fa-solid fa-circle"></i>
-
-                  لم يتم التنفيذ
-
-                </span>
-
-                <span id="executionTime">
-                  0 ms
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- STATS -->
-
-          <div class="stats-grid">
-
-            <div class="stat-card">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-file-code"></i>
-              </div>
-
-              <div>
-
-                <span>
-                  الأسطر
-                </span>
-
-                <strong id="statLines">
-                  1
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-font"></i>
-              </div>
-
-              <div>
-
-                <span>
-                  الأحرف
-                </span>
-
-                <strong id="statChars">
-                  0
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-icon">
+              <span>
                 <i class="fa-solid fa-code"></i>
-              </div>
+                TypeScript
+              </span>
 
-              <div>
-
-                <span>
-                  الكلمات
-                </span>
-
-                <strong id="statWords">
-                  0
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-clock"></i>
-              </div>
-
-              <div>
-
-                <span>
-                  وقت التنفيذ
-                </span>
-
-                <strong id="statTime">
-                  0 ms
-                </strong>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           CONTENT
-      ====================================================== -->
-
-      <section class="content-section">
-
-        <div class="content-container">
-
-          <!-- INFO -->
-
-          <div class="info-card">
-
-            <div class="info-icon">
-
-              <span class="ts-info-mark">
-                TS
+              <span id="charCount">
+                0 حرف
               </span>
 
             </div>
 
-            <div>
+          </div>
 
-              <h2>
-                ما هو TypeScript Playground؟
-              </h2>
 
-              <p>
-                TypeScript Playground هو محرر تفاعلي يسمح لك
-                بكتابة وتجربة أكواد TypeScript بسرعة من المتصفح
-                دون الحاجة إلى تثبيت بيئة تطوير كاملة على جهازك.
-              </p>
+          <!-- CONSOLE -->
+          <div class="console-card">
 
-              <p>
-                يمكنك استخدامه لتجربة Interfaces و Types والدوال
-                والمصفوفات والعديد من أساسيات TypeScript.
-              </p>
+            <div class="panel-header console-header">
+
+              <div class="panel-left">
+
+                <div class="panel-icon terminal-icon">
+                  <i class="fa-solid fa-terminal"></i>
+                </div>
+
+                <div>
+                  <strong>Console</strong>
+                  <small>output</small>
+                </div>
+
+              </div>
+
+              <button
+                id="clearConsole"
+                class="console-clear"
+                type="button"
+              >
+                <i class="fa-solid fa-broom"></i>
+                مسح
+              </button>
 
             </div>
 
-          </div>
 
+            <div class="console-output" id="consoleOutput">
 
-          <!-- FEATURES -->
+              <div class="console-welcome">
 
-          <div class="section-heading">
+                <div class="welcome-icon">
+                  <i class="fa-solid fa-terminal"></i>
+                </div>
 
-            <span class="heading-icon">
-
-              <i class="fa-solid fa-star"></i>
-
-            </span>
-
-            <div>
-
-              <h2>
-                مميزات الأداة
-              </h2>
-
-              <p>
-                كل ما تحتاجه لتجربة TypeScript بسرعة
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="features-grid">
-
-            <article class="feature-card">
-
-              <div class="feature-icon">
-
-                <i class="fa-solid fa-play"></i>
-
-              </div>
-
-              <h3>
-                تشغيل مباشر
-              </h3>
-
-              <p>
-                شغّل الكود مباشرة من المتصفح واحصل على النتائج فوراً.
-              </p>
-
-            </article>
-
-
-            <article class="feature-card">
-
-              <div class="feature-icon">
-
-                <i class="fa-solid fa-terminal"></i>
-
-              </div>
-
-              <h3>
-                Console احترافي
-              </h3>
-
-              <p>
-                شاهد المخرجات والأخطاء ورسائل التنفيذ داخل Console مخصص.
-              </p>
-
-            </article>
-
-
-            <article class="feature-card">
-
-              <div class="feature-icon">
-
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-              </div>
-
-              <h3>
-                تنسيق الكود
-              </h3>
-
-              <p>
-                استخدم أداة التنسيق للحصول على كود أكثر وضوحاً وتنظيماً.
-              </p>
-
-            </article>
-
-
-            <article class="feature-card">
-
-              <div class="feature-icon">
-
-                <i class="fa-solid fa-lock"></i>
-
-              </div>
-
-              <h3>
-                معالجة محلية
-              </h3>
-
-              <p>
-                تتم معالجة الكود داخل المتصفح دون الحاجة إلى رفع ملفاتك.
-              </p>
-
-            </article>
-
-          </div>
-
-
-          <!-- HOW TO -->
-
-          <div class="section-heading">
-
-            <span class="heading-icon">
-
-              <i class="fa-solid fa-list-check"></i>
-
-            </span>
-
-            <div>
-
-              <h2>
-                طريقة الاستخدام
-              </h2>
-
-              <p>
-                ابدأ خلال ثوانٍ
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="steps">
-
-            <div class="step">
-
-              <div class="step-number">
-                1
-              </div>
-
-              <div>
-
-                <h3>
-                  اكتب الكود
-                </h3>
+                <h3>Console جاهز</h3>
 
                 <p>
-                  أدخل كود TypeScript داخل المحرر.
+                  اضغط على «تشغيل الكود» لرؤية النتائج هنا.
                 </p>
 
               </div>
@@ -677,3185 +288,2255 @@ console.log("المجموع:", total);</textarea>
             </div>
 
 
-            <div class="step">
+            <div class="console-footer">
 
-              <div class="step-number">
-                2
-              </div>
+              <span id="executionStatus">
+                <i class="fa-solid fa-circle"></i>
+                لم يتم التنفيذ
+              </span>
 
-              <div>
-
-                <h3>
-                  اضغط تشغيل
-                </h3>
-
-                <p>
-                  اضغط على زر تشغيل الكود لبدء التنفيذ.
-                </p>
-
-              </div>
+              <span id="executionTime">
+                0 ms
+              </span>
 
             </div>
-
-
-            <div class="step">
-
-              <div class="step-number">
-                3
-              </div>
-
-              <div>
-
-                <h3>
-                  شاهد النتائج
-                </h3>
-
-                <p>
-                  ستظهر نتائج Console والأخطاء في القسم المقابل.
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- FAQ -->
-
-          <div class="section-heading">
-
-            <span class="heading-icon">
-
-              <i class="fa-solid fa-circle-question"></i>
-
-            </span>
-
-            <div>
-
-              <h2>
-                الأسئلة الشائعة
-              </h2>
-
-              <p>
-                أهم الأسئلة حول الأداة
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="faq">
-
-            <details>
-
-              <summary>
-
-                هل TypeScript Playground مجاني؟
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-              </summary>
-
-              <p>
-                نعم، يمكنك استخدام الأداة مجاناً من المتصفح.
-              </p>
-
-            </details>
-
-
-            <details>
-
-              <summary>
-
-                هل أحتاج إلى تثبيت TypeScript؟
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-              </summary>
-
-              <p>
-                لا. الأداة مصممة للعمل من المتصفح دون الحاجة
-                إلى تثبيت TypeScript محلياً.
-              </p>
-
-            </details>
-
-
-            <details>
-
-              <summary>
-
-                هل يمكنني تجربة Interfaces و Types؟
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-              </summary>
-
-              <p>
-                نعم، يمكنك تجربة العديد من ميزات TypeScript
-                الأساسية داخل المحرر.
-              </p>
-
-            </details>
-
-
-            <details>
-
-              <summary>
-
-                هل يتم إرسال الكود إلى الخادم؟
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-              </summary>
-
-              <p>
-                تتم معالجة وتشغيل الكود داخل المتصفح باستخدام
-                بيئة تنفيذ محلية، ولا يتم رفع الكود إلى خادم خارجي.
-              </p>
-
-            </details>
 
           </div>
 
         </div>
 
-      </section>
 
-    </main>
+        <!-- STATS -->
+        <div class="stats-grid">
 
-    <Footer />
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              <i class="fa-solid fa-file-code"></i>
+            </div>
+
+            <div>
+              <span>الأسطر</span>
+              <strong id="statLines">1</strong>
+            </div>
+
+          </div>
 
 
-    <!-- =====================================================
-         STYLE
-    ====================================================== -->
+          <div class="stat-card">
 
-    <style>
+            <div class="stat-icon">
+              <i class="fa-solid fa-font"></i>
+            </div>
 
-      :root {
+            <div>
+              <span>الأحرف</span>
+              <strong id="statChars">0</strong>
+            </div>
 
-        --ts-primary: #06b6d4;
-        --ts-primary-dark: #0891b2;
-        --ts-secondary: #14b8a6;
-        --ts-light: #67e8f9;
+          </div>
 
-        --ts-soft: rgba(6, 182, 212, 0.10);
 
-        --bg: #f5f8fc;
-        --card: #ffffff;
-        --text: #0f172a;
-        --muted: #64748b;
-        --border: #e2e8f0;
+          <div class="stat-card">
 
-        --editor: #0b1120;
-        --editor-two: #111827;
-        --editor-text: #dbeafe;
+            <div class="stat-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
 
-        --console: #071019;
+            <div>
+              <span>الكلمات</span>
+              <strong id="statWords">0</strong>
+            </div>
 
-        --success: #22c55e;
-        --danger: #ef4444;
+          </div>
 
-        --shadow:
-          0 20px 60px rgba(15, 23, 42, 0.08);
 
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div>
+              <span>وقت التنفيذ</span>
+              <strong id="statTime">0 ms</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+    <section class="content-section">
+
+      <div class="content-container">
+
+        <div class="info-card">
+
+          <div class="info-icon">
+            <span>TS</span>
+          </div>
+
+          <div>
+
+            <h2>
+              ما هو TypeScript Playground؟
+            </h2>
+
+            <p>
+              TypeScript Playground هو محرر تفاعلي يسمح لك
+              بكتابة وتجربة أكواد TypeScript بسرعة من المتصفح
+              دون الحاجة إلى تثبيت بيئة تطوير كاملة.
+            </p>
+
+            <p>
+              يمكنك استخدامه لتجربة Interfaces و Types والدوال
+              والمصفوفات والأنواع المختلفة في TypeScript.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- FEATURES -->
+        <div class="section-heading">
+
+          <span class="heading-icon">
+            <i class="fa-solid fa-star"></i>
+          </span>
+
+          <div>
+            <h2>مميزات الأداة</h2>
+            <p>كل ما تحتاجه لتجربة TypeScript بسرعة</p>
+          </div>
+
+        </div>
+
+
+        <div class="features-grid">
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-play"></i>
+            </div>
+
+            <h3>تشغيل مباشر</h3>
+
+            <p>
+              شغّل الكود مباشرة من المتصفح واحصل على النتائج فوراً.
+            </p>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-terminal"></i>
+            </div>
+
+            <h3>Console احترافي</h3>
+
+            <p>
+              شاهد المخرجات والأخطاء ورسائل التنفيذ داخل Console.
+            </p>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <h3>تنسيق الكود</h3>
+
+            <p>
+              نظّم الكود بسرعة ليصبح أكثر وضوحاً وسهولة في القراءة.
+            </p>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h3>معالجة محلية</h3>
+
+            <p>
+              تتم معالجة الكود داخل المتصفح دون رفعه إلى خادم.
+            </p>
+
+          </article>
+
+        </div>
+
+
+        <!-- HOW TO -->
+        <div class="section-heading">
+
+          <span class="heading-icon">
+            <i class="fa-solid fa-list-check"></i>
+          </span>
+
+          <div>
+            <h2>طريقة الاستخدام</h2>
+            <p>ابدأ خلال ثوانٍ</p>
+          </div>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>اكتب الكود</h3>
+              <p>
+                أدخل كود TypeScript داخل المحرر.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>اضغط تشغيل</h3>
+              <p>
+                اضغط على زر تشغيل الكود لبدء التنفيذ.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>شاهد النتائج</h3>
+              <p>
+                ستظهر النتائج ورسائل Console في القسم المقابل.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- FAQ -->
+        <div class="section-heading">
+
+          <span class="heading-icon">
+            <i class="fa-solid fa-circle-question"></i>
+          </span>
+
+          <div>
+            <h2>الأسئلة الشائعة</h2>
+            <p>أهم الأسئلة حول الأداة</p>
+          </div>
+
+        </div>
+
+
+        <div class="faq">
+
+          <details>
+
+            <summary>
+              هل TypeScript Playground مجاني؟
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
+
+            <p>
+              نعم، يمكنك استخدام الأداة مجاناً من المتصفح.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              هل أحتاج إلى تثبيت TypeScript؟
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
+
+            <p>
+              لا. الأداة مصممة للعمل من المتصفح دون تثبيت
+              TypeScript محلياً.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              هل يمكن تجربة Interfaces و Types؟
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
+
+            <p>
+              نعم، يمكنك تجربة العديد من ميزات TypeScript
+              داخل المحرر.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              هل يتم إرسال الكود إلى الخادم؟
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
+
+            <p>
+              لا. تتم معالجة الكود محلياً داخل المتصفح.
+            </p>
+
+          </details>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+<style>
+:root {
+  --ts-primary: #06b6d4;
+  --ts-primary-dark: #0891b2;
+  --ts-secondary: #14b8a6;
+  --ts-soft: rgba(6, 182, 212, 0.1);
+
+  --bg: #f5f8fc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+
+  --editor: #0b1120;
+  --editor-two: #111827;
+  --editor-text: #dbeafe;
+
+  --console: #071019;
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Cairo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.playground-page {
+  overflow: hidden;
+}
+
+
+/* HERO */
+
+.hero {
+  position: relative;
+  padding: 80px 20px 90px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(6, 182, 212, 0.2),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(20, 184, 166, 0.15),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #06131b,
+      #0b1720 50%,
+      #061820
+    );
+
+  color: white;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: auto;
+  text-align: center;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+}
+
+.glow-one {
+  top: -100px;
+  left: 10%;
+  background: var(--ts-primary);
+}
+
+.glow-two {
+  right: 10%;
+  bottom: -130px;
+  background: var(--ts-secondary);
+}
+
+.tool-icon {
+  position: relative;
+
+  width: 88px;
+  height: 88px;
+
+  margin: 0 auto 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #06b6d4,
+      #0f766e
+    );
+
+  box-shadow:
+    0 15px 45px rgba(6, 182, 212, 0.35);
+}
+
+.tool-icon span {
+  font-family: Arial, sans-serif;
+  font-size: 31px;
+  font-weight: 900;
+  letter-spacing: -3px;
+}
+
+.tool-icon i {
+  position: absolute;
+  left: -8px;
+  bottom: -8px;
+
+  width: 31px;
+  height: 31px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #0f172a;
+  color: #67e8f9;
+
+  font-size: 13px;
+
+  border: 2px solid rgba(103, 232, 249, 0.3);
+}
+
+.badge {
+  width: fit-content;
+
+  margin: 0 auto 18px;
+  padding: 7px 15px;
+
+  border: 1px solid rgba(103, 232, 249, 0.25);
+  border-radius: 999px;
+
+  background: rgba(6, 182, 212, 0.08);
+  color: #67e8f9;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.badge i {
+  margin-left: 6px;
+}
+
+.hero h1 {
+  margin: 0;
+
+  font-size: clamp(35px, 6vw, 62px);
+  line-height: 1.15;
+
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.hero h1 span {
+  color: #67e8f9;
+}
+
+.hero p {
+  max-width: 720px;
+
+  margin: 22px auto 0;
+
+  color: #a7b9c8;
+
+  font-size: 16px;
+  line-height: 2;
+}
+
+.hero-features {
+  margin-top: 30px;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.hero-features span {
+  padding: 8px 13px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #d7e5ed;
+
+  font-size: 12px;
+}
+
+.hero-features i {
+  margin-left: 5px;
+  color: #67e8f9;
+}
+
+
+/* TOOL */
+
+.tool-section {
+  position: relative;
+  z-index: 5;
+
+  margin-top: -40px;
+
+  padding: 0 20px 70px;
+}
+
+.tool-container {
+  max-width: 1250px;
+  margin: auto;
+}
+
+.workspace-header {
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+  border-bottom: 0;
+
+  border-radius: 20px 20px 0 0;
+}
+
+.workspace-title,
+.panel-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.workspace-logo {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: var(--ts-soft);
+  color: var(--ts-primary-dark);
+
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.workspace-title h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.workspace-title p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.workspace-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 11px;
+
+  border-radius: 999px;
+
+  background: #f0fdf4;
+  color: #15803d;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+}
+
+.action-bar {
+  padding: 14px 18px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  background: #f8fafc;
+
+  border: 1px solid var(--border);
+  border-bottom: 0;
+}
+
+.action-bar button {
+  min-height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 10px;
+  border: 1px solid var(--border);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.run-btn {
+  border-color: var(--ts-primary) !important;
+
+  background: var(--ts-primary);
+  color: white;
+}
+
+.run-btn:hover {
+  background: var(--ts-primary-dark);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  background: white;
+  color: #334155;
+}
+
+.secondary-btn:hover {
+  border-color: var(--ts-primary);
+  color: var(--ts-primary-dark);
+}
+
+.danger-btn {
+  background: white;
+  color: #dc2626;
+}
+
+.danger-btn:hover {
+  border-color: #fecaca;
+  background: #fff7f7;
+}
+
+.action-bar i {
+  margin-left: 5px;
+}
+
+
+/* EDITOR */
+
+.editor-grid {
+  display: grid;
+
+  grid-template-columns: 1.15fr 0.85fr;
+
+  min-height: 580px;
+}
+
+.editor-card,
+.console-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #1e293b;
+}
+
+.editor-card {
+  border-radius: 0 0 0 18px;
+  background: var(--editor);
+}
+
+.console-card {
+  border-radius: 0 0 18px 0;
+  background: var(--console);
+}
+
+.panel-header {
+  min-height: 62px;
+
+  padding: 12px 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #1e293b;
+
+  background: var(--editor-two);
+
+  color: #e2e8f0;
+}
+
+.panel-left strong {
+  display: block;
+  font-size: 12px;
+}
+
+.panel-left small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 10px;
+
+  direction: ltr;
+  text-align: right;
+}
+
+.panel-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+}
+
+.ts-icon {
+  background: #3178c6;
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.terminal-icon {
+  background: rgba(6, 182, 212, 0.12);
+  color: #67e8f9;
+}
+
+.panel-tools {
+  color: #64748b;
+  font-size: 10px;
+}
+
+.editor-wrapper {
+  position: relative;
+
+  display: flex;
+
+  height: 455px;
+
+  direction: ltr;
+
+  overflow: hidden;
+}
+
+.line-numbers {
+  width: 48px;
+
+  flex-shrink: 0;
+
+  padding: 18px 9px;
+
+  background: #080d18;
+
+  border-right: 1px solid #1e293b;
+
+  color: #475569;
+
+  font-family: Consolas, Monaco, monospace;
+
+  font-size: 13px;
+  line-height: 1.8;
+
+  text-align: right;
+
+  overflow: hidden;
+
+  white-space: pre;
+  user-select: none;
+}
+
+#codeEditor {
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  resize: none;
+
+  padding: 18px;
+
+  border: 0;
+  outline: none;
+
+  background: var(--editor);
+  color: var(--editor-text);
+
+  font-family:
+    Consolas,
+    Monaco,
+    "Courier New",
+    monospace;
+
+  font-size: 13px;
+  line-height: 1.8;
+
+  tab-size: 2;
+
+  direction: ltr;
+  text-align: left;
+
+  white-space: pre;
+
+  overflow: auto;
+}
+
+#codeEditor::selection {
+  background: rgba(6, 182, 212, 0.3);
+}
+
+.editor-footer,
+.console-footer {
+  min-height: 44px;
+
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  color: #64748b;
+
+  background: var(--editor-two);
+
+  border-top: 1px solid #1e293b;
+
+  font-size: 10px;
+}
+
+.editor-footer i {
+  margin-left: 4px;
+  color: #67e8f9;
+}
+
+
+/* CONSOLE */
+
+.console-output {
+  height: 455px;
+
+  padding: 18px;
+
+  overflow: auto;
+
+  direction: ltr;
+  text-align: left;
+
+  font-family:
+    Consolas,
+    Monaco,
+    monospace;
+
+  font-size: 13px;
+
+  color: #cbd5e1;
+}
+
+.console-welcome {
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #64748b;
+}
+
+.welcome-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 16px;
+
+  background: rgba(6, 182, 212, 0.08);
+
+  color: #22d3ee;
+
+  font-size: 20px;
+}
+
+.console-welcome h3 {
+  margin: 0;
+
+  color: #cbd5e1;
+
+  font-family: Cairo, sans-serif;
+
+  font-size: 14px;
+}
+
+.console-welcome p {
+  margin: 6px 0;
+
+  font-family: Cairo, sans-serif;
+
+  font-size: 11px;
+}
+
+.console-line {
+  padding: 8px 10px;
+
+  margin-bottom: 6px;
+
+  border-radius: 7px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+.console-line.log {
+  border-left: 2px solid #22d3ee;
+}
+
+.console-line.error {
+  border-left: 2px solid #ef4444;
+
+  color: #fca5a5;
+
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.console-line.info {
+  border-left: 2px solid #60a5fa;
+
+  color: #93c5fd;
+}
+
+.console-clear {
+  border: 0;
+
+  background: transparent;
+
+  color: #64748b;
+
+  font-family: Cairo, sans-serif;
+
+  font-size: 10px;
+}
+
+.console-clear:hover {
+  color: #67e8f9;
+}
+
+.console-footer i {
+  margin-left: 4px;
+
+  color: #64748b;
+
+  font-size: 7px;
+}
+
+
+/* STATS */
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 12px;
+
+  margin-top: 15px;
+}
+
+.stat-card {
+  padding: 16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+}
+
+.stat-icon {
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: var(--ts-soft);
+
+  color: var(--ts-primary-dark);
+}
+
+.stat-card span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.stat-card strong {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 16px;
+}
+
+
+/* CONTENT */
+
+.content-section {
+  padding: 20px 20px 90px;
+}
+
+.content-container {
+  max-width: 1050px;
+  margin: auto;
+}
+
+.info-card {
+  display: flex;
+
+  gap: 20px;
+
+  padding: 27px;
+
+  margin-bottom: 65px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+}
+
+.info-icon {
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: var(--ts-soft);
+
+  color: var(--ts-primary-dark);
+
+  font-family: Arial, sans-serif;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.info-card h2 {
+  margin: 0 0 9px;
+
+  font-size: 19px;
+}
+
+.info-card p {
+  margin: 6px 0;
+
+  color: var(--muted);
+
+  line-height: 2;
+
+  font-size: 13px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin: 0 0 24px;
+}
+
+.heading-icon {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: var(--ts-soft);
+
+  color: var(--ts-primary-dark);
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 19px;
+}
+
+.section-heading p {
+  margin: 3px 0 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+/* FEATURES */
+
+.features-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 70px;
+}
+
+.feature-card {
+  padding: 22px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 17px;
+
+  transition: 0.25s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(6, 182, 212, 0.35);
+
+  box-shadow: var(--shadow);
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+
+  border-radius: 12px;
+
+  background: var(--ts-soft);
+
+  color: var(--ts-primary-dark);
+}
+
+.feature-card h3 {
+  margin: 0 0 7px;
+
+  font-size: 14px;
+}
+
+.feature-card p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.9;
+}
+
+
+/* STEPS */
+
+.steps {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 15px;
+
+  margin-bottom: 70px;
+}
+
+.step {
+  padding: 22px;
+
+  display: flex;
+
+  gap: 13px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 17px;
+}
+
+.step-number {
+  width: 35px;
+  height: 35px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: var(--ts-primary);
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+.step h3 {
+  margin: 0 0 4px;
+
+  font-size: 13px;
+}
+
+.step p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.8;
+}
+
+
+/* FAQ */
+
+.faq {
+  display: grid;
+  gap: 10px;
+}
+
+.faq details {
+  padding: 0 20px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+}
+
+.faq summary {
+  padding: 17px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  list-style: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary i {
+  color: var(--ts-primary-dark);
+
+  transition: 0.2s;
+}
+
+.faq details[open] summary i {
+  transform: rotate(180deg);
+}
+
+.faq details p {
+  margin: 0;
+
+  padding: 0 0 17px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 2;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-card {
+    border-radius: 0;
+    border-bottom: 0;
+  }
+
+  .console-card {
+    border-radius: 0 0 18px 18px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .hero {
+    padding: 60px 16px 80px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .tool-section {
+    padding: 0 10px 50px;
+  }
+
+  .workspace-header {
+    padding: 15px;
+  }
+
+  .workspace-status {
+    font-size: 9px;
+  }
+
+  .action-bar {
+    padding: 10px;
+  }
+
+  .action-bar button {
+    flex: 1;
+
+    padding: 0 9px;
+
+    font-size: 10px;
+  }
+
+  .editor-wrapper,
+  .console-output {
+    height: 390px;
+  }
+
+  #codeEditor {
+    font-size: 12px;
+  }
+
+  .line-numbers {
+    width: 40px;
+
+    font-size: 12px;
+  }
+
+  .stats-grid {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .stat-card strong {
+    font-size: 13px;
+  }
+
+  .content-section {
+    padding: 10px 14px 60px;
+  }
+
+  .info-card {
+    padding: 20px;
+
+    flex-direction: column;
+
+    gap: 13px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* DARK MODE */
+
+@media (prefers-color-scheme: dark) {
+
+  :root {
+    --bg: #070d14;
+    --card: #0d1620;
+    --text: #e2e8f0;
+    --muted: #8da0b2;
+    --border: #1e2b38;
+  }
+
+  .action-bar {
+    background: #0a131d;
+    border-color: #1e2b38;
+  }
+
+  .secondary-btn,
+  .danger-btn {
+    background: #0d1620;
+    color: #cbd5e1;
+    border-color: #253545;
+  }
+
+  .workspace-status {
+    background: rgba(34, 197, 94, 0.08);
+  }
+
+}
+</style>
+
+
+<script is:inline>
+(function () {
+
+  var editor = document.getElementById("codeEditor");
+  var lineNumbers = document.getElementById("lineNumbers");
+
+  var runBtn = document.getElementById("runBtn");
+  var copyBtn = document.getElementById("copyBtn");
+  var formatBtn = document.getElementById("formatBtn");
+  var clearBtn = document.getElementById("clearBtn");
+
+  var clearConsole = document.getElementById("clearConsole");
+  var consoleOutput = document.getElementById("consoleOutput");
+
+  var runtimeStatus = document.getElementById("runtimeStatus");
+  var executionStatus = document.getElementById("executionStatus");
+  var executionTime = document.getElementById("executionTime");
+
+  var lineCount = document.getElementById("lineCount");
+  var charCount = document.getElementById("charCount");
+
+  var statLines = document.getElementById("statLines");
+  var statChars = document.getElementById("statChars");
+  var statWords = document.getElementById("statWords");
+  var statTime = document.getElementById("statTime");
+
+  if (!editor) {
+    return;
+  }
+
+
+  /* -------------------------
+     STATS
+  ------------------------- */
+
+  function updateStats() {
+
+    var code = editor.value;
+
+    var lines = code.length === 0
+      ? 1
+      : code.split("\n").length;
+
+    var chars = code.length;
+
+    var words = code.trim()
+      ? code.trim().split(/\s+/).length
+      : 0;
+
+    lineCount.textContent =
+      lines + (lines === 1 ? " سطر" : " أسطر");
+
+    charCount.textContent =
+      chars.toLocaleString("ar") + " حرف";
+
+    statLines.textContent =
+      lines.toLocaleString("ar");
+
+    statChars.textContent =
+      chars.toLocaleString("ar");
+
+    statWords.textContent =
+      words.toLocaleString("ar");
+
+    var nums = [];
+
+    for (var i = 1; i <= lines; i++) {
+      nums.push(i);
+    }
+
+    lineNumbers.textContent = nums.join("\n");
+  }
+
+
+  /* -------------------------
+     ESCAPE
+  ------------------------- */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  /* -------------------------
+     CONSOLE
+  ------------------------- */
+
+  function addConsole(type, value) {
+
+    var line = document.createElement("div");
+
+    line.className = "console-line " + type;
+
+    line.innerHTML = escapeHtml(value);
+
+    consoleOutput.appendChild(line);
+
+    consoleOutput.scrollTop =
+      consoleOutput.scrollHeight;
+  }
+
+
+  function resetConsole() {
+
+    consoleOutput.innerHTML = "";
+  }
+
+
+  function setStatus(text, running) {
+
+    runtimeStatus.innerHTML =
+      '<span class="status-dot"></span>' + text;
+
+    var dot =
+      runtimeStatus.querySelector(".status-dot");
+
+    if (dot) {
+
+      dot.style.background =
+        running ? "#f59e0b" : "#22c55e";
+    }
+  }
+
+
+  /* -------------------------
+     SIMPLE TYPESCRIPT TRANSPILES
+  ------------------------- */
+
+  function transpileTS(code) {
+
+    var output = code;
+
+
+    /* interfaces */
+
+    output = output.replace(
+      /interface\s+[A-Za-z_$][\w$]*(?:\s+extends\s+[^{]+)?\s*\{[\s\S]*?\}/g,
+      ""
+    );
+
+
+    /* type aliases */
+
+    output = output.replace(
+      /type\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?\s*=\s*[^;]+;/g,
+      ""
+    );
+
+
+    /* access modifiers */
+
+    output = output.replace(
+      /\b(public|private|protected|readonly|abstract)\s+/g,
+      ""
+    );
+
+
+    /* generic function */
+
+    output = output.replace(
+      /function\s+([A-Za-z_$][\w$]*)\s*<[^>]+>/g,
+      "function $1"
+    );
+
+
+    /* generic calls */
+
+    output = output.replace(
+      /([A-Za-z_$][\w$]*)\s*<([A-Za-z_$][\w$]*(?:\[\])?(?:\s*,\s*[A-Za-z_$][\w$]*(?:\[\])?)*)>\s*\(/g,
+      "$1("
+    );
+
+
+    /* variable annotations */
+
+    output = output.replace(
+      /(\b(?:const|let|var)\s+[A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^;=]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*\s*(?==)/g,
+      "$1"
+    );
+
+
+    /* function parameter annotations */
+
+    output = output.replace(
+      /([A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*(?=\s*[,)=])/g,
+      "$1"
+    );
+
+
+    /* return annotations */
+
+    output = output.replace(
+      /\)\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*\s*\{/g,
+      ") {"
+    );
+
+
+    /* as */
+
+    output = output.replace(
+      /\s+as\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?/g,
+      ""
+    );
+
+
+    /* non-null */
+
+    output = output.replace(
+      /([A-Za-z_$][\w$]*)!(?=[.;,\)\]])/g,
+      "$1"
+    );
+
+
+    /* optional parameters */
+
+    output = output.replace(
+      /([A-Za-z_$][\w$]*)\?(?=\s*[:,)=])/g,
+      "$1"
+    );
+
+
+    /* enum */
+
+    output = output.replace(
+      /enum\s+([A-Za-z_$][\w$]*)\s*\{([\s\S]*?)\}/g,
+      function (_, name, body) {
+
+        var items = body
+          .split(",")
+          .map(function (item) {
+            return item.trim();
+          })
+          .filter(Boolean);
+
+        var result =
+          "var " + name + " = {};\n";
+
+        for (var i = 0; i < items.length; i++) {
+
+          var parts = items[i].split("=");
+
+          var key = parts[0].trim();
+
+          var value;
+
+          if (parts.length > 1) {
+            value = parts.slice(1).join("=").trim();
+          } else {
+            value = String(i);
+          }
+
+          result +=
+            name +
+            "[" +
+            JSON.stringify(key) +
+            "] = " +
+            value +
+            ";\n";
+        }
+
+        return result;
       }
+    );
 
 
-      * {
-        box-sizing: border-box;
-      }
+    return output;
+  }
 
 
-      html {
-        scroll-behavior: smooth;
-      }
+  /* -------------------------
+     RUN
+  ------------------------- */
+
+  function runCode() {
+
+    var code = editor.value;
+
+    resetConsole();
+
+    if (!code.trim()) {
+
+      addConsole(
+        "info",
+        "لا يوجد كود للتنفيذ."
+      );
+
+      return;
+    }
 
 
-      body {
-
-        margin: 0;
-
-        font-family: "Cairo", sans-serif;
-
-        background: var(--bg);
-
-        color: var(--text);
-
-      }
+    setStatus(
+      "جاري التنفيذ...",
+      true
+    );
 
 
-      button,
-      textarea {
-        font-family: inherit;
-      }
+    executionStatus.innerHTML =
+      '<i class="fa-solid fa-circle"></i> جاري التنفيذ';
 
 
-      button {
-        cursor: pointer;
-      }
+    var start = performance.now();
 
 
-      .playground-page {
-        overflow: hidden;
-      }
+    try {
+
+      var jsCode = transpileTS(code);
 
 
-      /* =====================================================
-         HERO
-      ====================================================== */
+      /*
+       * Local console
+       */
 
-      .hero {
+      var logs = [];
 
-        position: relative;
 
-        padding: 82px 20px 94px;
+      var fakeConsole = {
 
-        background:
-          radial-gradient(
-            circle at 15% 20%,
-            rgba(6, 182, 212, 0.20),
-            transparent 34%
-          ),
-          radial-gradient(
-            circle at 85% 80%,
-            rgba(20, 184, 166, 0.16),
-            transparent 35%
-          ),
-          linear-gradient(
-            135deg,
-            #06131b,
-            #0b1720 52%,
-            #061820
+        log: function () {
+
+          logs.push({
+            type: "log",
+            args: Array.prototype.slice.call(arguments)
+          });
+        },
+
+        info: function () {
+
+          logs.push({
+            type: "info",
+            args: Array.prototype.slice.call(arguments)
+          });
+        },
+
+        warn: function () {
+
+          logs.push({
+            type: "info",
+            args: Array.prototype.slice.call(arguments)
+          });
+        },
+
+        error: function () {
+
+          logs.push({
+            type: "error",
+            args: Array.prototype.slice.call(arguments)
+          });
+        }
+
+      };
+
+
+      /*
+       * Convert values to text
+       */
+
+      function formatValue(value) {
+
+        if (typeof value === "string") {
+          return value;
+        }
+
+        if (
+          typeof value === "number" ||
+          typeof value === "boolean" ||
+          typeof value === "bigint"
+        ) {
+          return String(value);
+        }
+
+        if (value === null) {
+          return "null";
+        }
+
+        if (typeof value === "undefined") {
+          return "undefined";
+        }
+
+        try {
+          return JSON.stringify(
+            value,
+            null,
+            2
           );
-
-        color: white;
-
-      }
-
-
-      .hero-grid {
-
-        position: absolute;
-
-        inset: 0;
-
-        opacity: 0.13;
-
-        background-image:
-          linear-gradient(
-            rgba(103, 232, 249, 0.12) 1px,
-            transparent 1px
-          ),
-          linear-gradient(
-            90deg,
-            rgba(103, 232, 249, 0.12) 1px,
-            transparent 1px
-          );
-
-        background-size: 42px 42px;
-
-        mask-image:
-          linear-gradient(
-            to bottom,
-            black,
-            transparent
-          );
-
-      }
-
-
-      .hero-inner {
-
-        position: relative;
-
-        z-index: 2;
-
-        max-width: 1000px;
-
-        margin: auto;
-
-        text-align: center;
-
-      }
-
-
-      .hero-orb {
-
-        position: absolute;
-
-        width: 260px;
-
-        height: 260px;
-
-        border-radius: 50%;
-
-        filter: blur(80px);
-
-        opacity: 0.18;
-
-      }
-
-
-      .orb-one {
-
-        top: -100px;
-
-        left: 10%;
-
-        background: var(--ts-primary);
-
-      }
-
-
-      .orb-two {
-
-        bottom: -120px;
-
-        right: 10%;
-
-        background: var(--ts-secondary);
-
-      }
-
-
-      .tool-icon {
-
-        width: 88px;
-
-        height: 88px;
-
-        margin: 0 auto 25px;
-
-        position: relative;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 24px;
-
-        background:
-          linear-gradient(
-            145deg,
-            #06b6d4,
-            #0f766e
-          );
-
-        box-shadow:
-          0 15px 45px rgba(6, 182, 212, 0.35);
-
-      }
-
-
-      .tool-icon span {
-
-        font-family: Arial, sans-serif;
-
-        font-weight: 900;
-
-        font-size: 31px;
-
-        letter-spacing: -3px;
-
-      }
-
-
-      .tool-icon i {
-
-        position: absolute;
-
-        bottom: -8px;
-
-        left: -8px;
-
-        width: 32px;
-
-        height: 32px;
-
-        border-radius: 10px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        background: #0f172a;
-
-        color: var(--ts-light);
-
-        font-size: 13px;
-
-        border: 2px solid rgba(103, 232, 249, 0.30);
-
-      }
-
-
-      .badge {
-
-        width: fit-content;
-
-        margin: 0 auto 18px;
-
-        padding: 7px 15px;
-
-        border: 1px solid rgba(103, 232, 249, 0.25);
-
-        border-radius: 999px;
-
-        background: rgba(6, 182, 212, 0.08);
-
-        color: var(--ts-light);
-
-        font-size: 13px;
-
-        font-weight: 700;
-
-      }
-
-
-      .badge i {
-        margin-left: 6px;
-      }
-
-
-      .hero h1 {
-
-        margin: 0;
-
-        font-size: clamp(35px, 6vw, 62px);
-
-        line-height: 1.15;
-
-        font-weight: 800;
-
-        letter-spacing: -1px;
-
-      }
-
-
-      .hero h1 span {
-        color: var(--ts-light);
-      }
-
-
-      .hero p {
-
-        max-width: 720px;
-
-        margin: 22px auto 0;
-
-        color: #a7b9c8;
-
-        font-size: 16px;
-
-        line-height: 2;
-
-      }
-
-
-      .hero-features {
-
-        margin-top: 30px;
-
-        display: flex;
-
-        justify-content: center;
-
-        flex-wrap: wrap;
-
-        gap: 10px;
-
-      }
-
-
-      .hero-features span {
-
-        padding: 8px 13px;
-
-        border-radius: 10px;
-
-        background: rgba(255, 255, 255, 0.05);
-
-        border: 1px solid rgba(255, 255, 255, 0.08);
-
-        color: #d7e5ed;
-
-        font-size: 12px;
-
-      }
-
-
-      .hero-features i {
-
-        color: var(--ts-light);
-
-        margin-left: 5px;
-
-      }
-
-
-      /* =====================================================
-         TOOL
-      ====================================================== */
-
-      .tool-section {
-
-        margin-top: -40px;
-
-        position: relative;
-
-        z-index: 5;
-
-        padding: 0 20px 70px;
-
-      }
-
-
-      .tool-container {
-
-        max-width: 1250px;
-
-        margin: auto;
-
-      }
-
-
-      .workspace-header {
-
-        padding: 20px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        gap: 15px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-bottom: 0;
-
-        border-radius: 20px 20px 0 0;
-
-      }
-
-
-      .workspace-title,
-      .panel-left {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 12px;
-
-      }
-
-
-      .workspace-logo {
-
-        width: 46px;
-
-        height: 46px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 13px;
-
-        background: var(--ts-soft);
-
-        color: var(--ts-primary-dark);
-
-        font-family: Arial, sans-serif;
-
-        font-size: 18px;
-
-        font-weight: 900;
-
-      }
-
-
-      .workspace-title h2 {
-
-        margin: 0;
-
-        font-size: 16px;
-
-      }
-
-
-      .workspace-title p {
-
-        margin: 3px 0 0;
-
-        color: var(--muted);
-
-        font-size: 11px;
-
-      }
-
-
-      .workspace-status {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 7px;
-
-        padding: 6px 11px;
-
-        border-radius: 999px;
-
-        background: #f0fdf4;
-
-        color: #15803d;
-
-        font-size: 11px;
-
-        font-weight: 700;
-
-      }
-
-
-      .status-dot {
-
-        width: 7px;
-
-        height: 7px;
-
-        border-radius: 50%;
-
-        background: var(--success);
-
-      }
-
-
-      .action-bar {
-
-        padding: 14px 18px;
-
-        display: flex;
-
-        flex-wrap: wrap;
-
-        gap: 9px;
-
-        background: #f8fafc;
-
-        border: 1px solid var(--border);
-
-        border-bottom: 0;
-
-      }
-
-
-      .action-bar button {
-
-        min-height: 40px;
-
-        padding: 0 16px;
-
-        border-radius: 10px;
-
-        border: 1px solid var(--border);
-
-        font-size: 12px;
-
-        font-weight: 700;
-
-        transition: 0.2s ease;
-
-      }
-
-
-      .run-btn {
-
-        border-color: var(--ts-primary) !important;
-
-        background: var(--ts-primary);
-
-        color: white;
-
-      }
-
-
-      .run-btn:hover {
-
-        background: var(--ts-primary-dark);
-
-        transform: translateY(-1px);
-
-      }
-
-
-      .secondary-btn {
-
-        background: white;
-
-        color: #334155;
-
-      }
-
-
-      .secondary-btn:hover {
-
-        border-color: var(--ts-primary);
-
-        color: var(--ts-primary-dark);
-
-      }
-
-
-      .danger-btn {
-
-        background: white;
-
-        color: #dc2626;
-
-      }
-
-
-      .danger-btn:hover {
-
-        border-color: #fecaca !important;
-
-        background: #fff7f7;
-
-      }
-
-
-      .action-bar i {
-        margin-left: 5px;
-      }
-
-
-      /* =====================================================
-         EDITORS
-      ====================================================== */
-
-      .editor-grid {
-
-        display: grid;
-
-        grid-template-columns: 1.15fr 0.85fr;
-
-        min-height: 580px;
-
-      }
-
-
-      .editor-card,
-      .console-card {
-
-        min-width: 0;
-
-        overflow: hidden;
-
-        border: 1px solid var(--border);
-
-      }
-
-
-      .editor-card {
-
-        border-radius: 0 0 0 18px;
-
-        background: var(--editor);
-
-        border-color: #1e293b;
-
-      }
-
-
-      .console-card {
-
-        border-radius: 0 0 18px 0;
-
-        background: var(--console);
-
-        border-color: #1e293b;
-
-      }
-
-
-      .panel-header {
-
-        min-height: 62px;
-
-        padding: 12px 15px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        border-bottom: 1px solid #1e293b;
-
-        background: var(--editor-two);
-
-        color: #e2e8f0;
-
-      }
-
-
-      .panel-left strong {
-
-        display: block;
-
-        font-size: 12px;
-
-      }
-
-
-      .panel-left small {
-
-        display: block;
-
-        margin-top: 2px;
-
-        color: #64748b;
-
-        font-size: 10px;
-
-        direction: ltr;
-
-        text-align: right;
-
-      }
-
-
-      .panel-icon {
-
-        width: 34px;
-
-        height: 34px;
-
-        border-radius: 9px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-      }
-
-
-      .ts-icon {
-
-        background: #3178c6;
-
-        color: white;
-
-        font-family: Arial, sans-serif;
-
-        font-weight: 900;
-
-        font-size: 13px;
-
-      }
-
-
-      .terminal-icon {
-
-        background: rgba(6, 182, 212, 0.12);
-
-        color: var(--ts-light);
-
-      }
-
-
-      .panel-tools {
-
-        color: #64748b;
-
-        font-size: 10px;
-
-      }
-
-
-      .editor-wrapper {
-
-        position: relative;
-
-        display: flex;
-
-        height: 455px;
-
-        direction: ltr;
-
-        overflow: hidden;
-
-      }
-
-
-      .line-numbers {
-
-        width: 48px;
-
-        flex-shrink: 0;
-
-        padding: 18px 9px;
-
-        background: #080d18;
-
-        border-right: 1px solid #1e293b;
-
-        color: #475569;
-
-        font-family: Consolas, Monaco, monospace;
-
-        font-size: 13px;
-
-        line-height: 1.8;
-
-        text-align: right;
-
-        overflow: hidden;
-
-        white-space: pre;
-
-        user-select: none;
-
-      }
-
-
-      #codeEditor {
-
-        flex: 1;
-
-        width: 100%;
-
-        height: 100%;
-
-        resize: none;
-
-        padding: 18px;
-
-        border: 0;
-
-        outline: none;
-
-        background: var(--editor);
-
-        color: var(--editor-text);
-
-        font-family:
-          Consolas,
-          Monaco,
-          "Courier New",
-          monospace;
-
-        font-size: 13px;
-
-        line-height: 1.8;
-
-        tab-size: 2;
-
-        direction: ltr;
-
-        text-align: left;
-
-        white-space: pre;
-
-        overflow: auto;
-
-      }
-
-
-      #codeEditor::selection {
-
-        background: rgba(6, 182, 212, 0.30);
-
-      }
-
-
-      .editor-footer,
-      .console-footer {
-
-        min-height: 44px;
-
-        padding: 0 15px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        gap: 10px;
-
-        color: #64748b;
-
-        background: var(--editor-two);
-
-        border-top: 1px solid #1e293b;
-
-        font-size: 10px;
-
-      }
-
-
-      .editor-footer i {
-
-        color: var(--ts-light);
-
-        margin-left: 4px;
-
-      }
-
-
-      /* =====================================================
-         CONSOLE
-      ====================================================== */
-
-      .console-output {
-
-        height: 455px;
-
-        padding: 18px;
-
-        overflow: auto;
-
-        direction: ltr;
-
-        text-align: left;
-
-        font-family:
-          Consolas,
-          Monaco,
-          monospace;
-
-        font-size: 13px;
-
-        color: #cbd5e1;
-
-      }
-
-
-      .console-welcome {
-
-        min-height: 100%;
-
-        display: flex;
-
-        flex-direction: column;
-
-        align-items: center;
-
-        justify-content: center;
-
-        text-align: center;
-
-        color: #64748b;
-
-      }
-
-
-      .welcome-icon {
-
-        width: 55px;
-
-        height: 55px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        margin-bottom: 15px;
-
-        border-radius: 16px;
-
-        background: rgba(6, 182, 212, 0.08);
-
-        color: #22d3ee;
-
-        font-size: 20px;
-
-      }
-
-
-      .console-welcome h3 {
-
-        margin: 0;
-
-        color: #cbd5e1;
-
-        font-family: Cairo, sans-serif;
-
-        font-size: 14px;
-
-      }
-
-
-      .console-welcome p {
-
-        margin: 6px 0;
-
-        font-family: Cairo, sans-serif;
-
-        font-size: 11px;
-
-      }
-
-
-      .console-line {
-
-        padding: 8px 10px;
-
-        margin-bottom: 6px;
-
-        border-radius: 7px;
-
-        background: rgba(255, 255, 255, 0.025);
-
-        white-space: pre-wrap;
-
-        word-break: break-word;
-
-      }
-
-
-      .console-line.log {
-
-        border-left: 2px solid #22d3ee;
-
-      }
-
-
-      .console-line.error {
-
-        border-left: 2px solid #ef4444;
-
-        color: #fca5a5;
-
-        background: rgba(239, 68, 68, 0.06);
-
-      }
-
-
-      .console-line.info {
-
-        border-left: 2px solid #60a5fa;
-
-        color: #93c5fd;
-
-      }
-
-
-      .console-clear {
-
-        border: 0;
-
-        background: transparent;
-
-        color: #64748b;
-
-        font-family: Cairo, sans-serif;
-
-        font-size: 10px;
-
-      }
-
-
-      .console-clear:hover {
-
-        color: var(--ts-light);
-
-      }
-
-
-      .console-footer i {
-
-        margin-left: 4px;
-
-        color: #64748b;
-
-        font-size: 7px;
-
-      }
-
-
-      /* =====================================================
-         STATS
-      ====================================================== */
-
-      .stats-grid {
-
-        display: grid;
-
-        grid-template-columns: repeat(4, 1fr);
-
-        gap: 12px;
-
-        margin-top: 15px;
-
-      }
-
-
-      .stat-card {
-
-        padding: 16px;
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 12px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-radius: 14px;
-
-      }
-
-
-      .stat-icon {
-
-        width: 39px;
-
-        height: 39px;
-
-        flex-shrink: 0;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 11px;
-
-        background: var(--ts-soft);
-
-        color: var(--ts-primary-dark);
-
-      }
-
-
-      .stat-card span {
-
-        display: block;
-
-        color: var(--muted);
-
-        font-size: 10px;
-
-      }
-
-
-      .stat-card strong {
-
-        display: block;
-
-        margin-top: 2px;
-
-        font-size: 16px;
-
-      }
-
-
-      /* =====================================================
-         CONTENT
-      ====================================================== */
-
-      .content-section {
-
-        padding: 20px 20px 90px;
-
-      }
-
-
-      .content-container {
-
-        max-width: 1050px;
-
-        margin: auto;
-
-      }
-
-
-      .info-card {
-
-        display: flex;
-
-        gap: 20px;
-
-        padding: 27px;
-
-        margin-bottom: 65px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-radius: 20px;
-
-        box-shadow: var(--shadow);
-
-      }
-
-
-      .info-icon {
-
-        width: 54px;
-
-        height: 54px;
-
-        flex-shrink: 0;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 15px;
-
-        background: var(--ts-soft);
-
-        color: var(--ts-primary-dark);
-
-      }
-
-
-      .ts-info-mark {
-
-        font-family: Arial, sans-serif;
-
-        font-weight: 900;
-
-        font-size: 19px;
-
-      }
-
-
-      .info-card h2 {
-
-        margin: 0 0 9px;
-
-        font-size: 19px;
-
-      }
-
-
-      .info-card p {
-
-        margin: 6px 0;
-
-        color: var(--muted);
-
-        line-height: 2;
-
-        font-size: 13px;
-
-      }
-
-
-      .section-heading {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 13px;
-
-        margin: 0 0 24px;
-
-      }
-
-
-      .heading-icon {
-
-        width: 43px;
-
-        height: 43px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 12px;
-
-        background: var(--ts-soft);
-
-        color: var(--ts-primary-dark);
-
-      }
-
-
-      .section-heading h2 {
-
-        margin: 0;
-
-        font-size: 19px;
-
-      }
-
-
-      .section-heading p {
-
-        margin: 3px 0 0;
-
-        color: var(--muted);
-
-        font-size: 11px;
-
-      }
-
-
-      .features-grid {
-
-        display: grid;
-
-        grid-template-columns: repeat(4, 1fr);
-
-        gap: 14px;
-
-        margin-bottom: 70px;
-
-      }
-
-
-      .feature-card {
-
-        padding: 22px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-radius: 17px;
-
-        transition: 0.25s ease;
-
-      }
-
-
-      .feature-card:hover {
-
-        transform: translateY(-4px);
-
-        border-color: rgba(6, 182, 212, 0.35);
-
-        box-shadow: var(--shadow);
-
-      }
-
-
-      .feature-icon {
-
-        width: 42px;
-
-        height: 42px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        margin-bottom: 14px;
-
-        border-radius: 12px;
-
-        background: var(--ts-soft);
-
-        color: var(--ts-primary-dark);
-
-      }
-
-
-      .feature-card h3 {
-
-        margin: 0 0 7px;
-
-        font-size: 14px;
-
-      }
-
-
-      .feature-card p {
-
-        margin: 0;
-
-        color: var(--muted);
-
-        font-size: 11px;
-
-        line-height: 1.9;
-
-      }
-
-
-      /* =====================================================
-         STEPS
-      ====================================================== */
-
-      .steps {
-
-        display: grid;
-
-        grid-template-columns: repeat(3, 1fr);
-
-        gap: 15px;
-
-        margin-bottom: 70px;
-
-      }
-
-
-      .step {
-
-        padding: 22px;
-
-        display: flex;
-
-        gap: 13px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-radius: 17px;
-
-      }
-
-
-      .step-number {
-
-        width: 35px;
-
-        height: 35px;
-
-        flex-shrink: 0;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 10px;
-
-        background: var(--ts-primary);
-
-        color: white;
-
-        font-weight: 800;
-
-        font-size: 13px;
-
-      }
-
-
-      .step h3 {
-
-        margin: 0 0 4px;
-
-        font-size: 13px;
-
-      }
-
-
-      .step p {
-
-        margin: 0;
-
-        color: var(--muted);
-
-        font-size: 11px;
-
-        line-height: 1.8;
-
-      }
-
-
-      /* =====================================================
-         FAQ
-      ====================================================== */
-
-      .faq {
-
-        display: grid;
-
-        gap: 10px;
-
-      }
-
-
-      .faq details {
-
-        padding: 0 20px;
-
-        background: var(--card);
-
-        border: 1px solid var(--border);
-
-        border-radius: 14px;
-
-      }
-
-
-      .faq summary {
-
-        padding: 17px 0;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        cursor: pointer;
-
-        list-style: none;
-
-        font-size: 13px;
-
-        font-weight: 700;
-
-      }
-
-
-      .faq summary::-webkit-details-marker {
-
-        display: none;
-
-      }
-
-
-      .faq summary i {
-
-        color: var(--ts-primary-dark);
-
-        transition: 0.2s;
-
-      }
-
-
-      .faq details[open] summary i {
-
-        transform: rotate(180deg);
-
-      }
-
-
-      .faq details p {
-
-        margin: 0;
-
-        padding: 0 0 17px;
-
-        color: var(--muted);
-
-        font-size: 12px;
-
-        line-height: 2;
-
-      }
-
-
-      /* =====================================================
-         RESPONSIVE
-      ====================================================== */
-
-      @media (max-width: 900px) {
-
-        .editor-grid {
-
-          grid-template-columns: 1fr;
-
+        } catch (_) {
+          return String(value);
         }
-
-
-        .editor-card {
-
-          border-radius: 0;
-
-          border-bottom: 0;
-
-        }
-
-
-        .console-card {
-
-          border-radius: 0 0 18px 18px;
-
-        }
-
-
-        .features-grid {
-
-          grid-template-columns: repeat(2, 1fr);
-
-        }
-
-
-        .stats-grid {
-
-          grid-template-columns: repeat(2, 1fr);
-
-        }
-
-
-        .steps {
-
-          grid-template-columns: 1fr;
-
-        }
-
       }
 
 
-      @media (max-width: 600px) {
+      /*
+       * Execute inside isolated function scope
+       */
 
-        .hero {
+      var executor = new Function(
+        "console",
+        '"use strict";\n' + jsCode
+      );
 
-          padding: 60px 16px 80px;
 
-        }
+      executor(fakeConsole);
 
 
-        .hero h1 {
+      for (var i = 0; i < logs.length; i++) {
 
-          font-size: 38px;
+        var item = logs[i];
 
-        }
+        var text = item.args
+          .map(formatValue)
+          .join(" ");
 
-
-        .hero p {
-
-          font-size: 13px;
-
-        }
-
-
-        .tool-section {
-
-          padding: 0 10px 50px;
-
-        }
-
-
-        .workspace-header {
-
-          padding: 15px;
-
-        }
-
-
-        .workspace-title h2 {
-
-          font-size: 13px;
-
-        }
-
-
-        .workspace-title p {
-
-          font-size: 9px;
-
-        }
-
-
-        .workspace-status {
-
-          font-size: 9px;
-
-          padding: 5px 8px;
-
-        }
-
-
-        .action-bar {
-
-          padding: 10px;
-
-        }
-
-
-        .action-bar button {
-
-          flex: 1;
-
-          padding: 0 9px;
-
-          font-size: 10px;
-
-        }
-
-
-        .editor-wrapper,
-        .console-output {
-
-          height: 390px;
-
-        }
-
-
-        #codeEditor {
-
-          font-size: 12px;
-
-        }
-
-
-        .line-numbers {
-
-          width: 40px;
-
-          font-size: 12px;
-
-        }
-
-
-        .stats-grid {
-
-          gap: 8px;
-
-        }
-
-
-        .stat-card {
-
-          padding: 12px;
-
-        }
-
-
-        .stat-icon {
-
-          width: 34px;
-
-          height: 34px;
-
-        }
-
-
-        .stat-card strong {
-
-          font-size: 13px;
-
-        }
-
-
-        .content-section {
-
-          padding: 10px 14px 60px;
-
-        }
-
-
-        .info-card {
-
-          padding: 20px;
-
-          flex-direction: column;
-
-          gap: 13px;
-
-        }
-
-
-        .features-grid {
-
-          grid-template-columns: 1fr;
-
-        }
-
+        addConsole(
+          item.type,
+          text
+        );
       }
 
 
-      /* =====================================================
-         DARK MODE
-      ====================================================== */
+      var elapsed =
+        Math.round(
+          performance.now() - start
+        );
 
-      @media (prefers-color-scheme: dark) {
 
-        :root {
+      executionTime.textContent =
+        elapsed + " ms";
 
-          --bg: #070d14;
+      statTime.textContent =
+        elapsed + " ms";
 
-          --card: #0d1620;
 
-          --text: #e2e8f0;
+      executionStatus.innerHTML =
+        '<i class="fa-solid fa-circle" style="color:#22c55e"></i> تم التنفيذ';
 
-          --muted: #8da0b2;
 
-          --border: #1e2b38;
+      setStatus("تم التنفيذ", false);
 
-        }
 
+    } catch (error) {
 
-        .action-bar {
+      var errorTime =
+        Math.round(
+          performance.now() - start
+        );
 
-          background: #0a131d;
 
-          border-color: #1e2b38;
+      executionTime.textContent =
+        errorTime + " ms";
 
-        }
+      statTime.textContent =
+        errorTime + " ms";
 
 
-        .secondary-btn,
-        .danger-btn {
+      addConsole(
+        "error",
+        error && error.stack
+          ? error.stack
+          : String(error)
+      );
 
-          background: #0d1620;
 
-          color: #cbd5e1;
+      executionStatus.innerHTML =
+        '<i class="fa-solid fa-circle" style="color:#ef4444"></i> خطأ';
 
-          border-color: #253545;
 
-        }
+      setStatus("خطأ", false);
+    }
+  }
 
 
-        .workspace-status {
+  /* -------------------------
+     FORMAT
+  ------------------------- */
 
-          background: rgba(34, 197, 94, 0.08);
+  function formatCode() {
 
-        }
+    var code = editor.value;
 
-      }
+    code = code
+      .replace(/\r\n/g, "\n")
+      .replace(/[ \t]+$/gm, "")
+      .replace(/\n{3,}/g, "\n\n");
 
-    </style>
 
+    editor.value = code.trim();
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+    updateStats();
+  }
 
-    <script is:inline>
-      (() => {
 
-        "use strict";
+  /* -------------------------
+     COPY
+  ------------------------- */
 
-        const editor = document.getElementById("codeEditor");
-        const lineNumbers = document.getElementById("lineNumbers");
+  function copyCode() {
 
-        const runBtn = document.getElementById("runBtn");
-        const copyBtn = document.getElementById("copyBtn");
-        const formatBtn = document.getElementById("formatBtn");
-        const clearBtn = document.getElementById("clearBtn");
+    if (
+      navigator.clipboard &&
+      navigator.clipboard.writeText
+    ) {
 
-        const clearConsole = document.getElementById("clearConsole");
+      navigator.clipboard
+        .writeText(editor.value)
+        .then(function () {
 
-        const consoleOutput =
-          document.getElementById("consoleOutput");
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
 
-        const runtimeStatus =
-          document.getElementById("runtimeStatus");
-
-        const executionStatus =
-          document.getElementById("executionStatus");
-
-        const executionTime =
-          document.getElementById("executionTime");
-
-        const lineCount =
-          document.getElementById("lineCount");
-
-        const charCount =
-          document.getElementById("charCount");
-
-        const statLines =
-          document.getElementById("statLines");
-
-        const statChars =
-          document.getElementById("statChars");
-
-        const statWords =
-          document.getElementById("statWords");
-
-        const statTime =
-          document.getElementById("statTime");
-
-
-        if (!editor) {
-          return;
-        }
-
-
-        let activeWorker = null;
-        let activeWorkerUrl = null;
-        let executionTimer = null;
-
-
-        /* =====================================================
-           STATS
-        ====================================================== */
-
-        function updateStats() {
-
-          const code = editor.value;
-
-          const lines =
-            code.length === 0
-              ? 1
-              : code.split("\n").length;
-
-          const chars = code.length;
-
-          const words =
-            code.trim()
-              ? code.trim().split(/\s+/).length
-              : 0;
-
-          lineCount.textContent =
-            lines +
-            (lines === 1 ? " سطر" : " أسطر");
-
-          charCount.textContent =
-            chars.toLocaleString("ar") +
-            " حرف";
-
-          statLines.textContent =
-            lines.toLocaleString("ar");
-
-          statChars.textContent =
-            chars.toLocaleString("ar");
-
-          statWords.textContent =
-            words.toLocaleString("ar");
-
-          const numberArray = [];
-
-          for (let i = 1; i <= lines; i++) {
-            numberArray.push(i);
-          }
-
-          lineNumbers.textContent =
-            numberArray.join("\n");
-
-        }
-
-
-        /* =====================================================
-           HTML ESCAPE
-        ====================================================== */
-
-        function escapeHtml(value) {
-
-          return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-        }
-
-
-        /* =====================================================
-           CONSOLE
-        ====================================================== */
-
-        function addConsole(type, value) {
-
-          const line =
-            document.createElement("div");
-
-          line.className =
-            "console-line " + type;
-
-          line.innerHTML =
-            escapeHtml(value);
-
-          consoleOutput.appendChild(line);
-
-          consoleOutput.scrollTop =
-            consoleOutput.scrollHeight;
-
-        }
-
-
-        function resetConsole() {
-
-          consoleOutput.innerHTML = "";
-
-        }
-
-
-        function setStatus(text, running) {
-
-          runtimeStatus.innerHTML =
-            '<span class="status-dot"></span>' +
-            escapeHtml(text);
-
-          const dot =
-            runtimeStatus.querySelector(".status-dot");
-
-          if (dot) {
-
-            dot.style.background =
-              running
-                ? "#f59e0b"
-                : "#22c55e";
-
-          }
-
-        }
-
-
-        function resetWorker() {
-
-          if (executionTimer) {
-
-            clearTimeout(executionTimer);
-
-            executionTimer = null;
-
-          }
-
-
-          if (activeWorker) {
-
-            try {
-              activeWorker.terminate();
-            } catch (_) {
-              /* ignore */
-            }
-
-            activeWorker = null;
-
-          }
-
-
-          if (activeWorkerUrl) {
-
-            try {
-              URL.revokeObjectURL(activeWorkerUrl);
-            } catch (_) {
-              /* ignore */
-            }
-
-            activeWorkerUrl = null;
-
-          }
-
-        }
-
-
-        /* =====================================================
-           TYPESCRIPT TRANSPILER
-        ====================================================== */
-
-        function transpileTS(code) {
-
-          let output = code;
-
-
-          /*
-           * Remove interfaces.
-           */
-
-          output =
-            output.replace(
-              /interface\s+[A-Za-z_$][\w$]*(?:\s+extends\s+[^{]+)?\s*\{[\s\S]*?\}/g,
-              ""
-            );
-
-
-          /*
-           * Remove simple type aliases.
-           */
-
-          output =
-            output.replace(
-              /type\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?\s*=\s*[^;]+;/g,
-              ""
-            );
-
-
-          /*
-           * Remove access modifiers.
-           */
-
-          output =
-            output.replace(
-              /\b(public|private|protected|readonly|abstract)\s+/g,
-              ""
-            );
-
-
-          /*
-           * Generic function declaration.
-           */
-
-          output =
-            output.replace(
-              /function\s+([A-Za-z_$][\w$]*)\s*<[^>]+>/g,
-              "function $1"
-            );
-
-
-          /*
-           * Generic function call.
-           */
-
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\s*<([A-Za-z_$][\w$]*(?:\[\])?(?:\s*,\s*[A-Za-z_$][\w$]*(?:\[\])?)*)>\s*\(/g,
-              "$1("
-            );
-
-
-          /*
-           * Variable type annotations.
-           *
-           * Example:
-           * const name: string = "Th.Tech";
-           */
-
-          output =
-            output.replace(
-              /(\b(?:const|let|var)\s+[A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^;=]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*(?:\[\])?)*/g,
-              "$1"
-            );
-
-
-          /*
-           * Function parameter annotations.
-           */
-
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\s*\??\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*/g,
-              "$1"
-            );
-
-
-          /*
-           * Function return types.
-           */
-
-          output =
-            output.replace(
-              /\)\s*:\s*[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?(?:\s*\|\s*[A-Za-z_$][\w$]*)*\s*\{/g,
-              ") {"
-            );
-
-
-          /*
-           * Type assertions:
-           * value as string
-           */
-
-          output =
-            output.replace(
-              /\s+as\s+[A-Za-z_$][\w$]*(?:<[^>]+>)?(?:\[\])?/g,
-              ""
-            );
-
-
-          /*
-           * Non-null assertion.
-           */
-
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)!(?=[.;,\)\]])/g,
-              "$1"
-            );
-
-
-          /*
-           * Optional parameter.
-           */
-
-          output =
-            output.replace(
-              /([A-Za-z_$][\w$]*)\?(?=\s*[:,)=])/g,
-              "$1"
-            );
-
-
-          /*
-           * Simple enums.
-           */
-
-          output =
-            output.replace(
-              /enum\s+([A-Za-z_$][\w$]*)\s*\{([\s\S]*?)\}/g,
-              function (_, name, body) {
-
-                const items =
-                  body
-                    .split(",")
-                    .map(function (item) {
-                      return item.trim();
-                    })
-                    .filter(Boolean);
-
-                let value = 0;
-
-                const properties = [];
-
-                items.forEach(function (item) {
-
-                  const parts =
-                    item.split("=");
-
-                  const key =
-                    parts[0].trim();
-
-                  let val;
-
-                  if (parts[1]) {
-                    val = parts[1].trim();
-                  } else {
-                    val = String(value);
-                  }
-
-                  properties.push(
-                    name +
-                    "[" +
-                    JSON.stringify(key) +
-                    "] = " +
-                    val +
-                    ";"
-                  );
-
-                  value++;
-
-                });
-
-
-                return (
-                  "const " +
-                  name +
-                  " = {};\n" +
-                  properties.join("\n")
-                );
-
-              }
-            );
-
-
-          return output;
-
-        }
-
-
-        /* =====================================================
-           WORKER SOURCE
-           
-           IMPORTANT:
-           لا نستخدم Template Literal هنا.
-           هذا يمنع Astro/Vite من تفسير ${...}
-           داخل كود الـ Worker.
-        ====================================================== */
-
-        function createWorkerSource() {
-
-          return [
-            '"use strict";',
-            "",
-            "self.onmessage = function(event) {",
-            "",
-            "  const code = event.data;",
-            "",
-            "  function send(type, value) {",
-            "    self.postMessage({",
-            "      type: type,",
-            "      value: value",
-            "    });",
-            "  }",
-            "",
-            "  function format(value) {",
-            "",
-            "    if (typeof value === 'string') {",
-            "      return value;",
-            "    }",
-            "",
-            "    if (typeof value === 'number' ||",
-            "        typeof value === 'boolean' ||",
-            "        typeof value === 'bigint') {",
-            "      return String(value);",
-            "    }",
-            "",
-            "    if (value === null) {",
-            "      return 'null';",
-            "    }",
-            "",
-            "    if (value === undefined) {",
-            "      return 'undefined';",
-            "    }",
-            "",
-            "    try {",
-            "      return JSON.stringify(value, null, 2);",
-            "    } catch (_) {",
-            "      return String(value);",
-            "    }",
-            "",
-            "  }",
-            "",
-            "  console.log = function() {",
-            "    const args = Array.prototype.slice.call(arguments);",
-            "    send('log', args.map(format).join(' '));",
-            "  };",
-            "",
-            "  console.info = function() {",
-            "    const args = Array.prototype.slice.call(arguments);",
-            "    send('info', args.map(format).join(' '));",
-            "  };",
-            "",
-            "  console.warn = function() {",
-            "    const args = Array.prototype.slice.call(arguments);",
-            "    send('info', 'Warning: ' + args.map(format).join(' '));",
-            "  };",
-            "",
-            "  console.error = function() {",
-            "    const args = Array.prototype.slice.call(arguments);",
-            "    send('error', args.map(format).join(' '));",
-            "  };",
-            "",
-            "  try {",
-            "",
-            "    const fn = new Function(",
-            "      '\"use strict\";\\n' + code",
-            "    );",
-            "",
-            "    fn();",
-            "",
-            "    send('done', '');",
-            "",
-            "  } catch (error) {",
-            "",
-            "    send(",
-            "      'error',",
-            "      error && error.stack",
-            "        ? error.stack",
-            "        : String(error)",
-            "    );",
-            "",
-            "  }",
-            "",
-            "};"
-          ].join("\n");
-
-        }
-
-
-        /* =====================================================
-           RUN CODE
-        ====================================================== */
-
-        function runCode() {
-
-          const code = editor.value;
-
-          resetConsole();
-
-          resetWorker();
-
-
-          if (!code.trim()) {
-
-            addConsole(
-              "info",
-              "لا يوجد كود للتنفيذ."
-            );
-
-            setStatus("جاهز", false);
-
-            executionStatus.innerHTML =
-              '<i class="fa-solid fa-circle"></i>' +
-              " لم يتم التنفيذ";
-
-            return;
-
-          }
-
-
-          setStatus(
-            "جاري التنفيذ...",
-            true
-          );
-
-
-          executionStatus.innerHTML =
-            '<i class="fa-solid fa-circle" style="color:#f59e0b"></i>' +
-            " جاري التنفيذ";
-
-
-          executionTime.textContent =
-            "0 ms";
-
-          statTime.textContent =
-            "0 ms";
-
-
-          const start =
-            performance.now();
-
-
-          try {
-
-            const jsCode =
-              transpileTS(code);
-
-
-            const workerSource =
-              createWorkerSource();
-
-
-            const blob =
-              new Blob(
-                [workerSource],
-                {
-                  type: "application/javascript"
-                }
-              );
-
-
-            const workerUrl =
-              URL.createObjectURL(blob);
-
-
-            activeWorkerUrl =
-              workerUrl;
-
-
-            const worker =
-              new Worker(workerUrl);
-
-
-            activeWorker =
-              worker;
-
-
-            let finished = false;
-
-
-            function finishWorker() {
-
-              if (executionTimer) {
-
-                clearTimeout(executionTimer);
-
-                executionTimer = null;
-
-              }
-
-
-              try {
-                worker.terminate();
-              } catch (_) {
-                /* ignore */
-              }
-
-
-              if (activeWorker === worker) {
-                activeWorker = null;
-              }
-
-
-              if (activeWorkerUrl === workerUrl) {
-
-                try {
-                  URL.revokeObjectURL(workerUrl);
-                } catch (_) {
-                  /* ignore */
-                }
-
-                activeWorkerUrl = null;
-
-              }
-
-            }
-
-
-            worker.onmessage =
-              function(event) {
-
-                const data =
-                  event.data || {};
-
-                const type =
-                  data.type;
-
-                const value =
-                  data.value;
-
-
-                if (type === "log") {
-
-                  addConsole(
-                    "log",
-                    value
-                  );
-
-                  return;
-
-                }
-
-
-                if (type === "info") {
-
-                  addConsole(
-                    "info",
-                    value
-                  );
-
-                  return;
-
-                }
-
-
-                if (type === "error") {
-
-                  addConsole(
-                    "error",
-                    value
-                  );
-
-                  setStatus(
-                    "خطأ في التنفيذ",
-                    false
-                  );
-
-                  executionStatus.innerHTML =
-                    '<i class="fa-solid fa-circle" style="color:#ef4444"></i>' +
-                    " خطأ";
-
-                  const elapsed =
-                    Math.round(
-                      performance.now() - start
-                    );
-
-                  executionTime.textContent =
-                    elapsed + " ms";
-
-                  statTime.textContent =
-                    elapsed + " ms";
-
-                  finished = true;
-
-                  finishWorker();
-
-                  return;
-
-                }
-
-
-                if (type === "done") {
-
-                  if (finished) {
-                    return;
-                  }
-
-                  finished = true;
-
-
-                  const elapsed =
-                    Math.round(
-                      performance.now() - start
-                    );
-
-
-                  executionTime.textContent =
-                    elapsed + " ms";
-
-                  statTime.textContent =
-                    elapsed + " ms";
-
-
-                  executionStatus.innerHTML =
-                    '<i class="fa-solid fa-circle" style="color:#22c55e"></i>' +
-                    " تم التنفيذ";
-
-
-                  setStatus(
-                    "تم التنفيذ",
-                    false
-                  );
-
-
-                  finishWorker();
-
-                }
-
-              };
-
-
-            worker.onerror =
-              function(error) {
-
-                if (finished) {
-                  return;
-                }
-
-                finished = true;
-
-
-                const elapsed =
-                  Math.round(
-                    performance.now() - start
-                  );
-
-
-                executionTime.textContent =
-                  elapsed + " ms";
-
-                statTime.textContent =
-                  elapsed + " ms";
-
-
-                addConsole(
-                  "error",
-                  error.message ||
-                  "حدث خطأ أثناء تنفيذ الكود."
-                );
-
-
-                executionStatus.innerHTML =
-                  '<i class="fa-solid fa-circle" style="color:#ef4444"></i>' +
-                  " خطأ";
-
-
-                setStatus(
-                  "خطأ",
-                  false
-                );
-
-
-                finishWorker();
-
-              };
-
-
-            worker.postMessage(
-              jsCode
-            );
-
-
-            /*
-             * حماية من infinite loops.
-             */
-
-            executionTimer =
-              setTimeout(
-                function() {
-
-                  if (finished) {
-                    return;
-                  }
-
-                  finished = true;
-
-
-                  finishWorker();
-
-
-                  const elapsed =
-                    Math.round(
-                      performance.now() - start
-                    );
-
-
-                  executionTime.textContent =
-                    elapsed + " ms";
-
-                  statTime.textContent =
-                    elapsed + " ms";
-
-
-                  addConsole(
-                    "error",
-                    "تم إيقاف التنفيذ لأنه تجاوز الحد الزمني المسموح (5 ثوانٍ)."
-                  );
-
-
-                  executionStatus.innerHTML =
-                    '<i class="fa-solid fa-circle" style="color:#ef4444"></i>' +
-                    " توقف";
-
-
-                  setStatus(
-                    "تم إيقاف التنفيذ",
-                    false
-                  );
-
-                },
-                5000
-              );
-
-          } catch (error) {
-
-            const elapsed =
-              Math.round(
-                performance.now() - start
-              );
-
-
-            executionTime.textContent =
-              elapsed + " ms";
-
-            statTime.textContent =
-              elapsed + " ms";
-
-
-            addConsole(
-              "error",
-              error &&
-              error.stack
-                ? error.stack
-                : String(error)
-            );
-
-
-            executionStatus.innerHTML =
-              '<i class="fa-solid fa-circle" style="color:#ef4444"></i>' +
-              " خطأ";
-
-
-            setStatus(
-              "خطأ",
-              false
-            );
-
-          }
-
-        }
-
-
-        /* =====================================================
-           FORMAT
-        ====================================================== */
-
-        function formatCode() {
-
-          let code =
-            editor.value;
-
-
-          code =
-            code
-              .replace(/\r\n/g, "\n")
-              .replace(/\r/g, "\n")
-              .replace(/[ \t]+$/gm, "")
-              .replace(/\n{3,}/g, "\n\n");
-
-
-          const lines =
-            code.split("\n");
-
-          const formatted = [];
-
-          let indent = 0;
-
-
-          lines.forEach(
-            function(line) {
-
-              const trimmed =
-                line.trim();
-
-              if (!trimmed) {
-
-                formatted.push("");
-
-                return;
-
-              }
-
-
-              if (
-                trimmed.startsWith("}") ||
-                trimmed.startsWith(");")
-              ) {
-
-                indent =
-                  Math.max(
-                    0,
-                    indent - 1
-                  );
-
-              }
-
-
-              formatted.push(
-                "  ".repeat(indent) +
-                trimmed
-              );
-
-
-              const openCount =
-                (
-                  trimmed.match(
-                    /\{/g
-                  ) || []
-                ).length;
-
-
-              const closeCount =
-                (
-                  trimmed.match(
-                    /\}/g
-                  ) || []
-                ).length;
-
-
-              indent +=
-                openCount -
-                closeCount;
-
-
-              if (indent < 0) {
-                indent = 0;
-              }
-
-            }
-          );
-
-
-          editor.value =
-            formatted
-              .join("\n")
-              .trim();
-
-
-          updateStats();
-
-        }
-
-
-        /* =====================================================
-           COPY
-        ====================================================== */
-
-        async function copyCode() {
-
-          try {
-
-            await navigator.clipboard.writeText(
-              editor.value
-            );
-
+          setTimeout(function () {
 
             copyBtn.innerHTML =
-              '<i class="fa-solid fa-check"></i>' +
-              " تم النسخ";
+              '<i class="fa-regular fa-copy"></i> نسخ';
 
+          }, 1500);
 
-            setTimeout(
-              function() {
+        })
+        .catch(function () {
 
-                copyBtn.innerHTML =
-                  '<i class="fa-regular fa-copy"></i>' +
-                  " نسخ";
+          fallbackCopy();
+        });
 
-              },
-              1500
-            );
+    } else {
 
-          } catch (_) {
+      fallbackCopy();
+    }
+  }
 
-            editor.focus();
 
-            editor.select();
+  function fallbackCopy() {
 
-            document.execCommand("copy");
+    editor.select();
 
-            copyBtn.innerHTML =
-              '<i class="fa-solid fa-check"></i>' +
-              " تم النسخ";
+    try {
+      document.execCommand("copy");
+    } catch (_) {}
 
+    window.getSelection().removeAllRanges();
+  }
 
-            setTimeout(
-              function() {
 
-                copyBtn.innerHTML =
-                  '<i class="fa-regular fa-copy"></i>' +
-                  " نسخ";
+  /* -------------------------
+     CLEAR
+  ------------------------- */
 
-              },
-              1500
-            );
+  function clearCode() {
 
-          }
+    editor.value = "";
 
-        }
+    updateStats();
 
+    resetConsole();
 
-        /* =====================================================
-           CLEAR
-        ====================================================== */
+    setStatus("جاهز", false);
 
-        function clearCode() {
+    executionStatus.innerHTML =
+      '<i class="fa-solid fa-circle"></i> لم يتم التنفيذ';
 
-          resetWorker();
+    executionTime.textContent = "0 ms";
 
-          editor.value = "";
+    statTime.textContent = "0 ms";
+  }
 
-          updateStats();
 
-          resetConsole();
+  /* -------------------------
+     SCROLL
+  ------------------------- */
 
+  function syncScroll() {
 
-          setStatus(
-            "جاهز",
-            false
-          );
+    lineNumbers.scrollTop =
+      editor.scrollTop;
+  }
 
 
-          executionStatus.innerHTML =
-            '<i class="fa-solid fa-circle"></i>' +
-            " لم يتم التنفيذ";
+  /* -------------------------
+     EVENTS
+  ------------------------- */
 
+  editor.addEventListener(
+    "input",
+    updateStats
+  );
 
-          executionTime.textContent =
-            "0 ms";
 
-          statTime.textContent =
-            "0 ms";
+  editor.addEventListener(
+    "scroll",
+    syncScroll
+  );
 
-        }
 
+  editor.addEventListener(
+    "keydown",
+    function (event) {
 
-        /* =====================================================
-           SCROLL
-        ====================================================== */
+      if (event.key === "Tab") {
 
-        function syncScroll() {
+        event.preventDefault();
 
-          lineNumbers.scrollTop =
-            editor.scrollTop;
+        var start =
+          editor.selectionStart;
 
-        }
+        var end =
+          editor.selectionEnd;
 
+        editor.value =
+          editor.value.substring(0, start) +
+          "  " +
+          editor.value.substring(end);
 
-        /* =====================================================
-           EVENTS
-        ====================================================== */
+        editor.selectionStart =
+          start + 2;
 
-        editor.addEventListener(
-          "input",
-          updateStats
-        );
-
-
-        editor.addEventListener(
-          "scroll",
-          syncScroll
-        );
-
-
-        editor.addEventListener(
-          "keydown",
-          function(event) {
-
-            if (event.key === "Tab") {
-
-              event.preventDefault();
-
-
-              const start =
-                editor.selectionStart;
-
-              const end =
-                editor.selectionEnd;
-
-
-              editor.value =
-                editor.value.substring(
-                  0,
-                  start
-                ) +
-                "  " +
-                editor.value.substring(
-                  end
-                );
-
-
-              editor.selectionStart =
-                start + 2;
-
-              editor.selectionEnd =
-                start + 2;
-
-
-              updateStats();
-
-            }
-
-
-            if (
-              (event.ctrlKey ||
-                event.metaKey) &&
-              event.key === "Enter"
-            ) {
-
-              event.preventDefault();
-
-              runCode();
-
-            }
-
-          }
-        );
-
-
-        runBtn.addEventListener(
-          "click",
-          runCode
-        );
-
-
-        copyBtn.addEventListener(
-          "click",
-          copyCode
-        );
-
-
-        formatBtn.addEventListener(
-          "click",
-          formatCode
-        );
-
-
-        clearBtn.addEventListener(
-          "click",
-          clearCode
-        );
-
-
-        clearConsole.addEventListener(
-          "click",
-          function() {
-
-            resetConsole();
-
-          }
-        );
-
+        editor.selectionEnd =
+          start + 2;
 
         updateStats();
+      }
 
-      })();
-    </script>
 
-  </body>
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key === "Enter"
+      ) {
+
+        event.preventDefault();
+
+        runCode();
+      }
+
+    }
+  );
+
+
+  runBtn.addEventListener(
+    "click",
+    runCode
+  );
+
+
+  copyBtn.addEventListener(
+    "click",
+    copyCode
+  );
+
+
+  formatBtn.addEventListener(
+    "click",
+    formatCode
+  );
+
+
+  clearBtn.addEventListener(
+    "click",
+    clearCode
+  );
+
+
+  clearConsole.addEventListener(
+    "click",
+    resetConsole
+  );
+
+
+  updateStats();
+
+})();
+</script>
+
+</body>
 </html>
