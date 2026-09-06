@@ -4,1505 +4,2092 @@ import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const title = "JavaScript Playground - محرر JavaScript أونلاين مجاناً | Th.Tech";
+const title = "JavaScript Playground - تشغيل JavaScript أونلاين مجاناً | Th.Tech";
+
 const description =
-  "JavaScript Playground مجاني لتجربة وتشغيل أكواد JavaScript مباشرة من المتصفح مع عرض النتائج والأخطاء بسهولة.";
+  "JavaScript Playground مجانية لتجربة وتشغيل أكواد JavaScript مباشرة من المتصفح مع عرض النتائج والأخطاء.";
 
 const faqs = [
   {
     q: "ما هو JavaScript Playground؟",
-    a: "هو محرر تفاعلي يسمح لك بكتابة وتشغيل كود JavaScript مباشرة من المتصفح دون الحاجة إلى تثبيت برامج إضافية."
+    a: "أداة تفاعلية تسمح لك بكتابة وتشغيل JavaScript مباشرة من المتصفح ومشاهدة النتائج فوراً."
   },
   {
-    q: "هل يتم إرسال الكود إلى الخادم؟",
-    a: "لا. يتم تشغيل JavaScript مباشرة داخل المتصفح، لذلك لا تحتاج إلى رفع الكود إلى خادم خارجي."
+    q: "هل أحتاج إلى تثبيت JavaScript؟",
+    a: "لا. يتم تشغيل JavaScript بواسطة المتصفح مباشرة، ولا تحتاج إلى تثبيت أي برنامج إضافي."
   },
   {
     q: "هل يمكن استخدام console.log؟",
-    a: "نعم. يمكنك استخدام console.log وconsole.error وconsole.warn، وستظهر النتائج في نافذة الإخراج."
+    a: "نعم. يمكنك استخدام console.log وconsole.warn وconsole.error وستظهر المخرجات داخل قسم النتائج."
   },
   {
-    q: "هل الأداة مجانية؟",
-    a: "نعم، JavaScript Playground متاح مجاناً للاستخدام من المتصفح."
+    q: "هل الكود الخاص بي يُرسل إلى الخادم؟",
+    a: "لا. يتم تنفيذ الكود داخل المتصفح، ولا تحتاج الأداة إلى إرسال الكود إلى خادم خارجي."
   }
 ];
 ---
 
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" href={`${base}/logo1.png`} />
+  <title>{title}</title>
+  <meta name="description" content={description} />
 
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="icon" href={`${base}/logo1.png`} />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 
-    <script is:inline>
-      (() => {
-        try {
-          const saved = localStorage.getItem('theme');
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-          if (saved === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-          } else {
-            document.documentElement.classList.remove('dark-mode');
-          }
-        } catch {}
-      })();
-    </script>
-  </head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
 
-  <body>
-    <Header />
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem('theme');
 
-    <main class="playground-page">
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark-mode');
+        } else {
+          document.documentElement.classList.remove('dark-mode');
+        }
+      } catch {}
+    })();
+  </script>
+</head>
 
-      <!-- HERO -->
-      <section class="hero">
-        <div class="container">
+<body>
 
-          <div class="breadcrumb">
-            <a href={`${base}/`}>الرئيسية</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <a href={`${base}/tools/`}>الأدوات</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <span>JavaScript Playground</span>
-          </div>
+  <Header />
 
-          <div class="hero-content">
+  <main>
 
-            <div class="hero-icon">
-              <i class="fa-brands fa-js"></i>
-            </div>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
 
-            <div class="hero-kicker">
-              <i class="fa-solid fa-code"></i>
-              JavaScript Tool
-            </div>
-
-            <h1>
-              JavaScript
-              <span>Playground</span>
-            </h1>
-
-            <p>
-              اكتب وجرب وشغّل أكواد JavaScript مباشرة من المتصفح
-              مع عرض النتائج والأخطاء في الوقت الحقيقي.
-            </p>
-
-          </div>
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>JavaScript Playground</span>
         </div>
-      </section>
 
-      <!-- TOOL -->
-      <section class="tool-section">
-        <div class="container">
+        <div class="hero-content">
 
-          <div class="tool-card">
+          <div class="hero-icon">
+            <i class="fa-brands fa-js"></i>
+          </div>
 
-            <!-- TOOLBAR -->
-            <div class="toolbar">
+          <div class="hero-label">
+            <i class="fa-solid fa-code"></i>
+            JavaScript
+          </div>
 
-              <div class="toolbar-title">
-                <div class="toolbar-icon">
-                  <i class="fa-brands fa-js"></i>
-                </div>
+          <h1>
+            JavaScript
+            <span>Playground</span>
+          </h1>
 
-                <div>
-                  <strong>JavaScript Playground</strong>
-                  <small>تشغيل JavaScript مباشرة</small>
-                </div>
+          <p>
+            جرّب وشغّل أكواد JavaScript مباشرة من المتصفح
+            مع عرض النتائج والأخطاء بسهولة.
+          </p>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="tool-card">
+
+          <!-- TOOL HEADER -->
+          <div class="tool-header">
+
+            <div class="tool-title">
+
+              <div class="tool-title-icon">
+                <i class="fa-brands fa-js"></i>
               </div>
 
-              <div class="toolbar-actions">
-
-                <button id="exampleBtn" class="tool-btn secondary">
-                  <i class="fa-solid fa-wand-magic-sparkles"></i>
-                  مثال
-                </button>
-
-                <button id="clearBtn" class="tool-btn secondary">
-                  <i class="fa-solid fa-trash-can"></i>
-                  مسح
-                </button>
-
-                <button id="runBtn" class="tool-btn primary">
-                  <i class="fa-solid fa-play"></i>
-                  تشغيل الكود
-                </button>
-
+              <div>
+                <h2>JavaScript Playground</h2>
+                <p>اكتب الكود وشغّله مباشرة</p>
               </div>
+
             </div>
 
-            <!-- WORKSPACE -->
-            <div class="workspace">
+            <div class="tool-actions">
 
-              <!-- EDITOR -->
-              <div class="panel editor-panel">
+              <button id="exampleBtn" class="btn btn-secondary">
+                <i class="fa-solid fa-lightbulb"></i>
+                مثال
+              </button>
 
-                <div class="panel-header">
+              <button id="clearBtn" class="btn btn-secondary">
+                <i class="fa-solid fa-trash"></i>
+                مسح
+              </button>
 
-                  <div class="panel-title">
-                    <span class="panel-dot js-dot"></span>
-                    <span>JavaScript</span>
-                  </div>
+              <button id="runBtn" class="btn btn-primary">
+                <i class="fa-solid fa-play"></i>
+                تشغيل
+              </button>
 
-                  <div class="panel-tools">
-                    <span id="lineCount">1 سطر</span>
-                  </div>
+            </div>
 
+          </div>
+
+
+          <!-- EDITOR -->
+          <div class="workspace">
+
+            <div class="editor-box">
+
+              <div class="box-header">
+
+                <div class="box-title">
+                  <span class="dot js"></span>
+                  JavaScript
                 </div>
 
-                <div class="editor-wrap">
+                <div id="lineCount">
+                  1 سطر
+                </div>
 
-                  <div id="lineNumbers" class="line-numbers">1</div>
+              </div>
 
-                  <textarea
-                    id="codeInput"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    placeholder="// اكتب كود JavaScript هنا..."
-                  >const name = "Th.Tech";
+
+              <div class="editor">
+
+                <div id="lineNumbers" class="line-numbers">1</div>
+
+                <textarea
+                  id="codeInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  aria-label="JavaScript code editor"
+                >const name = "Th.Tech";
 
 console.log("مرحباً بك في " + name);
 
 const numbers = [10, 20, 30, 40, 50];
-const total = numbers.reduce((sum, n) => sum + n, 0);
+
+const total = numbers.reduce(
+  (sum, number) => sum + number,
+  0
+);
 
 console.log("المجموع:", total);</textarea>
 
+              </div>
+
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-brands fa-js"></i>
+                  JavaScript
+                </span>
+
+                <span id="charCount">
+                  0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- OUTPUT -->
+            <div class="output-box">
+
+              <div class="box-header">
+
+                <div class="box-title">
+                  <span class="dot output"></span>
+                  النتائج
                 </div>
 
-                <div class="editor-footer">
+                <button id="clearOutput" class="clear-output">
+                  <i class="fa-solid fa-eraser"></i>
+                  مسح
+                </button>
+
+              </div>
+
+
+              <div id="output" class="output">
+
+                <div class="output-empty">
+
+                  <div class="empty-icon">
+                    <i class="fa-solid fa-terminal"></i>
+                  </div>
+
+                  <strong>لا توجد نتائج بعد</strong>
+
                   <span>
-                    <i class="fa-solid fa-keyboard"></i>
-                    JavaScript
+                    اضغط على "تشغيل" لتنفيذ الكود
                   </span>
 
-                  <span id="charCount">0 حرف</span>
                 </div>
 
               </div>
 
-              <!-- OUTPUT -->
-              <div class="panel output-panel">
 
-                <div class="panel-header">
+              <div class="output-footer">
 
-                  <div class="panel-title">
-                    <span class="panel-dot output-dot"></span>
-                    <span>Output</span>
-                  </div>
+                <span id="status">
+                  <i class="fa-solid fa-circle"></i>
+                  جاهز
+                </span>
 
-                  <button id="clearOutput" class="mini-btn">
-                    <i class="fa-solid fa-eraser"></i>
-                    مسح
-                  </button>
-
-                </div>
-
-                <div id="output" class="output">
-                  <div class="empty-output">
-                    <div class="empty-icon">
-                      <i class="fa-solid fa-terminal"></i>
-                    </div>
-
-                    <strong>لا توجد نتائج بعد</strong>
-
-                    <span>
-                      اضغط على "تشغيل الكود" لعرض النتيجة هنا
-                    </span>
-                  </div>
-                </div>
-
-                <div class="output-footer">
-                  <span id="status">
-                    <i class="fa-solid fa-circle"></i>
-                    جاهز
-                  </span>
-
-                  <span id="executionTime">0 ms</span>
-                </div>
+                <span id="executionTime">
+                  0 ms
+                </span>
 
               </div>
 
             </div>
 
-            <!-- QUICK INFO -->
-            <div class="quick-info">
+          </div>
 
-              <div class="info-item">
+
+          <!-- STATS -->
+          <div class="stats">
+
+            <div class="stat">
+
+              <div class="stat-icon">
                 <i class="fa-solid fa-bolt"></i>
-                <div>
-                  <strong>تشغيل مباشر</strong>
-                  <span>داخل المتصفح</span>
-                </div>
               </div>
 
-              <div class="info-item">
-                <i class="fa-solid fa-shield-halved"></i>
-                <div>
-                  <strong>محلي</strong>
-                  <span>لا حاجة لخادم</span>
-                </div>
-              </div>
-
-              <div class="info-item">
-                <i class="fa-solid fa-terminal"></i>
-                <div>
-                  <strong>Console</strong>
-                  <span>عرض النتائج والأخطاء</span>
-                </div>
-              </div>
-
-              <div class="info-item">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-                <div>
-                  <strong>Responsive</strong>
-                  <span>هاتف وكمبيوتر</span>
-                </div>
+              <div>
+                <strong>تشغيل فوري</strong>
+                <span>داخل المتصفح</span>
               </div>
 
             </div>
 
-          </div>
 
-        </div>
-      </section>
+            <div class="stat">
 
-      <!-- INFO -->
-      <section class="info-section">
-        <div class="container">
-
-          <div class="section-heading">
-            <span class="section-kicker">
-              <i class="fa-solid fa-circle-info"></i>
-              حول الأداة
-            </span>
-
-            <h2>
-              جرّب JavaScript
-              <span>بسهولة</span>
-            </h2>
-
-            <p>
-              بيئة بسيطة وسريعة لتجربة أكواد JavaScript واختبار الأفكار
-              البرمجية مباشرة من المتصفح.
-            </p>
-          </div>
-
-          <div class="info-grid">
-
-            <article class="info-card">
-              <div class="info-card-icon">
-                <i class="fa-solid fa-code"></i>
+              <div class="stat-icon">
+                <i class="fa-solid fa-terminal"></i>
               </div>
 
-              <h3>محرر JavaScript</h3>
-
-              <p>
-                اكتب الكود البرمجي داخل المحرر مع ترقيم الأسطر
-                وحساب عدد الأحرف والأسطر.
-              </p>
-            </article>
-
-            <article class="info-card">
-              <div class="info-card-icon">
-                <i class="fa-solid fa-play"></i>
+              <div>
+                <strong>Console</strong>
+                <span>عرض المخرجات</span>
               </div>
 
-              <h3>تشغيل فوري</h3>
+            </div>
 
-              <p>
-                شغّل الكود مباشرة باستخدام زر واحد وشاهد النتيجة
-                بدون الحاجة إلى إعداد بيئة تطوير.
-              </p>
-            </article>
 
-            <article class="info-card">
-              <div class="info-card-icon">
+            <div class="stat">
+
+              <div class="stat-icon">
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
 
-              <h3>كشف الأخطاء</h3>
+              <div>
+                <strong>كشف الأخطاء</strong>
+                <span>رسائل واضحة</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <div>
+                <strong>محلي</strong>
+                <span>بدون خادم</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- INFORMATION -->
+    <section class="information">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-label">
+            <i class="fa-solid fa-circle-info"></i>
+            حول الأداة
+          </div>
+
+          <h2>
+            جرّب JavaScript
+            <span>بسهولة</span>
+          </h2>
+
+          <p>
+            بيئة تفاعلية بسيطة وسريعة لتجربة أكواد JavaScript
+            واختبار الأفكار البرمجية مباشرة من المتصفح.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <h3>محرر JavaScript</h3>
+
+            <p>
+              اكتب وعدّل كود JavaScript بسهولة داخل محرر
+              يدعم ترقيم الأسطر والتنسيق المناسب للكود.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-play"></i>
+            </div>
+
+            <h3>تشغيل مباشر</h3>
+
+            <p>
+              نفّذ الكود مباشرة من المتصفح وشاهد النتائج
+              بدون الحاجة إلى إعداد بيئة تطوير كاملة.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-terminal"></i>
+            </div>
+
+            <h3>عرض النتائج</h3>
+
+            <p>
+              تظهر مخرجات console والرسائل التحذيرية
+              والأخطاء داخل نافذة نتائج مخصصة.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-to">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-label">
+            <i class="fa-solid fa-list-check"></i>
+            طريقة الاستخدام
+          </div>
+
+          <h2>
+            كيف تستخدم
+            <span>الأداة؟</span>
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+              <h3>اكتب الكود</h3>
 
               <p>
-                عند وجود خطأ في الكود، يتم عرض رسالة الخطأ داخل
-                نافذة النتائج لتسهيل اكتشاف المشكلة.
+                اكتب كود JavaScript الذي تريد تجربته
+                داخل محرر الكود.
               </p>
-            </article>
+            </div>
 
           </div>
 
-        </div>
-      </section>
 
-      <!-- HOW TO -->
-      <section class="how-section">
-        <div class="container">
+          <div class="step">
 
-          <div class="section-heading">
-            <span class="section-kicker">
-              <i class="fa-solid fa-list-check"></i>
-              طريقة الاستخدام
-            </span>
+            <div class="step-number">
+              2
+            </div>
 
-            <h2>
-              كيف تستخدم
-              <span>الأداة؟</span>
-            </h2>
+            <div>
+              <h3>شغّل الكود</h3>
+
+              <p>
+                اضغط على زر "تشغيل" أو استخدم
+                الاختصار Ctrl + Enter.
+              </p>
+            </div>
+
           </div>
 
-          <div class="steps">
 
-            <div class="step">
-              <div class="step-number">1</div>
+          <div class="step">
 
-              <div>
-                <h3>اكتب الكود</h3>
-                <p>
-                  أدخل كود JavaScript الذي تريد اختباره داخل المحرر.
-                </p>
-              </div>
+            <div class="step-number">
+              3
             </div>
 
-            <div class="step">
-              <div class="step-number">2</div>
+            <div>
+              <h3>شاهد النتيجة</h3>
 
-              <div>
-                <h3>اضغط تشغيل</h3>
-                <p>
-                  اضغط على زر "تشغيل الكود" لتنفيذ الكود مباشرة.
-                </p>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">3</div>
-
-              <div>
-                <h3>راجع النتيجة</h3>
-                <p>
-                  ستظهر نتائج console والرسائل والأخطاء في نافذة Output.
-                </p>
-              </div>
+              <p>
+                ستظهر المخرجات والأخطاء في قسم النتائج
+                مباشرة.
+              </p>
             </div>
 
           </div>
 
         </div>
-      </section>
 
-      <!-- FAQ -->
-      <section class="faq-section">
-        <div class="container">
+      </div>
+    </section>
 
-          <div class="section-heading">
-            <span class="section-kicker">
-              <i class="fa-solid fa-circle-question"></i>
-              الأسئلة الشائعة
-            </span>
 
-            <h2>
-              أسئلة حول
-              <span>JavaScript Playground</span>
-            </h2>
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-label">
+            <i class="fa-solid fa-circle-question"></i>
+            الأسئلة الشائعة
           </div>
 
-          <div class="faq-list">
-
-            {faqs.map((faq) => (
-              <details class="faq-item">
-                <summary>
-                  <span>{faq.q}</span>
-                  <i class="fa-solid fa-chevron-down"></i>
-                </summary>
-
-                <p>{faq.a}</p>
-              </details>
-            ))}
-
-          </div>
+          <h2>
+            أسئلة حول
+            <span>JavaScript Playground</span>
+          </h2>
 
         </div>
-      </section>
 
-    </main>
 
-    <Footer />
+        <div class="faq-list">
 
-    <style>
-      :global(*) {
-        box-sizing: border-box;
-      }
+          {faqs.map((faq) => (
+            <details class="faq-item">
 
-      :global(html) {
-        scroll-behavior: smooth;
-      }
+              <summary>
+                <span>{faq.q}</span>
 
-      :global(body) {
-        margin: 0;
-        font-family: "Cairo", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        transition:
-          background 0.25s ease,
-          color 0.25s ease;
-      }
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
 
-      :global(button),
-      :global(textarea) {
-        font-family: inherit;
-      }
+              <p>{faq.a}</p>
 
-      :root {
-        --bg: #f8fafc;
-        --bg2: #f1f5f9;
-        --card: #ffffff;
-        --card2: #f8fafc;
-        --text: #0f172a;
-        --muted: #64748b;
-        --primary: #2563eb;
-        --primary-hover: #1d4ed8;
-        --cyan: #0891b2;
-        --green: #16a34a;
-        --red: #dc2626;
-        --orange: #ea580c;
-        --border: rgba(15, 23, 42, 0.09);
-        --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-        --code-bg: #0b1220;
-        --code-text: #e2e8f0;
-      }
+            </details>
+          ))}
 
-      :global(.dark-mode) {
-        --bg: #07101f;
-        --bg2: #0b1426;
-        --card: #111d32;
-        --card2: #0d1729;
-        --text: #f8fafc;
-        --muted: #94a3b8;
-        --primary: #3b82f6;
-        --primary-hover: #2563eb;
-        --cyan: #06b6d4;
-        --green: #22c55e;
-        --red: #ef4444;
-        --orange: #f97316;
-        --border: rgba(148, 163, 184, 0.12);
-        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
-        --code-bg: #07101d;
-        --code-text: #e2e8f0;
-      }
+        </div>
 
-      .container {
-        width: min(1120px, calc(100% - 32px));
-        margin-inline: auto;
-      }
+      </div>
+    </section>
 
-      /* HERO */
+  </main>
 
-      .hero {
-        padding: 34px 0 48px;
-        background:
-          radial-gradient(
-            circle at 20% 20%,
-            rgba(37, 99, 235, 0.12),
-            transparent 32%
-          ),
-          radial-gradient(
-            circle at 80% 20%,
-            rgba(8, 145, 178, 0.1),
-            transparent 30%
-          );
-      }
+  <Footer />
 
-      .breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        flex-wrap: wrap;
-        font-size: 13px;
-        color: var(--muted);
-        margin-bottom: 30px;
-      }
 
-      .breadcrumb a {
-        color: var(--muted);
-        text-decoration: none;
-        transition: color 0.2s ease;
-      }
+  <style>
 
-      .breadcrumb a:hover {
-        color: var(--primary);
-      }
+    :global(*) {
+      box-sizing: border-box;
+    }
 
-      .breadcrumb i {
-        font-size: 9px;
-        opacity: 0.65;
-      }
+    :global(html) {
+      scroll-behavior: smooth;
+    }
 
-      .hero-content {
-        text-align: center;
-        max-width: 760px;
-        margin: auto;
-      }
+    :global(body) {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition:
+        background .25s ease,
+        color .25s ease;
+    }
 
-      .hero-icon {
-        width: 76px;
-        height: 76px;
-        margin: 0 auto 18px;
-        border-radius: 22px;
-        display: grid;
-        place-items: center;
-        font-size: 38px;
-        color: #facc15;
-        background: rgba(37, 99, 235, 0.1);
-        border: 1px solid rgba(37, 99, 235, 0.15);
-        box-shadow: var(--shadow);
-      }
+    :global(button),
+    :global(textarea) {
+      font-family: inherit;
+    }
 
-      .hero-kicker,
-      .section-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--primary);
-        font-size: 13px;
-        font-weight: 800;
-        margin-bottom: 10px;
-      }
 
-      .hero h1 {
-        margin: 0;
-        font-size: clamp(32px, 5vw, 54px);
-        line-height: 1.15;
-        letter-spacing: -1px;
-        font-weight: 800;
-      }
+    :root {
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --card: #ffffff;
+      --card2: #f8fafc;
 
-      .hero h1 span,
-      .section-heading h2 span {
-        color: var(--primary);
-      }
+      --text: #0f172a;
+      --muted: #64748b;
 
-      .hero p {
-        margin: 16px auto 0;
-        max-width: 650px;
-        color: var(--muted);
-        font-size: 16px;
-        line-height: 1.9;
-      }
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
 
-      /* TOOL */
+      --cyan: #0891b2;
+      --green: #16a34a;
+      --red: #dc2626;
 
-      .tool-section {
-        padding: 0 0 75px;
-      }
+      --border: rgba(15, 23, 42, .09);
 
-      .tool-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
-      }
+      --shadow:
+        0 20px 60px rgba(15, 23, 42, .08);
 
-      .toolbar {
-        min-height: 78px;
-        padding: 14px 18px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        border-bottom: 1px solid var(--border);
-        background: var(--card2);
-      }
+      --code-bg: #0b1220;
+      --code-text: #e2e8f0;
+    }
 
-      .toolbar-title {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
 
-      .toolbar-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        display: grid;
-        place-items: center;
-        color: #facc15;
-        background: rgba(37, 99, 235, 0.1);
-      }
+    :global(.dark-mode) {
 
-      .toolbar-title strong {
-        display: block;
-        font-size: 14px;
-      }
+      --bg: #07101f;
+      --bg2: #0b1426;
+      --card: #111d32;
+      --card2: #0d1729;
 
-      .toolbar-title small {
-        display: block;
-        color: var(--muted);
-        font-size: 11px;
-        margin-top: 2px;
-      }
+      --text: #f8fafc;
+      --muted: #94a3b8;
 
-      .toolbar-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
 
-      .tool-btn,
-      .mini-btn {
-        border: 0;
-        cursor: pointer;
-        transition:
-          transform 0.2s ease,
-          background 0.2s ease;
-      }
+      --cyan: #06b6d4;
+      --green: #22c55e;
+      --red: #ef4444;
 
-      .tool-btn {
-        min-height: 42px;
-        padding: 0 16px;
-        border-radius: 11px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        font-size: 13px;
-        font-weight: 700;
-      }
+      --border: rgba(148, 163, 184, .12);
 
-      .tool-btn:hover {
-        transform: translateY(-1px);
-      }
+      --shadow:
+        0 20px 60px rgba(0, 0, 0, .28);
 
-      .tool-btn.primary {
-        color: white;
-        background: var(--primary);
-      }
+      --code-bg: #07101d;
+      --code-text: #e2e8f0;
+    }
 
-      .tool-btn.primary:hover {
-        background: var(--primary-hover);
-      }
 
-      .tool-btn.secondary {
-        color: var(--text);
-        background: var(--bg2);
-        border: 1px solid var(--border);
-      }
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin-inline: auto;
+    }
 
-      .tool-btn.secondary:hover {
-        background: var(--card);
-      }
 
-      /* WORKSPACE */
+    /* HERO */
+
+    .hero {
+      padding: 32px 0 48px;
+
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(37, 99, 235, .08),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(8, 145, 178, .07),
+          transparent 32%
+        );
+    }
+
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+
+
+    .breadcrumb i {
+      font-size: 8px;
+      opacity: .6;
+    }
+
+
+    .hero-content {
+      max-width: 720px;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+
+    .hero-icon {
+      width: 70px;
+      height: 70px;
+
+      margin: 0 auto 16px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 20px;
+
+      color: #facc15;
+
+      background: rgba(37, 99, 235, .09);
+
+      border: 1px solid rgba(37, 99, 235, .13);
+
+      font-size: 34px;
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .hero-label,
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      color: var(--primary);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+
+    .hero-label {
+      margin-bottom: 8px;
+    }
+
+
+    .hero h1 {
+      margin: 0;
+
+      font-size: clamp(31px, 5vw, 50px);
+
+      line-height: 1.2;
+
+      font-weight: 800;
+
+      letter-spacing: -.8px;
+    }
+
+
+    .hero h1 span,
+    .section-heading h2 span {
+      color: var(--primary);
+    }
+
+
+    .hero p {
+      max-width: 620px;
+
+      margin: 13px auto 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.9;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+      padding-bottom: 70px;
+    }
+
+
+    .tool-card {
+      overflow: hidden;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 22px;
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .tool-header {
+      min-height: 76px;
+
+      padding: 13px 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      border-bottom: 1px solid var(--border);
+
+      background: var(--card2);
+    }
+
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+
+    .tool-title-icon {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      color: #facc15;
+
+      background: rgba(37, 99, 235, .1);
+    }
+
+
+    .tool-title h2 {
+      margin: 0;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+
+    .tool-title p {
+      margin: 2px 0 0;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    .tool-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+
+    .btn {
+      min-height: 40px;
+
+      padding: 0 14px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      border-radius: 10px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        transform .2s ease,
+        background .2s ease;
+    }
+
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+
+    .btn-primary {
+      color: white;
+
+      background: var(--primary);
+
+      border: 1px solid var(--primary);
+    }
+
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+
+    .btn-secondary {
+      color: var(--text);
+
+      background: var(--bg2);
+
+      border: 1px solid var(--border);
+    }
+
+
+    .btn-secondary:hover {
+      background: var(--card);
+    }
+
+
+    /* WORKSPACE */
+
+    .workspace {
+      padding: 15px;
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      background: var(--bg2);
+    }
+
+
+    .editor-box,
+    .output-box {
+      overflow: hidden;
+
+      border-radius: 15px;
+
+      background: var(--code-bg);
+
+      border: 1px solid rgba(148, 163, 184, .14);
+    }
+
+
+    .box-header {
+      height: 45px;
+
+      padding: 0 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      color: #cbd5e1;
+
+      border-bottom: 1px solid rgba(148, 163, 184, .1);
+
+      background: rgba(255,255,255,.025);
+
+      font-size: 11px;
+    }
+
+
+    .box-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      font-weight: 700;
+    }
+
+
+    .dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+    }
+
+
+    .dot.js {
+      background: #facc15;
+    }
+
+
+    .dot.output {
+      background: #22c55e;
+    }
+
+
+    .editor {
+      height: 365px;
+
+      display: flex;
+
+      direction: ltr;
+
+      overflow: hidden;
+    }
+
+
+    .line-numbers {
+      width: 45px;
+
+      flex: 0 0 45px;
+
+      padding: 15px 8px;
+
+      color: #64748b;
+
+      text-align: right;
+
+      white-space: pre;
+
+      overflow: hidden;
+
+      border-right: 1px solid rgba(148,163,184,.09);
+
+      background: rgba(255,255,255,.018);
+
+      font:
+        13px/1.75
+        Consolas,
+        monospace;
+    }
+
+
+    #codeInput {
+      width: 100%;
+      height: 100%;
+
+      flex: 1;
+
+      padding: 15px;
+
+      resize: none;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
+      color: var(--code-text);
+
+      direction: ltr;
+
+      text-align: left;
+
+      white-space: pre;
+
+      tab-size: 2;
+
+      overflow: auto;
+
+      font:
+        13px/1.75
+        Consolas,
+        "Courier New",
+        monospace;
+    }
+
+
+    #codeInput::selection {
+      background: rgba(59,130,246,.25);
+    }
+
+
+    .editor-footer,
+    .output-footer {
+      height: 36px;
+
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      color: #94a3b8;
+
+      border-top: 1px solid rgba(148,163,184,.09);
+
+      background: rgba(255,255,255,.018);
+
+      font-size: 9px;
+    }
+
+
+    .editor-footer span,
+    .output-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+
+    .output {
+      height: 365px;
+
+      padding: 15px;
+
+      overflow: auto;
+
+      direction: ltr;
+
+      text-align: left;
+
+      color: var(--code-text);
+
+      font:
+        13px/1.7
+        Consolas,
+        monospace;
+    }
+
+
+    .output-empty {
+      height: 100%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      color: #64748b;
+
+      text-align: center;
+    }
+
+
+    .output-empty strong {
+      color: #cbd5e1;
+
+      font-size: 12px;
+    }
+
+
+    .output-empty span {
+      font-size: 10px;
+    }
+
+
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+
+      margin-bottom: 4px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 13px;
+
+      color: #60a5fa;
+
+      background: rgba(37,99,235,.1);
+
+      font-size: 18px;
+    }
+
+
+    .clear-output {
+      padding: 5px 8px;
+
+      border: 0;
+
+      border-radius: 7px;
+
+      color: #94a3b8;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      font-size: 10px;
+    }
+
+
+    .clear-output:hover {
+      color: white;
+
+      background: rgba(255,255,255,.07);
+    }
+
+
+    .console-line {
+      margin-bottom: 7px;
+
+      padding: 8px 10px;
+
+      border-radius: 7px;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
+
+      background: rgba(255,255,255,.035);
+    }
+
+
+    .console-line.log {
+      color: #e2e8f0;
+    }
+
+
+    .console-line.warn {
+      color: #fbbf24;
+
+      background: rgba(251,191,36,.06);
+    }
+
+
+    .console-line.error {
+      color: #f87171;
+
+      background: rgba(239,68,68,.07);
+    }
+
+
+    .console-prefix {
+      margin-right: 8px;
+
+      color: #64748b;
+
+      font-size: 9px;
+    }
+
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      background: var(--border);
+    }
+
+
+    .stat {
+      min-height: 72px;
+
+      padding: 13px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      background: var(--card);
+    }
+
+
+    .stat-icon {
+      width: 35px;
+      height: 35px;
+
+      flex: 0 0 35px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      color: var(--primary);
+
+      background: rgba(37,99,235,.09);
+
+      font-size: 13px;
+    }
+
+
+    .stat strong {
+      display: block;
+
+      font-size: 11px;
+    }
+
+
+    .stat span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: var(--muted);
+
+      font-size: 9px;
+    }
+
+
+    /* SECTIONS */
+
+    .information,
+    .how-to,
+    .faq {
+      padding: 75px 0;
+    }
+
+
+    .information {
+      background: var(--bg2);
+    }
+
+
+    .section-heading {
+      max-width: 680px;
+
+      margin: 0 auto 32px;
+
+      text-align: center;
+    }
+
+
+    .section-label {
+      margin-bottom: 7px;
+    }
+
+
+    .section-heading h2 {
+      margin: 0;
+
+      font-size: clamp(24px, 4vw, 34px);
+
+      line-height: 1.35;
+    }
+
+
+    .section-heading p {
+      max-width: 600px;
+
+      margin: 10px auto 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.9;
+    }
+
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 17px;
+    }
+
+
+    .info-card {
+      padding: 23px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 17px;
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .info-icon {
+      width: 45px;
+      height: 45px;
+
+      margin-bottom: 15px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      color: var(--primary);
+
+      background: rgba(37,99,235,.09);
+
+      font-size: 17px;
+    }
+
+
+    .info-card h3 {
+      margin: 0 0 7px;
+
+      font-size: 15px;
+    }
+
+
+    .info-card p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.85;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+      max-width: 850px;
+
+      margin-inline: auto;
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 17px;
+    }
+
+
+    .step {
+      padding: 21px;
+
+      display: flex;
+
+      gap: 12px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 17px;
+    }
+
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+
+      flex: 0 0 36px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      color: white;
+
+      background: var(--primary);
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .step h3 {
+      margin: 0 0 5px;
+
+      font-size: 13px;
+    }
+
+
+    .step p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      line-height: 1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+      max-width: 850px;
+
+      margin-inline: auto;
+
+      display: grid;
+
+      gap: 9px;
+    }
+
+
+    .faq-item {
+      overflow: hidden;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+    }
+
+
+    .faq-item summary {
+      padding: 16px 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      cursor: pointer;
+
+      list-style: none;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    .faq-item summary i {
+      color: var(--muted);
+
+      font-size: 10px;
+
+      transition: transform .2s ease;
+    }
+
+
+    .faq-item[open] summary i {
+      transform: rotate(180deg);
+    }
+
+
+    .faq-item p {
+      margin: 0;
+
+      padding: 0 18px 17px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      line-height: 1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
 
       .workspace {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        padding: 16px;
-        background: var(--bg2);
-      }
-
-      .panel {
-        min-width: 0;
-        overflow: hidden;
-        border-radius: 17px;
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        background: var(--code-bg);
-      }
-
-      .panel-header {
-        height: 48px;
-        padding: 0 14px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: rgba(255, 255, 255, 0.035);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-        color: var(--code-text);
-      }
-
-      .panel-title {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .panel-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-      }
-
-      .js-dot {
-        background: #facc15;
-      }
-
-      .output-dot {
-        background: #22c55e;
-      }
-
-      .panel-tools {
-        font-size: 11px;
-        color: #94a3b8;
-      }
-
-      .editor-wrap {
-        height: 390px;
-        display: flex;
-        direction: ltr;
-        overflow: hidden;
-      }
-
-      .line-numbers {
-        width: 48px;
-        flex: 0 0 48px;
-        padding: 17px 9px;
-        overflow: hidden;
-        text-align: right;
-        user-select: none;
-        color: #64748b;
-        background: rgba(255, 255, 255, 0.025);
-        border-right: 1px solid rgba(148, 163, 184, 0.1);
-        font: 13px/1.75 monospace;
-        white-space: pre;
-      }
-
-      #codeInput {
-        flex: 1;
-        width: 100%;
-        height: 100%;
-        resize: none;
-        border: 0;
-        outline: 0;
-        padding: 17px;
-        color: var(--code-text);
-        background: transparent;
-        font: 13px/1.75 "Fira Code", "Cascadia Code", Consolas, monospace;
-        tab-size: 2;
-        direction: ltr;
-        text-align: left;
-        white-space: pre;
-        overflow: auto;
-      }
-
-      #codeInput::placeholder {
-        color: #64748b;
-      }
-
-      .editor-footer,
-      .output-footer {
-        height: 38px;
-        padding: 0 13px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #94a3b8;
-        font-size: 10px;
-        border-top: 1px solid rgba(148, 163, 184, 0.1);
-        background: rgba(255, 255, 255, 0.025);
-      }
-
-      .editor-footer span,
-      .output-footer span {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .output {
-        height: 390px;
-        padding: 17px;
-        overflow: auto;
-        color: var(--code-text);
-        direction: ltr;
-        text-align: left;
-        font: 13px/1.7 monospace;
-      }
-
-      .empty-output {
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        color: #94a3b8;
-        text-align: center;
-      }
-
-      .empty-output strong {
-        color: #cbd5e1;
-        font-size: 13px;
-      }
-
-      .empty-output span {
-        font-size: 11px;
-      }
-
-      .empty-icon {
-        width: 54px;
-        height: 54px;
-        margin-bottom: 4px;
-        border-radius: 15px;
-        display: grid;
-        place-items: center;
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.12);
-        font-size: 20px;
-      }
-
-      .mini-btn {
-        padding: 6px 9px;
-        border-radius: 8px;
-        color: #94a3b8;
-        background: transparent;
-        font-size: 11px;
-      }
-
-      .mini-btn:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
-      .console-line {
-        margin-bottom: 8px;
-        padding: 8px 10px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.035);
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .console-line.log {
-        color: #e2e8f0;
-      }
-
-      .console-line.warn {
-        color: #fbbf24;
-      }
-
-      .console-line.error {
-        color: #f87171;
-        background: rgba(220, 38, 38, 0.08);
-      }
-
-      .console-prefix {
-        display: inline-block;
-        margin-right: 8px;
-        opacity: 0.7;
-        font-size: 10px;
-      }
-
-      .quick-info {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1px;
-        background: var(--border);
-        border-top: 1px solid var(--border);
-      }
-
-      .info-item {
-        min-height: 78px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        background: var(--card);
-      }
-
-      .info-item > i {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-        border-radius: 11px;
-        display: grid;
-        place-items: center;
-        color: var(--primary);
-        background: rgba(37, 99, 235, 0.1);
-      }
-
-      .info-item strong {
-        display: block;
-        font-size: 12px;
-      }
-
-      .info-item span {
-        display: block;
-        margin-top: 2px;
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      /* SECTIONS */
-
-      .info-section,
-      .how-section,
-      .faq-section {
-        padding: 80px 0;
-      }
-
-      .info-section {
-        background: var(--bg2);
-      }
-
-      .section-heading {
-        max-width: 700px;
-        margin: 0 auto 35px;
-        text-align: center;
-      }
-
-      .section-heading h2 {
-        margin: 0;
-        font-size: clamp(25px, 4vw, 36px);
-        line-height: 1.3;
-      }
-
-      .section-heading p {
-        margin: 12px auto 0;
-        color: var(--muted);
-        line-height: 1.9;
-        font-size: 14px;
+        grid-template-columns: 1fr;
       }
 
       .info-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
+        grid-template-columns: 1fr;
       }
-
-      .info-card {
-        padding: 25px;
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        box-shadow: var(--shadow);
-      }
-
-      .info-card-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 17px;
-        border-radius: 14px;
-        display: grid;
-        place-items: center;
-        color: var(--primary);
-        background: rgba(37, 99, 235, 0.1);
-        font-size: 19px;
-      }
-
-      .info-card h3 {
-        margin: 0 0 8px;
-        font-size: 16px;
-      }
-
-      .info-card p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.85;
-        font-size: 13px;
-      }
-
-      /* STEPS */
 
       .steps {
-        max-width: 850px;
-        margin: auto;
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .container {
+        width: min(100% - 20px, 1120px);
+      }
+
+
+      .hero {
+        padding-top: 22px;
+        padding-bottom: 38px;
+      }
+
+
+      .breadcrumb {
+        font-size: 10px;
+
+        margin-bottom: 22px;
+      }
+
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+
+        border-radius: 17px;
+
+        font-size: 29px;
+      }
+
+
+      .hero p {
+        font-size: 12px;
+      }
+
+
+      .tool-header {
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+
+      .tool-actions {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
+
+        grid-template-columns: 1fr 1fr;
       }
 
-      .step {
-        padding: 23px;
-        display: flex;
-        gap: 13px;
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        background: var(--card);
+
+      .btn-primary {
+        grid-column: 1 / -1;
       }
 
-      .step-number {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-        display: grid;
-        place-items: center;
-        border-radius: 11px;
-        color: white;
-        background: var(--primary);
-        font-weight: 800;
-        font-size: 13px;
-      }
 
-      .step h3 {
-        margin: 0 0 5px;
-        font-size: 14px;
-      }
+      .workspace {
+        padding: 10px;
 
-      .step p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.8;
-      }
-
-      /* FAQ */
-
-      .faq-list {
-        max-width: 850px;
-        margin: auto;
-        display: grid;
         gap: 10px;
       }
 
-      .faq-item {
-        border: 1px solid var(--border);
-        border-radius: 15px;
-        background: var(--card);
-        overflow: hidden;
+
+      .editor,
+      .output {
+        height: 315px;
       }
 
-      .faq-item summary {
-        padding: 17px 19px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        list-style: none;
-        font-size: 13px;
-        font-weight: 700;
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .faq-item summary::-webkit-details-marker {
-        display: none;
+
+      .stat {
+        min-height: 65px;
       }
 
-      .faq-item summary i {
-        color: var(--muted);
-        font-size: 11px;
-        transition: transform 0.2s ease;
+
+      .information,
+      .how-to,
+      .faq {
+        padding: 58px 0;
       }
 
-      .faq-item[open] summary i {
-        transform: rotate(180deg);
+
+      .section-heading {
+        margin-bottom: 25px;
       }
 
-      .faq-item p {
-        margin: 0;
-        padding: 0 19px 18px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.9;
-      }
+    }
 
-      /* RESPONSIVE */
+  </style>
 
-      @media (max-width: 850px) {
-        .workspace {
-          grid-template-columns: 1fr;
-        }
 
-        .quick-info {
-          grid-template-columns: repeat(2, 1fr);
-        }
+  <script is:inline>
+    (() => {
 
-        .info-grid {
-          grid-template-columns: 1fr;
-        }
+      const codeInput = document.getElementById("codeInput");
+      const output = document.getElementById("output");
 
-        .steps {
-          grid-template-columns: 1fr;
-        }
-      }
+      const runBtn = document.getElementById("runBtn");
+      const clearBtn = document.getElementById("clearBtn");
 
-      @media (max-width: 600px) {
-        .container {
-          width: min(100% - 20px, 1120px);
-        }
+      const exampleBtn = document.getElementById("exampleBtn");
+      const clearOutput = document.getElementById("clearOutput");
 
-        .hero {
-          padding-top: 22px;
-          padding-bottom: 38px;
-        }
+      const lineNumbers = document.getElementById("lineNumbers");
+      const lineCount = document.getElementById("lineCount");
+      const charCount = document.getElementById("charCount");
 
-        .breadcrumb {
-          font-size: 11px;
-          margin-bottom: 22px;
-        }
+      const status = document.getElementById("status");
+      const executionTime = document.getElementById("executionTime");
 
-        .hero-icon {
-          width: 64px;
-          height: 64px;
-          font-size: 31px;
-          border-radius: 18px;
-        }
 
-        .hero p {
-          font-size: 13px;
-        }
-
-        .tool-section {
-          padding-bottom: 50px;
-        }
-
-        .toolbar {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .toolbar-actions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .tool-btn.primary {
-          grid-column: 1 / -1;
-        }
-
-        .workspace {
-          padding: 10px;
-          gap: 10px;
-        }
-
-        .editor-wrap,
-        .output {
-          height: 320px;
-        }
-
-        .quick-info {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .info-item {
-          min-height: 70px;
-          padding: 11px;
-        }
-
-        .info-item > i {
-          width: 32px;
-          height: 32px;
-          flex-basis: 32px;
-          font-size: 12px;
-        }
-
-        .info-item strong {
-          font-size: 10px;
-        }
-
-        .info-item span {
-          font-size: 9px;
-        }
-
-        .info-section,
-        .how-section,
-        .faq-section {
-          padding: 58px 0;
-        }
-
-        .section-heading {
-          margin-bottom: 25px;
-        }
-
-        .info-card,
-        .step {
-          padding: 19px;
-        }
-      }
-    </style>
-
-    <script is:inline>
-      (() => {
-        const codeInput = document.getElementById("codeInput");
-        const output = document.getElementById("output");
-        const runBtn = document.getElementById("runBtn");
-        const clearBtn = document.getElementById("clearBtn");
-        const exampleBtn = document.getElementById("exampleBtn");
-        const clearOutput = document.getElementById("clearOutput");
-        const lineNumbers = document.getElementById("lineNumbers");
-        const lineCount = document.getElementById("lineCount");
-        const charCount = document.getElementById("charCount");
-        const status = document.getElementById("status");
-        const executionTime = document.getElementById("executionTime");
-
-        const exampleCode = `const name = "Th.Tech";
+      const exampleCode = `const name = "Th.Tech";
 
 console.log("مرحباً بك في " + name);
 
 const numbers = [10, 20, 30, 40, 50];
-const total = numbers.reduce((sum, n) => sum + n, 0);
+
+const total = numbers.reduce(
+  (sum, number) => sum + number,
+  0
+);
 
 console.log("المجموع:", total);`;
 
-        function updateEditorStats() {
-          const code = codeInput.value;
-          const lines = code.split("\\n").length;
 
-          lineNumbers.textContent = Array.from(
+      function updateStats() {
+
+        const code = codeInput.value;
+
+        const lines = code.split("\\n").length;
+
+        lineNumbers.textContent =
+          Array.from(
             { length: Math.max(lines, 1) },
-            (_, i) => i + 1
+            (_, index) => index + 1
           ).join("\\n");
 
-          lineCount.textContent =
-            `${lines} ${lines === 1 ? "سطر" : "أسطر"}`;
 
-          charCount.textContent =
-            `${code.length.toLocaleString("ar-MA")} حرف`;
+        lineCount.textContent =
+          `${lines} ${lines === 1 ? "سطر" : "أسطر"}`;
+
+
+        charCount.textContent =
+          `${code.length.toLocaleString("ar-MA")} حرف`;
+
+      }
+
+
+      function setStatus(text, type = "ready") {
+
+        const colors = {
+          ready: "#94a3b8",
+          running: "#60a5fa",
+          success: "#4ade80",
+          error: "#f87171"
+        };
+
+
+        status.style.color =
+          colors[type] || colors.ready;
+
+
+        status.innerHTML =
+          `<i class="fa-solid fa-circle"></i> ${text}`;
+
+      }
+
+
+      function escapeHtml(value) {
+
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+      }
+
+
+      function formatValue(value) {
+
+        if (typeof value === "string") {
+          return value;
         }
 
-        function setStatus(text, type = "ready") {
-          const colors = {
-            ready: "#94a3b8",
-            success: "#4ade80",
-            error: "#f87171",
-            running: "#60a5fa"
-          };
 
-          status.style.color = colors[type] || colors.ready;
-
-          status.innerHTML = `
-            <i class="fa-solid fa-circle"></i>
-            ${text}
-          `;
+        if (typeof value === "undefined") {
+          return "undefined";
         }
 
-        function clearOutputArea() {
+
+        if (value instanceof Error) {
+          return value.stack || value.message;
+        }
+
+
+        if (typeof value === "function") {
+          return value.toString();
+        }
+
+
+        try {
+
+          const result =
+            JSON.stringify(value, null, 2);
+
+          return result === undefined
+            ? String(value)
+            : result;
+
+        } catch {
+
+          return String(value);
+
+        }
+
+      }
+
+
+      function addOutput(type, values) {
+
+        const line =
+          document.createElement("div");
+
+        line.className =
+          `console-line ${type}`;
+
+
+        const prefix =
+          type === "error"
+            ? "ERROR"
+            : type === "warn"
+              ? "WARN"
+              : "LOG";
+
+
+        const content =
+          values
+            .map(formatValue)
+            .join(" ");
+
+
+        line.innerHTML =
+          `<span class="console-prefix">[${prefix}]</span>${escapeHtml(content)}`;
+
+
+        output.appendChild(line);
+
+        output.scrollTop =
+          output.scrollHeight;
+
+      }
+
+
+      function resetOutput() {
+
+        output.innerHTML = `
+          <div class="output-empty">
+
+            <div class="empty-icon">
+              <i class="fa-solid fa-terminal"></i>
+            </div>
+
+            <strong>لا توجد نتائج بعد</strong>
+
+            <span>
+              اضغط على "تشغيل" لتنفيذ الكود
+            </span>
+
+          </div>
+        `;
+
+
+        executionTime.textContent = "0 ms";
+
+        setStatus("جاهز", "ready");
+
+      }
+
+
+      function runCode() {
+
+        const code =
+          codeInput.value.trim();
+
+
+        if (!code) {
+
           output.innerHTML = `
-            <div class="empty-output">
-              <div class="empty-icon">
-                <i class="fa-solid fa-terminal"></i>
-              </div>
-
-              <strong>لا توجد نتائج بعد</strong>
-
-              <span>
-                اضغط على "تشغيل الكود" لعرض النتيجة هنا
-              </span>
+            <div class="console-line warn">
+              <span class="console-prefix">[WARN]</span>
+              اكتب كود JavaScript أولاً.
             </div>
           `;
 
-          executionTime.textContent = "0 ms";
-          setStatus("جاهز", "ready");
+          setStatus("لا يوجد كود", "error");
+
+          return;
         }
 
-        function formatValue(value) {
-          if (typeof value === "string") {
-            return value;
+
+        output.innerHTML = "";
+
+        setStatus("جاري التشغيل...", "running");
+
+
+        const start =
+          performance.now();
+
+
+        const originalLog =
+          console.log;
+
+        const originalWarn =
+          console.warn;
+
+        const originalError =
+          console.error;
+
+
+        let hasError = false;
+
+
+        const restoreConsole = () => {
+
+          console.log = originalLog;
+          console.warn = originalWarn;
+          console.error = originalError;
+
+        };
+
+
+        console.log = (...args) => {
+
+          addOutput("log", args);
+
+          originalLog(...args);
+
+        };
+
+
+        console.warn = (...args) => {
+
+          addOutput("warn", args);
+
+          originalWarn(...args);
+
+        };
+
+
+        console.error = (...args) => {
+
+          addOutput("error", args);
+
+          originalError(...args);
+
+        };
+
+
+        try {
+
+          const result =
+            Function(
+              `"use strict";\\n${code}`
+            )();
+
+
+          if (typeof result !== "undefined") {
+            addOutput("log", [result]);
           }
 
-          if (typeof value === "undefined") {
-            return "undefined";
-          }
+        } catch (error) {
 
-          if (typeof value === "function") {
-            return value.toString();
-          }
+          hasError = true;
 
-          if (value instanceof Error) {
-            return value.stack || value.message;
-          }
-
-          try {
-            return JSON.stringify(value, null, 2);
-          } catch {
-            return String(value);
-          }
-        }
-
-        function addOutput(type, args) {
-          const line = document.createElement("div");
-          line.className = `console-line ${type}`;
-
-          const prefix =
-            type === "error"
-              ? "ERROR"
-              : type === "warn"
-                ? "WARN"
-                : "LOG";
-
-          const content = args
-            .map((item) => formatValue(item))
-            .join(" ");
-
-          line.innerHTML = `
-            <span class="console-prefix">[${prefix}]</span>${escapeHtml(content)}
-          `;
-
-          output.appendChild(line);
-        }
-
-        function escapeHtml(value) {
-          return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-        }
-
-        function runCode() {
-          const code = codeInput.value.trim();
-
-          if (!code) {
-            output.innerHTML = `
-              <div class="console-line warn">
-                <span class="console-prefix">[WARN]</span>
-                اكتب كود JavaScript أولاً.
-              </div>
-            `;
-
-            setStatus("لا يوجد كود", "error");
-            return;
-          }
-
-          output.innerHTML = "";
-          setStatus("جاري التشغيل...", "running");
-
-          const start = performance.now();
-
-          const originalLog = console.log;
-          const originalWarn = console.warn;
-          const originalError = console.error;
-
-          let hasError = false;
-
-          const restoreConsole = () => {
-            console.log = originalLog;
-            console.warn = originalWarn;
-            console.error = originalError;
-          };
-
-          console.log = (...args) => {
-            addOutput("log", args);
-            originalLog(...args);
-          };
-
-          console.warn = (...args) => {
-            addOutput("warn", args);
-            originalWarn(...args);
-          };
-
-          console.error = (...args) => {
-            addOutput("error", args);
-            originalError(...args);
-          };
-
-          try {
-            const result = Function(`"use strict";\\n${code}`)();
-
-            if (typeof result !== "undefined") {
-              addOutput("log", [result]);
-            }
-          } catch (error) {
-            hasError = true;
-
-            addOutput("error", [
+          addOutput(
+            "error",
+            [
               error && error.stack
                 ? error.stack
                 : String(error)
-            ]);
-          } finally {
-            restoreConsole();
-          }
+            ]
+          );
 
-          const elapsed = performance.now() - start;
+        } finally {
 
-          executionTime.textContent =
-            `${elapsed.toFixed(2)} ms`;
+          restoreConsole();
 
-          if (hasError) {
-            setStatus("حدث خطأ", "error");
-          } else {
-            setStatus("تم التنفيذ بنجاح", "success");
-          }
-
-          if (!output.children.length) {
-            addOutput("log", ["تم تنفيذ الكود بنجاح بدون مخرجات."]);
-          }
         }
 
-        codeInput.addEventListener("input", updateEditorStats);
 
-        codeInput.addEventListener("scroll", () => {
-          lineNumbers.scrollTop = codeInput.scrollTop;
-        });
+        const elapsed =
+          performance.now() - start;
 
-        codeInput.addEventListener("keydown", (event) => {
+
+        executionTime.textContent =
+          `${elapsed.toFixed(2)} ms`;
+
+
+        if (hasError) {
+
+          setStatus("حدث خطأ", "error");
+
+        } else {
+
+          setStatus(
+            "تم التنفيذ بنجاح",
+            "success"
+          );
+
+        }
+
+
+        if (!output.children.length) {
+
+          addOutput(
+            "log",
+            ["تم تنفيذ الكود بنجاح بدون مخرجات."]
+          );
+
+        }
+
+      }
+
+
+      codeInput.addEventListener(
+        "input",
+        updateStats
+      );
+
+
+      codeInput.addEventListener(
+        "scroll",
+        () => {
+
+          lineNumbers.scrollTop =
+            codeInput.scrollTop;
+
+        }
+      );
+
+
+      codeInput.addEventListener(
+        "keydown",
+        (event) => {
+
           if (event.key === "Tab") {
+
             event.preventDefault();
 
-            const start = codeInput.selectionStart;
-            const end = codeInput.selectionEnd;
+            const start =
+              codeInput.selectionStart;
+
+            const end =
+              codeInput.selectionEnd;
+
 
             codeInput.value =
               codeInput.value.substring(0, start) +
               "  " +
               codeInput.value.substring(end);
 
-            codeInput.selectionStart = start + 2;
-            codeInput.selectionEnd = start + 2;
 
-            updateEditorStats();
+            codeInput.selectionStart =
+              start + 2;
+
+            codeInput.selectionEnd =
+              start + 2;
+
+
+            updateStats();
+
           }
+
 
           if (
             (event.ctrlKey || event.metaKey) &&
             event.key === "Enter"
           ) {
+
             event.preventDefault();
+
             runCode();
+
           }
-        });
 
-        runBtn.addEventListener("click", runCode);
+        }
+      );
 
-        clearBtn.addEventListener("click", () => {
+
+      runBtn.addEventListener(
+        "click",
+        runCode
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        () => {
+
           codeInput.value = "";
-          updateEditorStats();
-          clearOutputArea();
+
+          updateStats();
+
+          resetOutput();
+
           codeInput.focus();
-        });
 
-        clearOutput.addEventListener("click", () => {
-          clearOutputArea();
-        });
+        }
+      );
 
-        exampleBtn.addEventListener("click", () => {
-          codeInput.value = exampleCode;
-          updateEditorStats();
-          clearOutputArea();
+
+      exampleBtn.addEventListener(
+        "click",
+        () => {
+
+          codeInput.value =
+            exampleCode;
+
+          updateStats();
+
+          resetOutput();
+
           codeInput.focus();
-        });
 
-        updateEditorStats();
-      })();
-    </script>
-  </body>
+        }
+      );
+
+
+      clearOutput.addEventListener(
+        "click",
+        resetOutput
+      );
+
+
+      updateStats();
+
+    })();
+  </script>
+
+</body>
 </html>
