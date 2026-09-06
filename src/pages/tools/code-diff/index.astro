@@ -1,0 +1,1793 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Code Diff - مقارنة الأكواد أونلاين | Th.Tech";
+const description =
+  "أداة Code Diff مجانية لمقارنة نسختين من الأكواد ومعرفة الأسطر المضافة والمحذوفة والمعدلة مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة Code Diff؟",
+    a: "أداة Code Diff تسمح لك بمقارنة نسختين من الكود وعرض الاختلافات بينهما بطريقة واضحة."
+  },
+  {
+    q: "هل يتم إرسال الكود إلى الخادم؟",
+    a: "لا. تتم عملية المقارنة بالكامل داخل المتصفح ولا يحتاج الكود إلى الرفع إلى خادم خارجي."
+  },
+  {
+    q: "ما أنواع الأكواد التي يمكن مقارنتها؟",
+    a: "يمكنك مقارنة JavaScript وTypeScript وCSS وHTML وJSON وPython وغيرها من النصوص البرمجية."
+  },
+  {
+    q: "هل يمكن استخدام الأداة على الهاتف؟",
+    a: "نعم، الواجهة مصممة للعمل بشكل متجاوب على الهاتف والكمبيوتر."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (function () {
+        try {
+          var savedTheme = localStorage.getItem("theme");
+          if (savedTheme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-glow"></div>
+
+        <div class="container hero-inner">
+          <div class="tool-badge">
+            <i class="fa-solid fa-code-compare"></i>
+            <span>Developer Tool #39</span>
+          </div>
+
+          <h1>
+            Code <span>Diff</span>
+          </h1>
+
+          <p>
+            قارن بين نسختين من الكود واكتشف جميع التغييرات بسرعة
+          </p>
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-code-compare"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-section">
+        <div class="container">
+          <div class="tool-card">
+
+            <!-- TOP BAR -->
+            <div class="tool-topbar">
+              <div class="tool-title">
+                <div class="mini-icon">
+                  <i class="fa-solid fa-code-compare"></i>
+                </div>
+
+                <div>
+                  <strong>Code Diff</strong>
+                  <span>مقارنة الأكواد</span>
+                </div>
+              </div>
+
+              <div class="tool-status">
+                <span class="status-dot"></span>
+                يعمل محلياً
+              </div>
+            </div>
+
+            <!-- ACTION BAR -->
+            <div class="actionbar">
+
+              <div class="action-group">
+                <button id="compareBtn" class="action primary">
+                  <i class="fa-solid fa-code-compare"></i>
+                  مقارنة
+                </button>
+
+                <button id="swapBtn" class="action">
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  تبديل
+                </button>
+
+                <button id="copyBtn" class="action">
+                  <i class="fa-regular fa-copy"></i>
+                  نسخ النتيجة
+                </button>
+
+                <button id="clearBtn" class="action danger">
+                  <i class="fa-solid fa-trash"></i>
+                  مسح
+                </button>
+              </div>
+
+              <div class="language-box">
+                <i class="fa-solid fa-code"></i>
+
+                <select id="language">
+                  <option value="text">نص عادي</option>
+                  <option value="javascript">JavaScript</option>
+                  <option value="typescript">TypeScript</option>
+                  <option value="html">HTML</option>
+                  <option value="css">CSS</option>
+                  <option value="json">JSON</option>
+                  <option value="python">Python</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- EDITORS -->
+            <div class="editors-grid">
+
+              <!-- OLD -->
+              <div class="editor-panel">
+                <div class="editor-header">
+                  <div class="editor-heading">
+                    <span class="editor-dot old-dot"></span>
+
+                    <div>
+                      <strong>النسخة القديمة</strong>
+                      <small>Original</small>
+                    </div>
+                  </div>
+
+                  <span id="oldLines" class="line-count">
+                    0 سطر
+                  </span>
+                </div>
+
+                <div class="editor-body">
+                  <div id="oldNumbers" class="line-numbers">1</div>
+
+                  <textarea
+                    id="oldCode"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    placeholder="// ضع النسخة القديمة من الكود هنا..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- NEW -->
+              <div class="editor-panel">
+                <div class="editor-header">
+                  <div class="editor-heading">
+                    <span class="editor-dot new-dot"></span>
+
+                    <div>
+                      <strong>النسخة الجديدة</strong>
+                      <small>Modified</small>
+                    </div>
+                  </div>
+
+                  <span id="newLines" class="line-count">
+                    0 سطر
+                  </span>
+                </div>
+
+                <div class="editor-body">
+                  <div id="newNumbers" class="line-numbers">1</div>
+
+                  <textarea
+                    id="newCode"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    placeholder="// ضع النسخة الجديدة من الكود هنا..."
+                  ></textarea>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- RESULT -->
+            <div class="result-panel">
+
+              <div class="result-header">
+                <div>
+                  <div class="result-title">
+                    <i class="fa-solid fa-code-branch"></i>
+                    نتيجة المقارنة
+                  </div>
+
+                  <small>
+                    يتم عرض الاختلافات بين النسختين
+                  </small>
+                </div>
+
+                <div class="result-summary">
+                  <span id="addedStat">
+                    <i class="fa-solid fa-plus"></i>
+                    0 مضاف
+                  </span>
+
+                  <span id="removedStat">
+                    <i class="fa-solid fa-minus"></i>
+                    0 محذوف
+                  </span>
+
+                  <span id="sameStat">
+                    <i class="fa-solid fa-equals"></i>
+                    0 بدون تغيير
+                  </span>
+                </div>
+              </div>
+
+              <div id="diffOutput" class="diff-output">
+                <div class="empty-result">
+                  <i class="fa-solid fa-code-compare"></i>
+
+                  <strong>
+                    لم تتم المقارنة بعد
+                  </strong>
+
+                  <span>
+                    أدخل النسختين ثم اضغط على زر "مقارنة"
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- TOOL STATS -->
+            <div class="tool-stats">
+
+              <div class="stat">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-file-code"></i>
+                </div>
+
+                <div>
+                  <strong id="totalOld">0</strong>
+                  <span>أسطر قديمة</span>
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+
+                <div>
+                  <strong id="totalNew">0</strong>
+                  <span>أسطر جديدة</span>
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div>
+                  <strong id="totalAdded">0</strong>
+                  <span>أسطر مضافة</span>
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-minus"></i>
+                </div>
+
+                <div>
+                  <strong id="totalRemoved">0</strong>
+                  <span>أسطر محذوفة</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>CODE DIFF</span>
+            <h2>مقارنة الأكواد بسهولة</h2>
+
+            <p>
+              اكتشف التغييرات بين نسختين من أي كود بدون الحاجة إلى تثبيت برامج إضافية.
+            </p>
+          </div>
+
+          <div class="features-grid">
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fa-solid fa-code-compare"></i>
+              </div>
+
+              <h3>مقارنة دقيقة</h3>
+
+              <p>
+                عرض الأسطر المضافة والمحذوفة والتي لم تتغير بطريقة واضحة.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <h3>خصوصية كاملة</h3>
+
+              <p>
+                تتم معالجة الأكواد داخل متصفحك ولا يتم إرسالها إلى خادم خارجي.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+
+              <h3>متوافق مع الهاتف</h3>
+
+              <p>
+                يمكنك مقارنة الأكواد من الهاتف أو الجهاز اللوحي أو الكمبيوتر.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>HOW IT WORKS</span>
+            <h2>كيفية استخدام Code Diff</h2>
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">01</div>
+
+              <div>
+                <h3>أدخل النسخة القديمة</h3>
+                <p>
+                  ضع الكود السابق في المحرر الأول.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">02</div>
+
+              <div>
+                <h3>أدخل النسخة الجديدة</h3>
+                <p>
+                  ضع النسخة المعدلة في المحرر الثاني.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">03</div>
+
+              <div>
+                <h3>اضغط مقارنة</h3>
+                <p>
+                  ستظهر جميع الاختلافات والإحصائيات مباشرة.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>FAQ</span>
+            <h2>الأسئلة الشائعة</h2>
+          </div>
+
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details class="faq-item">
+                <summary>
+                  <span>{faq.q}</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <p>{faq.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #4f46e5;
+        --accent: #60a5fa;
+
+        --bg: #f6f8fc;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --border: #e2e8f0;
+
+        --text: #0f172a;
+        --muted: #64748b;
+
+        --code-bg: #07101f;
+        --code-surface: #0b1628;
+        --code-border: #1e293b;
+
+        --success: #22c55e;
+        --danger: #ef4444;
+
+        color-scheme: light;
+      }
+
+      html.dark {
+        --bg: #060b14;
+        --surface: #0b1220;
+        --surface-2: #101827;
+        --border: #1e293b;
+
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+
+        --code-bg: #040914;
+        --code-surface: #08101d;
+        --code-border: #1e293b;
+
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition: background .25s ease, color .25s ease;
+      }
+
+      button,
+      select,
+      textarea {
+        font-family: inherit;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: auto;
+      }
+
+      /* HERO */
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 72px 0 110px;
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(37, 99, 235, .16),
+            transparent 42%
+          ),
+          var(--bg);
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: rgba(79, 70, 229, .10);
+        filter: blur(80px);
+        top: -230px;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        position: relative;
+        text-align: center;
+      }
+
+      .tool-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 15px;
+        border: 1px solid rgba(37, 99, 235, .25);
+        background: rgba(37, 99, 235, .08);
+        color: var(--primary);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hero h1 {
+        margin: 20px 0 8px;
+        font-size: clamp(38px, 7vw, 70px);
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+
+      .hero h1 span {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero p {
+        margin: 0 auto 28px;
+        max-width: 680px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .hero-icon {
+        width: 82px;
+        height: 82px;
+        margin: 20px auto 0;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 34px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+        box-shadow:
+          0 20px 50px rgba(37, 99, 235, .25);
+      }
+
+      /* TOOL */
+
+      .tool-section {
+        margin-top: -60px;
+        position: relative;
+        z-index: 2;
+        padding-bottom: 80px;
+      }
+
+      .tool-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, .10);
+      }
+
+      .tool-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tool-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .mini-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+      }
+
+      .tool-title strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .tool-title span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .tool-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--success);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, .10);
+      }
+
+      /* ACTIONBAR */
+
+      .actionbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 14px 18px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .action-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .action {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 9px 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        transition: .2s ease;
+      }
+
+      .action:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .action.primary {
+        border-color: transparent;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+        color: #fff;
+      }
+
+      .action.primary:hover {
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, .25);
+      }
+
+      .action.danger:hover {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+
+      .language-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 10px;
+        padding: 0 10px;
+        color: var(--muted);
+      }
+
+      .language-box select {
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        padding: 9px 5px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      /* EDITORS */
+
+      .editors-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .editor-panel {
+        background: var(--code-bg);
+        min-width: 0;
+      }
+
+      .editor-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 15px;
+        background: var(--code-surface);
+        border-bottom: 1px solid var(--code-border);
+      }
+
+      .editor-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .editor-heading strong {
+        display: block;
+        color: #e2e8f0;
+        font-size: 12px;
+      }
+
+      .editor-heading small {
+        display: block;
+        color: #64748b;
+        font-size: 10px;
+      }
+
+      .editor-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+
+      .old-dot {
+        background: var(--danger);
+        box-shadow: 0 0 10px rgba(239, 68, 68, .45);
+      }
+
+      .new-dot {
+        background: var(--success);
+        box-shadow: 0 0 10px rgba(34, 197, 94, .45);
+      }
+
+      .line-count {
+        color: #64748b;
+        font-size: 10px;
+      }
+
+      .editor-body {
+        display: grid;
+        grid-template-columns: 46px 1fr;
+        min-height: 310px;
+      }
+
+      .line-numbers {
+        padding: 17px 8px;
+        background: rgba(255,255,255,.02);
+        border-left: 1px solid var(--code-border);
+        color: #475569;
+        font: 12px/1.75 monospace;
+        text-align: center;
+        overflow: hidden;
+        user-select: none;
+        white-space: pre;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 310px;
+        resize: vertical;
+        border: 0;
+        outline: 0;
+        padding: 17px;
+        background: transparent;
+        color: #dbeafe;
+        font: 13px/1.75 "Courier New", monospace;
+        direction: ltr;
+        text-align: left;
+        tab-size: 2;
+      }
+
+      textarea::placeholder {
+        color: #475569;
+      }
+
+      /* RESULT */
+
+      .result-panel {
+        margin: 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--surface-2);
+      }
+
+      .result-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 15px 17px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .result-title {
+        font-size: 13px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .result-title i {
+        color: var(--primary);
+      }
+
+      .result-header small {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .result-summary {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 10px;
+      }
+
+      .result-summary span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      #addedStat {
+        color: var(--success);
+      }
+
+      #removedStat {
+        color: var(--danger);
+      }
+
+      #sameStat {
+        color: var(--muted);
+      }
+
+      .diff-output {
+        max-height: 420px;
+        overflow: auto;
+        direction: ltr;
+        text-align: left;
+        font: 12px/1.7 "Courier New", monospace;
+      }
+
+      .empty-result {
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: var(--muted);
+        direction: rtl;
+        text-align: center;
+      }
+
+      .empty-result i {
+        font-size: 32px;
+        color: var(--primary);
+        margin-bottom: 6px;
+      }
+
+      .empty-result strong {
+        color: var(--text);
+        font-size: 13px;
+      }
+
+      .empty-result span {
+        font-size: 11px;
+      }
+
+      .diff-line {
+        display: flex;
+        min-height: 28px;
+        border-bottom: 1px solid rgba(148,163,184,.07);
+      }
+
+      .diff-number {
+        flex: 0 0 48px;
+        padding: 4px 8px;
+        text-align: right;
+        color: #64748b;
+        background: rgba(255,255,255,.015);
+        user-select: none;
+      }
+
+      .diff-symbol {
+        flex: 0 0 26px;
+        padding: 4px 0;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      .diff-content {
+        flex: 1;
+        padding: 4px 10px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .diff-line.added {
+        background: rgba(34, 197, 94, .10);
+      }
+
+      .diff-line.added .diff-symbol {
+        color: var(--success);
+      }
+
+      .diff-line.removed {
+        background: rgba(239, 68, 68, .10);
+      }
+
+      .diff-line.removed .diff-symbol {
+        color: var(--danger);
+      }
+
+      .diff-line.same {
+        opacity: .72;
+      }
+
+      .diff-line.same .diff-symbol {
+        color: #64748b;
+      }
+
+      /* STATS */
+
+      .tool-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--border);
+      }
+
+      .stat {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 17px;
+        border-left: 1px solid var(--border);
+      }
+
+      .stat:last-child {
+        border-left: 0;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        background: rgba(37, 99, 235, .09);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 17px;
+      }
+
+      .stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      /* SECTIONS */
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        padding: 80px 0;
+      }
+
+      .how-section {
+        background: var(--surface);
+      }
+
+      .section-heading {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 38px;
+      }
+
+      .section-heading > span {
+        color: var(--primary);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+      }
+
+      .section-heading h2 {
+        margin: 8px 0;
+        font-size: clamp(25px, 4vw, 34px);
+      }
+
+      .section-heading p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .feature-card {
+        padding: 25px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        transition: .25s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(37, 99, 235, .4);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        background: rgba(37, 99, 235, .09);
+        font-size: 19px;
+        margin-bottom: 17px;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      /* STEPS */
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .step {
+        display: flex;
+        gap: 15px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        background: var(--surface-2);
+      }
+
+      .step-number {
+        flex: 0 0 43px;
+        height: 43px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 5px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.7;
+      }
+
+      /* FAQ */
+
+      .faq-list {
+        max-width: 850px;
+        margin: auto;
+      }
+
+      .faq-item {
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        margin-bottom: 10px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      .faq-item summary {
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 17px 19px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--primary);
+        transition: .2s ease;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-item p {
+        margin: 0;
+        padding: 0 19px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 800px) {
+        .hero {
+          padding: 55px 0 90px;
+        }
+
+        .tool-section {
+          margin-top: -45px;
+        }
+
+        .actionbar {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .action-group {
+          width: 100%;
+        }
+
+        .language-box {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .language-box select {
+          flex: 1;
+        }
+
+        .editors-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .tool-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat:nth-child(2) {
+          border-left: 0;
+        }
+
+        .stat:nth-child(3),
+        .stat:nth-child(4) {
+          border-top: 1px solid var(--border);
+        }
+
+        .features-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .result-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .result-summary {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .container {
+          width: min(100% - 20px, 1180px);
+        }
+
+        .hero h1 {
+          font-size: 39px;
+        }
+
+        .hero-icon {
+          width: 68px;
+          height: 68px;
+          border-radius: 20px;
+          font-size: 27px;
+        }
+
+        .tool-topbar {
+          padding: 14px;
+        }
+
+        .tool-status {
+          display: none;
+        }
+
+        .action {
+          flex: 1;
+          justify-content: center;
+          padding: 9px 8px;
+        }
+
+        .result-panel {
+          margin: 12px;
+        }
+
+        .editor-body {
+          grid-template-columns: 35px 1fr;
+        }
+
+        textarea {
+          padding: 14px 11px;
+          font-size: 12px;
+        }
+
+        .line-numbers {
+          padding: 14px 4px;
+        }
+
+        .diff-number {
+          flex-basis: 38px;
+        }
+
+        .diff-symbol {
+          flex-basis: 22px;
+        }
+
+        .tool-stats {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .stat {
+          padding: 13px 10px;
+          gap: 8px;
+        }
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+          font-size: 12px;
+        }
+
+        .stat strong {
+          font-size: 15px;
+        }
+      }
+    </style>
+
+    <script is:inline>
+      (function () {
+        var oldCode = document.getElementById("oldCode");
+        var newCode = document.getElementById("newCode");
+
+        var oldNumbers = document.getElementById("oldNumbers");
+        var newNumbers = document.getElementById("newNumbers");
+
+        var oldLines = document.getElementById("oldLines");
+        var newLines = document.getElementById("newLines");
+
+        var compareBtn = document.getElementById("compareBtn");
+        var swapBtn = document.getElementById("swapBtn");
+        var copyBtn = document.getElementById("copyBtn");
+        var clearBtn = document.getElementById("clearBtn");
+
+        var diffOutput = document.getElementById("diffOutput");
+
+        var addedStat = document.getElementById("addedStat");
+        var removedStat = document.getElementById("removedStat");
+        var sameStat = document.getElementById("sameStat");
+
+        var totalOld = document.getElementById("totalOld");
+        var totalNew = document.getElementById("totalNew");
+        var totalAdded = document.getElementById("totalAdded");
+        var totalRemoved = document.getElementById("totalRemoved");
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        function getLines(value) {
+          if (!value) return [];
+          return value.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+        }
+
+        function updateLineNumbers(textarea, numbers, counter) {
+          var lines = getLines(textarea.value);
+          var count = Math.max(lines.length, 1);
+
+          var result = [];
+
+          for (var i = 1; i <= count; i++) {
+            result.push(i);
+          }
+
+          numbers.textContent = result.join("\n");
+          counter.textContent = count + " سطر";
+
+          if (textarea.id === "oldCode") {
+            totalOld.textContent = count;
+          } else {
+            totalNew.textContent = count;
+          }
+        }
+
+        function syncScroll(textarea, numbers) {
+          numbers.scrollTop = textarea.scrollTop;
+        }
+
+        function buildLcs(a, b) {
+          var m = a.length;
+          var n = b.length;
+
+          var dp = [];
+
+          for (var i = 0; i <= m; i++) {
+            dp[i] = [];
+
+            for (var j = 0; j <= n; j++) {
+              dp[i][j] = 0;
+            }
+          }
+
+          for (var x = 1; x <= m; x++) {
+            for (var y = 1; y <= n; y++) {
+              if (a[x - 1] === b[y - 1]) {
+                dp[x][y] = dp[x - 1][y - 1] + 1;
+              } else {
+                dp[x][y] = Math.max(
+                  dp[x - 1][y],
+                  dp[x][y - 1]
+                );
+              }
+            }
+          }
+
+          var result = [];
+          var i2 = m;
+          var j2 = n;
+
+          while (i2 > 0 || j2 > 0) {
+            if (
+              i2 > 0 &&
+              j2 > 0 &&
+              a[i2 - 1] === b[j2 - 1]
+            ) {
+              result.unshift({
+                type: "same",
+                text: a[i2 - 1]
+              });
+
+              i2--;
+              j2--;
+            } else if (
+              j2 > 0 &&
+              (i2 === 0 || dp[i2][j2 - 1] >= dp[i2 - 1][j2])
+            ) {
+              result.unshift({
+                type: "added",
+                text: b[j2 - 1]
+              });
+
+              j2--;
+            } else {
+              result.unshift({
+                type: "removed",
+                text: a[i2 - 1]
+              });
+
+              i2--;
+            }
+          }
+
+          return result;
+        }
+
+        function compare() {
+          var oldLinesArray = getLines(oldCode.value);
+          var newLinesArray = getLines(newCode.value);
+
+          var diff = buildLcs(
+            oldLinesArray,
+            newLinesArray
+          );
+
+          var added = 0;
+          var removed = 0;
+          var same = 0;
+
+          var oldNumber = 0;
+          var newNumber = 0;
+
+          var html = "";
+
+          diff.forEach(function (item) {
+            var number = "";
+
+            if (item.type === "same") {
+              oldNumber++;
+              newNumber++;
+              same++;
+
+              number = oldNumber + ":" + newNumber;
+            }
+
+            if (item.type === "added") {
+              newNumber++;
+              added++;
+
+              number = "+" + newNumber;
+            }
+
+            if (item.type === "removed") {
+              oldNumber++;
+              removed++;
+
+              number = "-" + oldNumber;
+            }
+
+            var symbol = "=";
+
+            if (item.type === "added") {
+              symbol = "+";
+            }
+
+            if (item.type === "removed") {
+              symbol = "-";
+            }
+
+            html +=
+              '<div class="diff-line ' +
+              item.type +
+              '">' +
+              '<div class="diff-number">' +
+              escapeHtml(number) +
+              "</div>" +
+              '<div class="diff-symbol">' +
+              escapeHtml(symbol) +
+              "</div>" +
+              '<div class="diff-content">' +
+              escapeHtml(item.text) +
+              "</div>" +
+              "</div>";
+          });
+
+          if (!html) {
+            html =
+              '<div class="empty-result">' +
+              '<i class="fa-solid fa-code-compare"></i>' +
+              "<strong>لا توجد بيانات للمقارنة</strong>" +
+              "<span>أدخل الكود في المحررين أولاً.</span>" +
+              "</div>";
+          }
+
+          diffOutput.innerHTML = html;
+
+          addedStat.innerHTML =
+            '<i class="fa-solid fa-plus"></i> ' +
+            added +
+            " مضاف";
+
+          removedStat.innerHTML =
+            '<i class="fa-solid fa-minus"></i> ' +
+            removed +
+            " محذوف";
+
+          sameStat.innerHTML =
+            '<i class="fa-solid fa-equals"></i> ' +
+            same +
+            " بدون تغيير";
+
+          totalAdded.textContent = added;
+          totalRemoved.textContent = removed;
+        }
+
+        function copyResult() {
+          var text = "";
+
+          var lines = diffOutput.querySelectorAll(
+            ".diff-line"
+          );
+
+          lines.forEach(function (line) {
+            var symbol =
+              line.querySelector(".diff-symbol").textContent;
+
+            var content =
+              line.querySelector(".diff-content").textContent;
+
+            text += symbol + " " + content + "\n";
+          });
+
+          if (!text.trim()) {
+            return;
+          }
+
+          if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+          ) {
+            navigator.clipboard.writeText(text);
+          } else {
+            var temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            temp.remove();
+          }
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+          setTimeout(function () {
+            copyBtn.innerHTML =
+              '<i class="fa-regular fa-copy"></i> نسخ النتيجة';
+          }, 1500);
+        }
+
+        function swapEditors() {
+          var value = oldCode.value;
+
+          oldCode.value = newCode.value;
+          newCode.value = value;
+
+          updateLineNumbers(
+            oldCode,
+            oldNumbers,
+            oldLines
+          );
+
+          updateLineNumbers(
+            newCode,
+            newNumbers,
+            newLines
+          );
+
+          compare();
+        }
+
+        function clearAll() {
+          oldCode.value = "";
+          newCode.value = "";
+
+          updateLineNumbers(
+            oldCode,
+            oldNumbers,
+            oldLines
+          );
+
+          updateLineNumbers(
+            newCode,
+            newNumbers,
+            newLines
+          );
+
+          totalOld.textContent = "0";
+          totalNew.textContent = "0";
+          totalAdded.textContent = "0";
+          totalRemoved.textContent = "0";
+
+          addedStat.innerHTML =
+            '<i class="fa-solid fa-plus"></i> 0 مضاف';
+
+          removedStat.innerHTML =
+            '<i class="fa-solid fa-minus"></i> 0 محذوف';
+
+          sameStat.innerHTML =
+            '<i class="fa-solid fa-equals"></i> 0 بدون تغيير';
+
+          diffOutput.innerHTML =
+            '<div class="empty-result">' +
+            '<i class="fa-solid fa-code-compare"></i>' +
+            "<strong>لم تتم المقارنة بعد</strong>" +
+            '<span>أدخل النسختين ثم اضغط على زر "مقارنة"</span>' +
+            "</div>";
+        }
+
+        oldCode.addEventListener("input", function () {
+          updateLineNumbers(
+            oldCode,
+            oldNumbers,
+            oldLines
+          );
+        });
+
+        newCode.addEventListener("input", function () {
+          updateLineNumbers(
+            newCode,
+            newNumbers,
+            newLines
+          );
+        });
+
+        oldCode.addEventListener("scroll", function () {
+          syncScroll(oldCode, oldNumbers);
+        });
+
+        newCode.addEventListener("scroll", function () {
+          syncScroll(newCode, newNumbers);
+        });
+
+        compareBtn.addEventListener("click", compare);
+        swapBtn.addEventListener("click", swapEditors);
+        copyBtn.addEventListener("click", copyResult);
+        clearBtn.addEventListener("click", clearAll);
+
+        oldCode.addEventListener("keydown", function (event) {
+          if (event.key === "Tab") {
+            event.preventDefault();
+
+            var start = oldCode.selectionStart;
+            var end = oldCode.selectionEnd;
+
+            oldCode.value =
+              oldCode.value.substring(0, start) +
+              "  " +
+              oldCode.value.substring(end);
+
+            oldCode.selectionStart = start + 2;
+            oldCode.selectionEnd = start + 2;
+
+            updateLineNumbers(
+              oldCode,
+              oldNumbers,
+              oldLines
+            );
+          }
+        });
+
+        newCode.addEventListener("keydown", function (event) {
+          if (event.key === "Tab") {
+            event.preventDefault();
+
+            var start = newCode.selectionStart;
+            var end = newCode.selectionEnd;
+
+            newCode.value =
+              newCode.value.substring(0, start) +
+              "  " +
+              newCode.value.substring(end);
+
+            newCode.selectionStart = start + 2;
+            newCode.selectionEnd = start + 2;
+
+            updateLineNumbers(
+              newCode,
+              newNumbers,
+              newLines
+            );
+          }
+        });
+
+        updateLineNumbers(
+          oldCode,
+          oldNumbers,
+          oldLines
+        );
+
+        updateLineNumbers(
+          newCode,
+          newNumbers,
+          newLines
+        );
+      })();
+    </script>
+  </body>
+</html>
