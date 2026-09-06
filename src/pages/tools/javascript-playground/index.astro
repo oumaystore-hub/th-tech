@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "هل يمكن استخدام console.log؟",
-    a: "نعم. يمكنك استخدام console.log وconsole.warn وconsole.error وستظهر المخرجات داخل قسم النتائج."
+    a: "نعم. يمكنك استخدام console.log وconsole.info وconsole.warn وconsole.error وconsole.debug وستظهر المخرجات داخل قسم النتائج."
   },
   {
     q: "هل الكود الخاص بي يُرسل إلى الخادم؟",
@@ -82,10 +82,13 @@ const faqs = [
         <div class="breadcrumb">
           <a href={`${base}/`}>الرئيسية</a>
           <i class="fa-solid fa-chevron-left"></i>
+
           <a href={`${base}/tools/`}>الأدوات</a>
           <i class="fa-solid fa-chevron-left"></i>
+
           <span>JavaScript Playground</span>
         </div>
+
 
         <div class="hero-content">
 
@@ -136,19 +139,37 @@ const faqs = [
 
             </div>
 
+
             <div class="tool-actions">
 
-              <button id="exampleBtn" class="btn btn-secondary">
+              <button
+                id="exampleBtn"
+                class="btn btn-secondary"
+                type="button"
+                title="تحميل مثال"
+              >
                 <i class="fa-solid fa-lightbulb"></i>
                 مثال
               </button>
 
-              <button id="clearBtn" class="btn btn-secondary">
+
+              <button
+                id="clearBtn"
+                class="btn btn-secondary"
+                type="button"
+                title="مسح الكود"
+              >
                 <i class="fa-solid fa-trash"></i>
                 مسح
               </button>
 
-              <button id="runBtn" class="btn btn-primary">
+
+              <button
+                id="runBtn"
+                class="btn btn-primary"
+                type="button"
+                title="تشغيل الكود"
+              >
                 <i class="fa-solid fa-play"></i>
                 تشغيل
               </button>
@@ -158,9 +179,10 @@ const faqs = [
           </div>
 
 
-          <!-- EDITOR -->
+          <!-- WORKSPACE -->
           <div class="workspace">
 
+            <!-- EDITOR -->
             <div class="editor-box">
 
               <div class="box-header">
@@ -179,7 +201,12 @@ const faqs = [
 
               <div class="editor">
 
-                <div id="lineNumbers" class="line-numbers">1</div>
+                <div
+                  id="lineNumbers"
+                  class="line-numbers"
+                  aria-hidden="true"
+                >1</div>
+
 
                 <textarea
                   id="codeInput"
@@ -230,7 +257,13 @@ console.log("المجموع:", total);</textarea>
                   النتائج
                 </div>
 
-                <button id="clearOutput" class="clear-output">
+
+                <button
+                  id="clearOutput"
+                  class="clear-output"
+                  type="button"
+                  title="مسح النتائج"
+                >
                   <i class="fa-solid fa-eraser"></i>
                   مسح
                 </button>
@@ -272,6 +305,26 @@ console.log("المجموع:", total);</textarea>
 
             </div>
 
+          </div>
+
+
+          <!-- SHORTCUT HINT -->
+          <div class="shortcut-hint">
+            <span>
+              <i class="fa-solid fa-keyboard"></i>
+              اختصار التشغيل
+            </span>
+
+            <kbd>Ctrl</kbd>
+            <span>+</span>
+            <kbd>Enter</kbd>
+
+            <span class="shortcut-separator"></span>
+
+            <span class="local-badge">
+              <i class="fa-solid fa-shield-halved"></i>
+              تنفيذ محلي
+            </span>
           </div>
 
 
@@ -542,6 +595,7 @@ console.log("المجموع:", total);</textarea>
 
   </main>
 
+
   <Footer />
 
 
@@ -551,19 +605,26 @@ console.log("المجموع:", total);</textarea>
       box-sizing: border-box;
     }
 
+
     :global(html) {
       scroll-behavior: smooth;
     }
 
+
     :global(body) {
       margin: 0;
+
       font-family: "Cairo", sans-serif;
+
       background: var(--bg);
+
       color: var(--text);
+
       transition:
         background .25s ease,
         color .25s ease;
     }
+
 
     :global(button),
     :global(textarea) {
@@ -574,6 +635,7 @@ console.log("المجموع:", total);</textarea>
     :root {
       --bg: #f8fafc;
       --bg2: #f1f5f9;
+
       --card: #ffffff;
       --card2: #f8fafc;
 
@@ -601,6 +663,7 @@ console.log("المجموع:", total);</textarea>
 
       --bg: #07101f;
       --bg2: #0b1426;
+
       --card: #111d32;
       --card2: #0d1729;
 
@@ -626,11 +689,14 @@ console.log("المجموع:", total);</textarea>
 
     .container {
       width: min(1120px, calc(100% - 32px));
+
       margin-inline: auto;
     }
 
 
-    /* HERO */
+    /* =========================
+       HERO
+    ========================= */
 
     .hero {
       padding: 32px 0 48px;
@@ -651,8 +717,11 @@ console.log("المجموع:", total);</textarea>
 
     .breadcrumb {
       display: flex;
+
       align-items: center;
+
       flex-wrap: wrap;
+
       gap: 8px;
 
       color: var(--muted);
@@ -665,7 +734,9 @@ console.log("المجموع:", total);</textarea>
 
     .breadcrumb a {
       color: var(--muted);
+
       text-decoration: none;
+
       transition: color .2s ease;
     }
 
@@ -677,13 +748,16 @@ console.log("المجموع:", total);</textarea>
 
     .breadcrumb i {
       font-size: 8px;
+
       opacity: .6;
     }
 
 
     .hero-content {
       max-width: 720px;
+
       margin-inline: auto;
+
       text-align: center;
     }
 
@@ -695,6 +769,7 @@ console.log("المجموع:", total);</textarea>
       margin: 0 auto 16px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 20px;
@@ -714,12 +789,15 @@ console.log("المجموع:", total);</textarea>
     .hero-label,
     .section-label {
       display: inline-flex;
+
       align-items: center;
+
       gap: 7px;
 
       color: var(--primary);
 
       font-size: 12px;
+
       font-weight: 800;
     }
 
@@ -761,7 +839,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* TOOL */
+    /* =========================
+       TOOL
+    ========================= */
 
     .tool-section {
       padding-bottom: 70px;
@@ -787,7 +867,9 @@ console.log("المجموع:", total);</textarea>
       padding: 13px 16px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       gap: 15px;
@@ -800,7 +882,9 @@ console.log("المجموع:", total);</textarea>
 
     .tool-title {
       display: flex;
+
       align-items: center;
+
       gap: 11px;
     }
 
@@ -810,6 +894,7 @@ console.log("المجموع:", total);</textarea>
       height: 40px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 11px;
@@ -824,6 +909,7 @@ console.log("المجموع:", total);</textarea>
       margin: 0;
 
       font-size: 14px;
+
       font-weight: 800;
     }
 
@@ -839,6 +925,7 @@ console.log("المجموع:", total);</textarea>
 
     .tool-actions {
       display: flex;
+
       gap: 7px;
     }
 
@@ -849,7 +936,9 @@ console.log("المجموع:", total);</textarea>
       padding: 0 14px;
 
       display: inline-flex;
+
       align-items: center;
+
       justify-content: center;
 
       gap: 7px;
@@ -857,18 +946,33 @@ console.log("المجموع:", total);</textarea>
       border-radius: 10px;
 
       font-size: 12px;
+
       font-weight: 700;
 
       cursor: pointer;
 
       transition:
         transform .2s ease,
-        background .2s ease;
+        background .2s ease,
+        box-shadow .2s ease;
     }
 
 
     .btn:hover {
       transform: translateY(-1px);
+    }
+
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+
+    .btn:focus-visible,
+    .clear-output:focus-visible {
+      outline: 2px solid var(--primary);
+
+      outline-offset: 2px;
     }
 
 
@@ -878,11 +982,17 @@ console.log("المجموع:", total);</textarea>
       background: var(--primary);
 
       border: 1px solid var(--primary);
+
+      box-shadow:
+        0 8px 20px rgba(37, 99, 235, .18);
     }
 
 
     .btn-primary:hover {
       background: var(--primary-hover);
+
+      box-shadow:
+        0 10px 25px rgba(37, 99, 235, .25);
     }
 
 
@@ -900,7 +1010,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* WORKSPACE */
+    /* =========================
+       WORKSPACE
+    ========================= */
 
     .workspace {
       padding: 15px;
@@ -924,6 +1036,9 @@ console.log("المجموع:", total);</textarea>
       background: var(--code-bg);
 
       border: 1px solid rgba(148, 163, 184, .14);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025);
     }
 
 
@@ -933,7 +1048,9 @@ console.log("المجموع:", total);</textarea>
       padding: 0 13px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       color: #cbd5e1;
@@ -948,7 +1065,9 @@ console.log("المجموع:", total);</textarea>
 
     .box-title {
       display: flex;
+
       align-items: center;
+
       gap: 8px;
 
       font-weight: 700;
@@ -959,17 +1078,25 @@ console.log("المجموع:", total);</textarea>
       width: 8px;
       height: 8px;
 
+      flex: 0 0 8px;
+
       border-radius: 50%;
     }
 
 
     .dot.js {
       background: #facc15;
+
+      box-shadow:
+        0 0 8px rgba(250, 204, 21, .3);
     }
 
 
     .dot.output {
       background: #22c55e;
+
+      box-shadow:
+        0 0 8px rgba(34, 197, 94, .3);
     }
 
 
@@ -999,6 +1126,8 @@ console.log("المجموع:", total);</textarea>
 
       overflow: hidden;
 
+      user-select: none;
+
       border-right: 1px solid rgba(148,163,184,.09);
 
       background: rgba(255,255,255,.018);
@@ -1021,6 +1150,7 @@ console.log("المجموع:", total);</textarea>
       resize: none;
 
       border: 0;
+
       outline: 0;
 
       background: transparent;
@@ -1050,6 +1180,28 @@ console.log("المجموع:", total);</textarea>
     }
 
 
+    #codeInput::-webkit-scrollbar,
+    .output::-webkit-scrollbar {
+      width: 8px;
+
+      height: 8px;
+    }
+
+
+    #codeInput::-webkit-scrollbar-thumb,
+    .output::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,.25);
+
+      border-radius: 20px;
+    }
+
+
+    #codeInput::-webkit-scrollbar-track,
+    .output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+
     .editor-footer,
     .output-footer {
       height: 36px;
@@ -1057,7 +1209,9 @@ console.log("المجموع:", total);</textarea>
       padding: 0 12px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       color: #94a3b8;
@@ -1073,7 +1227,9 @@ console.log("المجموع:", total);</textarea>
     .editor-footer span,
     .output-footer span {
       display: inline-flex;
+
       align-items: center;
+
       gap: 6px;
     }
 
@@ -1106,6 +1262,7 @@ console.log("المجموع:", total);</textarea>
       flex-direction: column;
 
       align-items: center;
+
       justify-content: center;
 
       gap: 7px;
@@ -1135,6 +1292,7 @@ console.log("المجموع:", total);</textarea>
       margin-bottom: 4px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 13px;
@@ -1161,6 +1319,10 @@ console.log("المجموع:", total);</textarea>
       cursor: pointer;
 
       font-size: 10px;
+
+      transition:
+        color .2s ease,
+        background .2s ease;
     }
 
 
@@ -1183,11 +1345,44 @@ console.log("المجموع:", total);</textarea>
       word-break: break-word;
 
       background: rgba(255,255,255,.035);
+
+      animation: outputIn .18s ease both;
+    }
+
+
+    @keyframes outputIn {
+
+      from {
+        opacity: 0;
+
+        transform: translateY(3px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+
     }
 
 
     .console-line.log {
       color: #e2e8f0;
+    }
+
+
+    .console-line.info {
+      color: #93c5fd;
+
+      background: rgba(59,130,246,.06);
+    }
+
+
+    .console-line.debug {
+      color: #c4b5fd;
+
+      background: rgba(139,92,246,.06);
     }
 
 
@@ -1211,10 +1406,104 @@ console.log("المجموع:", total);</textarea>
       color: #64748b;
 
       font-size: 9px;
+
+      font-weight: 700;
     }
 
 
-    /* STATS */
+    /* =========================
+       SHORTCUT
+    ========================= */
+
+    .shortcut-hint {
+      min-height: 42px;
+
+      padding: 8px 15px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-start;
+
+      gap: 7px;
+
+      color: var(--muted);
+
+      background: var(--card2);
+
+      border-top: 1px solid var(--border);
+
+      font-size: 9px;
+    }
+
+
+    .shortcut-hint > span:first-child {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      font-weight: 600;
+    }
+
+
+    kbd {
+      min-width: 25px;
+
+      padding: 3px 6px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 1px solid var(--border);
+
+      border-bottom-width: 2px;
+
+      border-radius: 5px;
+
+      color: var(--text);
+
+      background: var(--bg2);
+
+      font-family: inherit;
+
+      font-size: 9px;
+
+      font-weight: 700;
+    }
+
+
+    .shortcut-separator {
+      width: 1px;
+      height: 18px;
+
+      margin-inline: 5px;
+
+      background: var(--border);
+    }
+
+
+    .local-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+      color: var(--green);
+
+      font-weight: 700;
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
 
     .stats {
       display: grid;
@@ -1231,6 +1520,7 @@ console.log("المجموع:", total);</textarea>
       padding: 13px;
 
       display: flex;
+
       align-items: center;
 
       gap: 10px;
@@ -1246,6 +1536,7 @@ console.log("المجموع:", total);</textarea>
       flex: 0 0 35px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 10px;
@@ -1276,7 +1567,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* SECTIONS */
+    /* =========================
+       SECTIONS
+    ========================= */
 
     .information,
     .how-to,
@@ -1345,6 +1638,17 @@ console.log("المجموع:", total);</textarea>
       border-radius: 17px;
 
       box-shadow: var(--shadow);
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease;
+    }
+
+
+    .info-card:hover {
+      transform: translateY(-3px);
+
+      border-color: rgba(37,99,235,.2);
     }
 
 
@@ -1355,6 +1659,7 @@ console.log("المجموع:", total);</textarea>
       margin-bottom: 15px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 12px;
@@ -1385,7 +1690,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* STEPS */
+    /* =========================
+       STEPS
+    ========================= */
 
     .steps {
       max-width: 850px;
@@ -1412,6 +1719,17 @@ console.log("المجموع:", total);</textarea>
       border: 1px solid var(--border);
 
       border-radius: 17px;
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease;
+    }
+
+
+    .step:hover {
+      transform: translateY(-2px);
+
+      border-color: rgba(37,99,235,.2);
     }
 
 
@@ -1422,6 +1740,7 @@ console.log("المجموع:", total);</textarea>
       flex: 0 0 36px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 10px;
@@ -1454,7 +1773,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* FAQ */
+    /* =========================
+       FAQ
+    ========================= */
 
     .faq-list {
       max-width: 850px;
@@ -1475,6 +1796,14 @@ console.log("المجموع:", total);</textarea>
       border: 1px solid var(--border);
 
       border-radius: 14px;
+
+      transition:
+        border-color .2s ease;
+    }
+
+
+    .faq-item:hover {
+      border-color: rgba(37,99,235,.18);
     }
 
 
@@ -1482,7 +1811,9 @@ console.log("المجموع:", total);</textarea>
       padding: 16px 18px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       gap: 15px;
@@ -1529,7 +1860,9 @@ console.log("المجموع:", total);</textarea>
     }
 
 
-    /* RESPONSIVE */
+    /* =========================
+       RESPONSIVE
+    ========================= */
 
     @media (max-width: 850px) {
 
@@ -1537,9 +1870,11 @@ console.log("المجموع:", total);</textarea>
         grid-template-columns: 1fr;
       }
 
+
       .info-grid {
         grid-template-columns: 1fr;
       }
+
 
       .steps {
         grid-template-columns: 1fr;
@@ -1557,6 +1892,7 @@ console.log("المجموع:", total);</textarea>
 
       .hero {
         padding-top: 22px;
+
         padding-bottom: 38px;
       }
 
@@ -1625,6 +1961,25 @@ console.log("المجموع:", total);</textarea>
       }
 
 
+      .shortcut-hint {
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        padding: 10px;
+      }
+
+
+      .shortcut-separator {
+        display: none;
+      }
+
+
+      .local-badge {
+        margin-inline-start: 4px;
+      }
+
+
       .information,
       .how-to,
       .faq {
@@ -1634,6 +1989,70 @@ console.log("المجموع:", total);</textarea>
 
       .section-heading {
         margin-bottom: 25px;
+      }
+
+    }
+
+
+    @media (max-width: 420px) {
+
+      .tool-actions {
+        gap: 6px;
+      }
+
+
+      .btn {
+        padding-inline: 10px;
+
+        font-size: 11px;
+      }
+
+
+      .tool-title h2 {
+        font-size: 13px;
+      }
+
+
+      .workspace {
+        padding: 8px;
+      }
+
+
+      .editor,
+      .output {
+        height: 300px;
+      }
+
+
+      .line-numbers {
+        width: 39px;
+
+        flex-basis: 39px;
+
+        padding-inline: 6px;
+
+        font-size: 11px;
+      }
+
+
+      #codeInput,
+      .output {
+        font-size: 12px;
+      }
+
+
+      .stat {
+        padding: 10px;
+
+        gap: 8px;
+      }
+
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+
+        flex-basis: 32px;
       }
 
     }
@@ -1661,6 +2080,10 @@ console.log("المجموع:", total);</textarea>
       const executionTime = document.getElementById("executionTime");
 
 
+      /* =========================
+         EXAMPLE
+      ========================= */
+
       const exampleCode = `const name = "Th.Tech";
 
 console.log("مرحباً بك في " + name);
@@ -1675,17 +2098,25 @@ const total = numbers.reduce(
 console.log("المجموع:", total);`;
 
 
+      /* =========================
+         UPDATE STATS
+      ========================= */
+
       function updateStats() {
 
         const code = codeInput.value;
 
-        const lines = code.split("\\n").length;
+        const lines =
+          code.length === 0
+            ? 1
+            : code.split("\n").length;
+
 
         lineNumbers.textContent =
           Array.from(
             { length: Math.max(lines, 1) },
             (_, index) => index + 1
-          ).join("\\n");
+          ).join("\n");
 
 
         lineCount.textContent =
@@ -1697,6 +2128,10 @@ console.log("المجموع:", total);`;
 
       }
 
+
+      /* =========================
+         STATUS
+      ========================= */
 
       function setStatus(text, type = "ready") {
 
@@ -1718,6 +2153,10 @@ console.log("المجموع:", total);`;
       }
 
 
+      /* =========================
+         ESCAPE HTML
+      ========================= */
+
       function escapeHtml(value) {
 
         return String(value)
@@ -1730,7 +2169,11 @@ console.log("المجموع:", total);`;
       }
 
 
-      function formatValue(value) {
+      /* =========================
+         FORMAT VALUE
+      ========================= */
+
+      function formatValue(value, seen = new WeakSet()) {
 
         if (typeof value === "string") {
           return value;
@@ -1739,6 +2182,21 @@ console.log("المجموع:", total);`;
 
         if (typeof value === "undefined") {
           return "undefined";
+        }
+
+
+        if (value === null) {
+          return "null";
+        }
+
+
+        if (typeof value === "bigint") {
+          return `${value}n`;
+        }
+
+
+        if (typeof value === "symbol") {
+          return value.toString();
         }
 
 
@@ -1752,44 +2210,102 @@ console.log("المجموع:", total);`;
         }
 
 
-        try {
+        if (
+          typeof value === "object" &&
+          value !== null
+        ) {
 
-          const result =
-            JSON.stringify(value, null, 2);
+          if (seen.has(value)) {
+            return "[Circular]";
+          }
 
-          return result === undefined
-            ? String(value)
-            : result;
 
-        } catch {
+          seen.add(value);
 
-          return String(value);
+
+          try {
+
+            const result =
+              JSON.stringify(
+                value,
+                (_, currentValue) => {
+
+                  if (
+                    typeof currentValue === "bigint"
+                  ) {
+                    return `${currentValue}n`;
+                  }
+
+
+                  if (
+                    typeof currentValue === "object" &&
+                    currentValue !== null
+                  ) {
+
+                    if (seen.has(currentValue)) {
+                      return "[Circular]";
+                    }
+
+                    seen.add(currentValue);
+
+                  }
+
+
+                  return currentValue;
+
+                },
+                2
+              );
+
+
+            return result === undefined
+              ? String(value)
+              : result;
+
+          } catch {
+
+            return String(value);
+
+          }
 
         }
 
+
+        return String(value);
+
       }
 
+
+      /* =========================
+         ADD OUTPUT
+      ========================= */
 
       function addOutput(type, values) {
 
         const line =
           document.createElement("div");
 
+
         line.className =
           `console-line ${type}`;
 
 
+        const prefixes = {
+          log: "LOG",
+          info: "INFO",
+          debug: "DEBUG",
+          warn: "WARN",
+          error: "ERROR"
+        };
+
+
         const prefix =
-          type === "error"
-            ? "ERROR"
-            : type === "warn"
-              ? "WARN"
-              : "LOG";
+          prefixes[type] || "LOG";
 
 
         const content =
           values
-            .map(formatValue)
+            .map((value) => formatValue(value))
             .join(" ");
 
 
@@ -1799,11 +2315,16 @@ console.log("المجموع:", total);`;
 
         output.appendChild(line);
 
+
         output.scrollTop =
           output.scrollHeight;
 
       }
 
+
+      /* =========================
+         RESET OUTPUT
+      ========================= */
 
       function resetOutput() {
 
@@ -1824,12 +2345,21 @@ console.log("المجموع:", total);`;
         `;
 
 
-        executionTime.textContent = "0 ms";
+        executionTime.textContent =
+          "0 ms";
 
-        setStatus("جاهز", "ready");
+
+        setStatus(
+          "جاهز",
+          "ready"
+        );
 
       }
 
+
+      /* =========================
+         RUN CODE
+      ========================= */
 
       function runCode() {
 
@@ -1846,15 +2376,34 @@ console.log("المجموع:", total);`;
             </div>
           `;
 
-          setStatus("لا يوجد كود", "error");
+
+          executionTime.textContent =
+            "0 ms";
+
+
+          setStatus(
+            "لا يوجد كود",
+            "error"
+          );
+
 
           return;
+
         }
 
 
         output.innerHTML = "";
 
-        setStatus("جاري التشغيل...", "running");
+
+        setStatus(
+          "جاري التشغيل...",
+          "running"
+        );
+
+
+        runBtn.disabled = true;
+
+        runBtn.style.opacity = ".75";
 
 
         const start =
@@ -1864,80 +2413,209 @@ console.log("المجموع:", total);`;
         const originalLog =
           console.log;
 
+        const originalInfo =
+          console.info;
+
         const originalWarn =
           console.warn;
 
         const originalError =
           console.error;
 
+        const originalDebug =
+          console.debug;
+
 
         let hasError = false;
 
 
+        /* =========================
+           RESTORE CONSOLE
+        ========================= */
+
         const restoreConsole = () => {
 
-          console.log = originalLog;
-          console.warn = originalWarn;
-          console.error = originalError;
+          console.log =
+            originalLog;
+
+          console.info =
+            originalInfo;
+
+          console.warn =
+            originalWarn;
+
+          console.error =
+            originalError;
+
+          console.debug =
+            originalDebug;
 
         };
 
+
+        /* =========================
+           CONSOLE.LOG
+        ========================= */
 
         console.log = (...args) => {
 
-          addOutput("log", args);
+          addOutput(
+            "log",
+            args
+          );
 
-          originalLog(...args);
+
+          originalLog.apply(
+            console,
+            args
+          );
 
         };
 
+
+        /* =========================
+           CONSOLE.INFO
+        ========================= */
+
+        console.info = (...args) => {
+
+          addOutput(
+            "info",
+            args
+          );
+
+
+          originalInfo.apply(
+            console,
+            args
+          );
+
+        };
+
+
+        /* =========================
+           CONSOLE.WARN
+        ========================= */
 
         console.warn = (...args) => {
 
-          addOutput("warn", args);
+          addOutput(
+            "warn",
+            args
+          );
 
-          originalWarn(...args);
+
+          originalWarn.apply(
+            console,
+            args
+          );
 
         };
 
 
+        /* =========================
+           CONSOLE.ERROR
+        ========================= */
+
         console.error = (...args) => {
 
-          addOutput("error", args);
+          addOutput(
+            "error",
+            args
+          );
 
-          originalError(...args);
+
+          originalError.apply(
+            console,
+            args
+          );
+
+        };
+
+
+        /* =========================
+           CONSOLE.DEBUG
+        ========================= */
+
+        console.debug = (...args) => {
+
+          addOutput(
+            "debug",
+            args
+          );
+
+
+          originalDebug.apply(
+            console,
+            args
+          );
 
         };
 
 
         try {
 
+          /*
+           * IMPORTANT:
+           *
+           * استخدمنا \n الحقيقي هنا.
+           * لا تستخدم \\n.
+           *
+           * هذا هو الإصلاح الأساسي
+           * للخطأ الذي ظهر في الصورة.
+           */
+
+          const runner =
+            new Function(
+              `"use strict";\n${code}`
+            );
+
+
           const result =
-            Function(
-              `"use strict";\\n${code}`
-            )();
+            runner();
 
 
-          if (typeof result !== "undefined") {
-            addOutput("log", [result]);
+          /*
+           * عرض نتيجة آخر تعبير
+           * إذا كانت موجودة.
+           */
+
+          if (
+            typeof result !== "undefined"
+          ) {
+
+            addOutput(
+              "log",
+              [result]
+            );
+
           }
 
         } catch (error) {
 
           hasError = true;
 
+
+          const errorMessage =
+            error &&
+            error.stack
+              ? error.stack
+              : String(error);
+
+
           addOutput(
             "error",
-            [
-              error && error.stack
-                ? error.stack
-                : String(error)
-            ]
+            [errorMessage]
           );
 
         } finally {
 
           restoreConsole();
+
+
+          runBtn.disabled = false;
+
+          runBtn.style.opacity = "1";
 
         }
 
@@ -1952,7 +2630,10 @@ console.log("المجموع:", total);`;
 
         if (hasError) {
 
-          setStatus("حدث خطأ", "error");
+          setStatus(
+            "حدث خطأ",
+            "error"
+          );
 
         } else {
 
@@ -1964,11 +2645,17 @@ console.log("المجموع:", total);`;
         }
 
 
+        /*
+         * إذا لم ينتج الكود أي مخرجات.
+         */
+
         if (!output.children.length) {
 
           addOutput(
             "log",
-            ["تم تنفيذ الكود بنجاح بدون مخرجات."]
+            [
+              "تم تنفيذ الكود بنجاح بدون مخرجات."
+            ]
           );
 
         }
@@ -1976,11 +2663,19 @@ console.log("المجموع:", total);`;
       }
 
 
+      /* =========================
+         INPUT
+      ========================= */
+
       codeInput.addEventListener(
         "input",
         updateStats
       );
 
+
+      /* =========================
+         SCROLL
+      ========================= */
 
       codeInput.addEventListener(
         "scroll",
@@ -1993,13 +2688,20 @@ console.log("المجموع:", total);`;
       );
 
 
+      /* =========================
+         KEYBOARD
+      ========================= */
+
       codeInput.addEventListener(
         "keydown",
         (event) => {
 
+          /* TAB */
+
           if (event.key === "Tab") {
 
             event.preventDefault();
+
 
             const start =
               codeInput.selectionStart;
@@ -2007,6 +2709,11 @@ console.log("المجموع:", total);`;
             const end =
               codeInput.selectionEnd;
 
+
+            /*
+             * إذا كان هناك نص محدد،
+             * نضع مسافتين في مكانه.
+             */
 
             codeInput.value =
               codeInput.value.substring(0, start) +
@@ -2026,6 +2733,8 @@ console.log("المجموع:", total);`;
           }
 
 
+          /* CTRL + ENTER */
+
           if (
             (event.ctrlKey || event.metaKey) &&
             event.key === "Enter"
@@ -2041,11 +2750,19 @@ console.log("المجموع:", total);`;
       );
 
 
+      /* =========================
+         RUN BUTTON
+      ========================= */
+
       runBtn.addEventListener(
         "click",
         runCode
       );
 
+
+      /* =========================
+         CLEAR CODE
+      ========================= */
 
       clearBtn.addEventListener(
         "click",
@@ -2062,6 +2779,10 @@ console.log("المجموع:", total);`;
         }
       );
 
+
+      /* =========================
+         LOAD EXAMPLE
+      ========================= */
 
       exampleBtn.addEventListener(
         "click",
@@ -2080,11 +2801,19 @@ console.log("المجموع:", total);`;
       );
 
 
+      /* =========================
+         CLEAR OUTPUT
+      ========================= */
+
       clearOutput.addEventListener(
         "click",
         resetOutput
       );
 
+
+      /* =========================
+         INITIALIZE
+      ========================= */
 
       updateStats();
 
