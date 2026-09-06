@@ -6,1788 +6,2085 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const title = "Code Diff - مقارنة الأكواد أونلاين | Th.Tech";
 const description =
-  "أداة Code Diff مجانية لمقارنة نسختين من الأكواد ومعرفة الأسطر المضافة والمحذوفة والمعدلة مباشرة من المتصفح.";
-
-const faqs = [
-  {
-    q: "ما هي أداة Code Diff؟",
-    a: "أداة Code Diff تسمح لك بمقارنة نسختين من الكود وعرض الاختلافات بينهما بطريقة واضحة."
-  },
-  {
-    q: "هل يتم إرسال الكود إلى الخادم؟",
-    a: "لا. تتم عملية المقارنة بالكامل داخل المتصفح ولا يحتاج الكود إلى الرفع إلى خادم خارجي."
-  },
-  {
-    q: "ما أنواع الأكواد التي يمكن مقارنتها؟",
-    a: "يمكنك مقارنة JavaScript وTypeScript وCSS وHTML وJSON وPython وغيرها من النصوص البرمجية."
-  },
-  {
-    q: "هل يمكن استخدام الأداة على الهاتف؟",
-    a: "نعم، الواجهة مصممة للعمل بشكل متجاوب على الهاتف والكمبيوتر."
-  }
-];
+  "أداة Code Diff مجانية لمقارنة نسختين من الأكواد واكتشاف الأسطر المضافة والمحذوفة والمتغيرة مباشرة من المتصفح.";
 ---
 
+<!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#2563eb" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
 
-    <script is:inline>
-      (function () {
-        try {
-          var savedTheme = localStorage.getItem("theme");
-          if (savedTheme === "dark") {
-            document.documentElement.classList.add("dark");
-          }
-        } catch (e) {}
-      })();
-    </script>
-  </head>
+<body>
 
-  <body>
-    <Header />
+  <Header />
 
-    <main>
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-glow"></div>
+  <main class="page">
 
-        <div class="container hero-inner">
-          <div class="tool-badge">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-icon">
+        <i class="fa-solid fa-code-compare"></i>
+      </div>
+
+      <div class="hero-content">
+        <div class="badge">
+          <i class="fa-solid fa-code-branch"></i>
+          Developer Tool #39
+        </div>
+
+        <h1>Code Diff</h1>
+
+        <p>
+          قارن بين نسختين من الكود واكتشف الأسطر المضافة والمحذوفة
+          والمتطابقة بسهولة وسرعة.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-card">
+
+      <!-- TOOL HEADER -->
+      <div class="tool-header">
+
+        <div class="tool-title">
+          <div class="tool-title-icon">
             <i class="fa-solid fa-code-compare"></i>
-            <span>Developer Tool #39</span>
           </div>
 
-          <h1>
-            Code <span>Diff</span>
-          </h1>
-
-          <p>
-            قارن بين نسختين من الكود واكتشف جميع التغييرات بسرعة
-          </p>
-
-          <div class="hero-icon">
-            <i class="fa-solid fa-code-compare"></i>
+          <div>
+            <h2>مقارنة الأكواد</h2>
+            <span>Original vs Modified</span>
           </div>
         </div>
-      </section>
 
-      <!-- TOOL -->
-      <section class="tool-section">
-        <div class="container">
-          <div class="tool-card">
+        <div class="status" id="status">
+          <span class="status-dot"></span>
+          جاهز للمقارنة
+        </div>
 
-            <!-- TOP BAR -->
-            <div class="tool-topbar">
-              <div class="tool-title">
-                <div class="mini-icon">
-                  <i class="fa-solid fa-code-compare"></i>
-                </div>
+      </div>
 
-                <div>
-                  <strong>Code Diff</strong>
-                  <span>مقارنة الأكواد</span>
-                </div>
-              </div>
 
-              <div class="tool-status">
-                <span class="status-dot"></span>
-                يعمل محلياً
+      <!-- ACTION BAR -->
+      <div class="actionbar">
+
+        <button class="primary-btn" id="compareBtn">
+          <i class="fa-solid fa-code-compare"></i>
+          مقارنة
+        </button>
+
+        <button class="action-btn" id="swapBtn">
+          <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          تبديل
+        </button>
+
+        <button class="action-btn" id="copyBtn">
+          <i class="fa-solid fa-copy"></i>
+          نسخ النتيجة
+        </button>
+
+        <button class="danger-btn" id="clearBtn">
+          <i class="fa-solid fa-trash"></i>
+          مسح
+        </button>
+
+        <div class="language-box">
+          <i class="fa-solid fa-code"></i>
+
+          <select id="language">
+            <option value="auto">تلقائي</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="json">JSON</option>
+            <option value="python">Python</option>
+            <option value="sql">SQL</option>
+            <option value="php">PHP</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <!-- EDITORS -->
+      <div class="editors">
+
+        <!-- ORIGINAL -->
+        <div class="editor-panel original-panel">
+
+          <div class="editor-header">
+
+            <div class="editor-name">
+              <span class="editor-icon">
+                <i class="fa-solid fa-file-code"></i>
+              </span>
+
+              <div>
+                <strong>Original</strong>
+                <small>الكود الأصلي</small>
               </div>
             </div>
 
-            <!-- ACTION BAR -->
-            <div class="actionbar">
-
-              <div class="action-group">
-                <button id="compareBtn" class="action primary">
-                  <i class="fa-solid fa-code-compare"></i>
-                  مقارنة
-                </button>
-
-                <button id="swapBtn" class="action">
-                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                  تبديل
-                </button>
-
-                <button id="copyBtn" class="action">
-                  <i class="fa-regular fa-copy"></i>
-                  نسخ النتيجة
-                </button>
-
-                <button id="clearBtn" class="action danger">
-                  <i class="fa-solid fa-trash"></i>
-                  مسح
-                </button>
-              </div>
-
-              <div class="language-box">
-                <i class="fa-solid fa-code"></i>
-
-                <select id="language">
-                  <option value="text">نص عادي</option>
-                  <option value="javascript">JavaScript</option>
-                  <option value="typescript">TypeScript</option>
-                  <option value="html">HTML</option>
-                  <option value="css">CSS</option>
-                  <option value="json">JSON</option>
-                  <option value="python">Python</option>
-                </select>
-              </div>
-
-            </div>
-
-            <!-- EDITORS -->
-            <div class="editors-grid">
-
-              <!-- OLD -->
-              <div class="editor-panel">
-                <div class="editor-header">
-                  <div class="editor-heading">
-                    <span class="editor-dot old-dot"></span>
-
-                    <div>
-                      <strong>النسخة القديمة</strong>
-                      <small>Original</small>
-                    </div>
-                  </div>
-
-                  <span id="oldLines" class="line-count">
-                    0 سطر
-                  </span>
-                </div>
-
-                <div class="editor-body">
-                  <div id="oldNumbers" class="line-numbers">1</div>
-
-                  <textarea
-                    id="oldCode"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    placeholder="// ضع النسخة القديمة من الكود هنا..."
-                  ></textarea>
-                </div>
-              </div>
-
-              <!-- NEW -->
-              <div class="editor-panel">
-                <div class="editor-header">
-                  <div class="editor-heading">
-                    <span class="editor-dot new-dot"></span>
-
-                    <div>
-                      <strong>النسخة الجديدة</strong>
-                      <small>Modified</small>
-                    </div>
-                  </div>
-
-                  <span id="newLines" class="line-count">
-                    0 سطر
-                  </span>
-                </div>
-
-                <div class="editor-body">
-                  <div id="newNumbers" class="line-numbers">1</div>
-
-                  <textarea
-                    id="newCode"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocapitalize="off"
-                    placeholder="// ضع النسخة الجديدة من الكود هنا..."
-                  ></textarea>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- RESULT -->
-            <div class="result-panel">
-
-              <div class="result-header">
-                <div>
-                  <div class="result-title">
-                    <i class="fa-solid fa-code-branch"></i>
-                    نتيجة المقارنة
-                  </div>
-
-                  <small>
-                    يتم عرض الاختلافات بين النسختين
-                  </small>
-                </div>
-
-                <div class="result-summary">
-                  <span id="addedStat">
-                    <i class="fa-solid fa-plus"></i>
-                    0 مضاف
-                  </span>
-
-                  <span id="removedStat">
-                    <i class="fa-solid fa-minus"></i>
-                    0 محذوف
-                  </span>
-
-                  <span id="sameStat">
-                    <i class="fa-solid fa-equals"></i>
-                    0 بدون تغيير
-                  </span>
-                </div>
-              </div>
-
-              <div id="diffOutput" class="diff-output">
-                <div class="empty-result">
-                  <i class="fa-solid fa-code-compare"></i>
-
-                  <strong>
-                    لم تتم المقارنة بعد
-                  </strong>
-
-                  <span>
-                    أدخل النسختين ثم اضغط على زر "مقارنة"
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- TOOL STATS -->
-            <div class="tool-stats">
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-file-code"></i>
-                </div>
-
-                <div>
-                  <strong id="totalOld">0</strong>
-                  <span>أسطر قديمة</span>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-file-circle-plus"></i>
-                </div>
-
-                <div>
-                  <strong id="totalNew">0</strong>
-                  <span>أسطر جديدة</span>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-plus"></i>
-                </div>
-
-                <div>
-                  <strong id="totalAdded">0</strong>
-                  <span>أسطر مضافة</span>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-minus"></i>
-                </div>
-
-                <div>
-                  <strong id="totalRemoved">0</strong>
-                  <span>أسطر محذوفة</span>
-                </div>
-              </div>
-
-            </div>
+            <span class="editor-tag removed-tag">
+              <i class="fa-solid fa-minus"></i>
+              Removed
+            </span>
 
           </div>
+
+          <div class="editor">
+            <div class="line-numbers" id="oldNumbers">0</div>
+
+            <textarea
+              id="oldCode"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="// ضع الكود الأصلي هنا..."
+              aria-label="Original code"
+            ></textarea>
+          </div>
+
+          <div class="editor-footer">
+            <span>
+              <i class="fa-solid fa-file"></i>
+              <span id="oldLineCount">0</span> أسطر
+            </span>
+
+            <span>Original</span>
+          </div>
+
         </div>
-      </section>
 
-      <!-- INFO -->
-      <section class="info-section">
-        <div class="container">
 
-          <div class="section-heading">
-            <span>CODE DIFF</span>
-            <h2>مقارنة الأكواد بسهولة</h2>
+        <!-- MODIFIED -->
+        <div class="editor-panel modified-panel">
+
+          <div class="editor-header">
+
+            <div class="editor-name">
+              <span class="editor-icon">
+                <i class="fa-solid fa-file-circle-plus"></i>
+              </span>
+
+              <div>
+                <strong>Modified</strong>
+                <small>الكود المعدّل</small>
+              </div>
+            </div>
+
+            <span class="editor-tag added-tag">
+              <i class="fa-solid fa-plus"></i>
+              Added
+            </span>
+
+          </div>
+
+          <div class="editor">
+            <div class="line-numbers" id="newNumbers">0</div>
+
+            <textarea
+              id="newCode"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="// ضع الكود المعدّل هنا..."
+              aria-label="Modified code"
+            ></textarea>
+          </div>
+
+          <div class="editor-footer">
+            <span>
+              <i class="fa-solid fa-file"></i>
+              <span id="newLineCount">0</span> أسطر
+            </span>
+
+            <span>Modified</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESULT -->
+      <div class="result-box">
+
+        <div class="result-header">
+
+          <div class="result-title">
+            <div class="result-icon">
+              <i class="fa-solid fa-code-compare"></i>
+            </div>
+
+            <div>
+              <h3>نتيجة المقارنة</h3>
+              <span id="resultDescription">
+                ستظهر الفروقات هنا بعد المقارنة
+              </span>
+            </div>
+          </div>
+
+          <div class="result-state" id="resultState">
+            <i class="fa-solid fa-circle-info"></i>
+            لم تتم المقارنة
+          </div>
+
+        </div>
+
+
+        <!-- DIFF OUTPUT -->
+        <div class="diff-output" id="diffOutput">
+
+          <div class="empty-result">
+            <div class="empty-icon">
+              <i class="fa-solid fa-code-compare"></i>
+            </div>
+
+            <h4>جاهز لمقارنة الأكواد</h4>
 
             <p>
-              اكتشف التغييرات بين نسختين من أي كود بدون الحاجة إلى تثبيت برامج إضافية.
+              أدخل الكود الأصلي والكود المعدّل ثم اضغط على
+              <strong>مقارنة</strong>.
             </p>
           </div>
 
-          <div class="features-grid">
-
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fa-solid fa-code-compare"></i>
-              </div>
-
-              <h3>مقارنة دقيقة</h3>
-
-              <p>
-                عرض الأسطر المضافة والمحذوفة والتي لم تتغير بطريقة واضحة.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-
-              <h3>خصوصية كاملة</h3>
-
-              <p>
-                تتم معالجة الأكواد داخل متصفحك ولا يتم إرسالها إلى خادم خارجي.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-              </div>
-
-              <h3>متوافق مع الهاتف</h3>
-
-              <p>
-                يمكنك مقارنة الأكواد من الهاتف أو الجهاز اللوحي أو الكمبيوتر.
-              </p>
-            </div>
-
-          </div>
-
         </div>
-      </section>
 
-      <!-- HOW TO -->
-      <section class="how-section">
-        <div class="container">
+      </div>
 
-          <div class="section-heading">
-            <span>HOW IT WORKS</span>
-            <h2>كيفية استخدام Code Diff</h2>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon original-stat">
+            <i class="fa-solid fa-file-code"></i>
           </div>
 
-          <div class="steps">
-
-            <div class="step">
-              <div class="step-number">01</div>
-
-              <div>
-                <h3>أدخل النسخة القديمة</h3>
-                <p>
-                  ضع الكود السابق في المحرر الأول.
-                </p>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">02</div>
-
-              <div>
-                <h3>أدخل النسخة الجديدة</h3>
-                <p>
-                  ضع النسخة المعدلة في المحرر الثاني.
-                </p>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">03</div>
-
-              <div>
-                <h3>اضغط مقارنة</h3>
-                <p>
-                  ستظهر جميع الاختلافات والإحصائيات مباشرة.
-                </p>
-              </div>
-            </div>
-
+          <div>
+            <span>الأسطر الأصلية</span>
+            <strong id="statOld">0</strong>
           </div>
-
         </div>
-      </section>
 
-      <!-- FAQ -->
-      <section class="faq-section">
-        <div class="container">
 
-          <div class="section-heading">
-            <span>FAQ</span>
-            <h2>الأسئلة الشائعة</h2>
+        <div class="stat-card">
+          <div class="stat-icon modified-stat">
+            <i class="fa-solid fa-file-circle-plus"></i>
           </div>
 
-          <div class="faq-list">
-            {faqs.map((faq) => (
-              <details class="faq-item">
-                <summary>
-                  <span>{faq.q}</span>
-                  <i class="fa-solid fa-chevron-down"></i>
-                </summary>
-
-                <p>{faq.a}</p>
-              </details>
-            ))}
+          <div>
+            <span>الأسطر الجديدة</span>
+            <strong id="statNew">0</strong>
           </div>
-
         </div>
-      </section>
-    </main>
 
-    <Footer />
 
-    <style>
+        <div class="stat-card">
+          <div class="stat-icon added-stat">
+            <i class="fa-solid fa-plus"></i>
+          </div>
+
+          <div>
+            <span>الأسطر المضافة</span>
+            <strong id="statAdded">0</strong>
+          </div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-icon removed-stat">
+            <i class="fa-solid fa-minus"></i>
+          </div>
+
+          <div>
+            <span>الأسطر المحذوفة</span>
+            <strong id="statRemoved">0</strong>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+
+      <div class="section-heading">
+        <div class="section-heading-icon">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div>
+          <h2>حول Code Diff</h2>
+          <p>قارن الأكواد مباشرة من متصفحك</p>
+        </div>
+      </div>
+
+
+      <div class="info-grid">
+
+        <div class="info-card">
+          <div class="info-card-icon">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+
+          <h3>سريع</h3>
+
+          <p>
+            تتم المقارنة محليًا داخل المتصفح دون الحاجة إلى رفع ملفاتك
+            إلى خادم خارجي.
+          </p>
+        </div>
+
+
+        <div class="info-card">
+          <div class="info-card-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <h3>خصوصية أفضل</h3>
+
+          <p>
+            الكود الذي تضعه في الأداة تتم معالجته محليًا في متصفحك.
+          </p>
+        </div>
+
+
+        <div class="info-card">
+          <div class="info-card-icon">
+            <i class="fa-solid fa-code"></i>
+          </div>
+
+          <h3>عدة لغات</h3>
+
+          <p>
+            يمكنك استخدامها مع JavaScript وTypeScript وHTML وCSS وJSON
+            وغيرها.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="guide-section">
+
+      <div class="section-heading">
+        <div class="section-heading-icon">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+
+        <div>
+          <h2>كيفية استخدام الأداة</h2>
+          <p>ثلاث خطوات بسيطة</p>
+        </div>
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step">
+          <span class="step-number">1</span>
+
+          <div>
+            <h3>أدخل الكود الأصلي</h3>
+            <p>
+              ضع النسخة القديمة من الكود داخل مربع Original.
+            </p>
+          </div>
+        </div>
+
+
+        <div class="step">
+          <span class="step-number">2</span>
+
+          <div>
+            <h3>أدخل الكود المعدّل</h3>
+            <p>
+              ضع النسخة الجديدة داخل مربع Modified.
+            </p>
+          </div>
+        </div>
+
+
+        <div class="step">
+          <span class="step-number">3</span>
+
+          <div>
+            <h3>ابدأ المقارنة</h3>
+            <p>
+              اضغط على زر مقارنة لرؤية الأسطر المضافة والمحذوفة.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+
+      <div class="section-heading">
+        <div class="section-heading-icon">
+          <i class="fa-solid fa-circle-question"></i>
+        </div>
+
+        <div>
+          <h2>الأسئلة الشائعة</h2>
+          <p>كل ما تحتاج معرفته</p>
+        </div>
+      </div>
+
+
+      <div class="faq-list">
+
+        <details>
+          <summary>
+            هل يتم إرسال الكود إلى الخادم؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            لا. تتم عملية المقارنة داخل متصفحك مباشرة، لذلك لا تحتاج
+            الأداة إلى إرسال الكود إلى خادم خارجي.
+          </p>
+        </details>
+
+
+        <details>
+          <summary>
+            ماذا تعني الأسطر الخضراء والحمراء؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            الأخضر يمثل الأسطر المضافة في النسخة المعدّلة، بينما الأحمر
+            يمثل الأسطر الموجودة في النسخة الأصلية والتي تم حذفها.
+          </p>
+        </details>
+
+
+        <details>
+          <summary>
+            هل يمكن مقارنة JavaScript وTypeScript؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. الأداة تعتمد على مقارنة محتوى الأسطر، ويمكن استخدامها
+            مع معظم لغات البرمجة والملفات النصية.
+          </p>
+        </details>
+
+
+        <details>
+          <summary>
+            هل تعمل الأداة على الهاتف؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. الواجهة مصممة للعمل على الهواتف والأجهزة اللوحية
+            وأجهزة الكمبيوتر.
+          </p>
+        </details>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <script is:inline>
+    const oldCode = document.getElementById("oldCode");
+    const newCode = document.getElementById("newCode");
+
+    const oldNumbers = document.getElementById("oldNumbers");
+    const newNumbers = document.getElementById("newNumbers");
+
+    const oldLineCount = document.getElementById("oldLineCount");
+    const newLineCount = document.getElementById("newLineCount");
+
+    const statOld = document.getElementById("statOld");
+    const statNew = document.getElementById("statNew");
+    const statAdded = document.getElementById("statAdded");
+    const statRemoved = document.getElementById("statRemoved");
+
+    const diffOutput = document.getElementById("diffOutput");
+
+    const status = document.getElementById("status");
+    const resultState = document.getElementById("resultState");
+    const resultDescription = document.getElementById("resultDescription");
+
+    const compareBtn = document.getElementById("compareBtn");
+    const swapBtn = document.getElementById("swapBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    function getLines(text) {
+      if (!text) return [];
+      return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+    }
+
+    function updateLineNumbers() {
+      const oldLines = getLines(oldCode.value);
+      const newLines = getLines(newCode.value);
+
+      if (oldLines.length === 0) {
+        oldNumbers.textContent = "0";
+        oldLineCount.textContent = "0";
+      } else {
+        oldNumbers.textContent = oldLines
+          .map(function (_, index) {
+            return String(index + 1);
+          })
+          .join("\n");
+
+        oldLineCount.textContent = String(oldLines.length);
+      }
+
+      if (newLines.length === 0) {
+        newNumbers.textContent = "0";
+        newLineCount.textContent = "0";
+      } else {
+        newNumbers.textContent = newLines
+          .map(function (_, index) {
+            return String(index + 1);
+          })
+          .join("\n");
+
+        newLineCount.textContent = String(newLines.length);
+      }
+
+      statOld.textContent = String(oldLines.length);
+      statNew.textContent = String(newLines.length);
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function buildDiff(oldLines, newLines) {
+      const rows = [];
+      const oldLength = oldLines.length;
+      const newLength = newLines.length;
+
+      const matrix = [];
+
+      for (let i = 0; i <= oldLength; i++) {
+        matrix[i] = new Array(newLength + 1).fill(0);
+      }
+
+      for (let i = oldLength - 1; i >= 0; i--) {
+        for (let j = newLength - 1; j >= 0; j--) {
+          if (oldLines[i] === newLines[j]) {
+            matrix[i][j] = matrix[i + 1][j + 1] + 1;
+          } else {
+            matrix[i][j] = Math.max(
+              matrix[i + 1][j],
+              matrix[i][j + 1]
+            );
+          }
+        }
+      }
+
+      let i = 0;
+      let j = 0;
+
+      while (i < oldLength && j < newLength) {
+        if (oldLines[i] === newLines[j]) {
+          rows.push({
+            type: "same",
+            oldLine: i + 1,
+            newLine: j + 1,
+            text: oldLines[i]
+          });
+
+          i++;
+          j++;
+        } else if (matrix[i + 1][j] >= matrix[i][j + 1]) {
+          rows.push({
+            type: "removed",
+            oldLine: i + 1,
+            newLine: "",
+            text: oldLines[i]
+          });
+
+          i++;
+        } else {
+          rows.push({
+            type: "added",
+            oldLine: "",
+            newLine: j + 1,
+            text: newLines[j]
+          });
+
+          j++;
+        }
+      }
+
+      while (i < oldLength) {
+        rows.push({
+          type: "removed",
+          oldLine: i + 1,
+          newLine: "",
+          text: oldLines[i]
+        });
+
+        i++;
+      }
+
+      while (j < newLength) {
+        rows.push({
+          type: "added",
+          oldLine: "",
+          newLine: j + 1,
+          text: newLines[j]
+        });
+
+        j++;
+      }
+
+      return rows;
+    }
+
+    function renderDiff(rows) {
+      if (rows.length === 0) {
+        return `
+          <div class="empty-result">
+            <div class="empty-icon">
+              <i class="fa-solid fa-code-compare"></i>
+            </div>
+            <h4>لا توجد بيانات للمقارنة</h4>
+            <p>أدخل الكود في المربعين ثم حاول مرة أخرى.</p>
+          </div>
+        `;
+      }
+
+      let html = "";
+
+      rows.forEach(function (row) {
+        let icon = "";
+        let className = "";
+
+        if (row.type === "added") {
+          icon = "+";
+          className = "diff-added";
+        } else if (row.type === "removed") {
+          icon = "-";
+          className = "diff-removed";
+        } else {
+          icon = "=";
+          className = "diff-same";
+        }
+
+        html += `
+          <div class="diff-row ${className}">
+            <span class="diff-line old-line">${row.oldLine}</span>
+            <span class="diff-line new-line">${row.newLine}</span>
+            <span class="diff-symbol">${icon}</span>
+            <code>${escapeHtml(row.text)}</code>
+          </div>
+        `;
+      });
+
+      return html;
+    }
+
+    function compareCodes() {
+      const oldLines = getLines(oldCode.value);
+      const newLines = getLines(newCode.value);
+
+      if (oldLines.length === 0 && newLines.length === 0) {
+        status.innerHTML =
+          '<span class="status-dot"></span> أدخل الكود أولاً';
+
+        resultState.innerHTML =
+          '<i class="fa-solid fa-circle-exclamation"></i> لا توجد بيانات';
+
+        resultDescription.textContent =
+          "أدخل الكود الأصلي والكود المعدّل للمقارنة.";
+
+        diffOutput.innerHTML = `
+          <div class="empty-result">
+            <div class="empty-icon warning">
+              <i class="fa-solid fa-file-code"></i>
+            </div>
+            <h4>لا توجد أكواد للمقارنة</h4>
+            <p>أدخل الكود في أحد المربعين أو كليهما.</p>
+          </div>
+        `;
+
+        statOld.textContent = "0";
+        statNew.textContent = "0";
+        statAdded.textContent = "0";
+        statRemoved.textContent = "0";
+
+        return;
+      }
+
+      const rows = buildDiff(oldLines, newLines);
+
+      let added = 0;
+      let removed = 0;
+      let same = 0;
+
+      rows.forEach(function (row) {
+        if (row.type === "added") added++;
+        if (row.type === "removed") removed++;
+        if (row.type === "same") same++;
+      });
+
+      statOld.textContent = String(oldLines.length);
+      statNew.textContent = String(newLines.length);
+      statAdded.textContent = String(added);
+      statRemoved.textContent = String(removed);
+
+      diffOutput.innerHTML = renderDiff(rows);
+
+      if (added === 0 && removed === 0) {
+        status.innerHTML =
+          '<span class="status-dot success"></span> الأكواد متطابقة';
+
+        resultState.innerHTML =
+          '<i class="fa-solid fa-check"></i> متطابق';
+
+        resultDescription.textContent =
+          "لم يتم العثور على اختلافات بين النسختين.";
+      } else {
+        status.innerHTML =
+          '<span class="status-dot changed"></span> تم العثور على اختلافات';
+
+        resultState.innerHTML =
+          '<i class="fa-solid fa-code-branch"></i> مختلف';
+
+        resultDescription.textContent =
+          added + " أسطر مضافة و " + removed + " أسطر محذوفة.";
+      }
+    }
+
+    function swapEditors() {
+      const temp = oldCode.value;
+      oldCode.value = newCode.value;
+      newCode.value = temp;
+
+      updateLineNumbers();
+      compareCodes();
+    }
+
+    async function copyResult() {
+      const rows = diffOutput.querySelectorAll(".diff-row");
+
+      if (!rows.length) {
+        status.innerHTML =
+          '<span class="status-dot"></span> لا توجد نتيجة لنسخها';
+
+        return;
+      }
+
+      let text = "";
+
+      rows.forEach(function (row) {
+        const symbol = row.querySelector(".diff-symbol");
+        const code = row.querySelector("code");
+
+        if (symbol && code) {
+          text += symbol.textContent + " " + code.textContent + "\n";
+        }
+      });
+
+      try {
+        await navigator.clipboard.writeText(text);
+
+        status.innerHTML =
+          '<span class="status-dot success"></span> تم نسخ النتيجة';
+
+        setTimeout(function () {
+          status.innerHTML =
+            '<span class="status-dot"></span> جاهز للمقارنة';
+        }, 1800);
+      } catch (error) {
+        status.innerHTML =
+          '<span class="status-dot"></span> تعذر نسخ النتيجة';
+      }
+    }
+
+    function clearAll() {
+      oldCode.value = "";
+      newCode.value = "";
+
+      updateLineNumbers();
+
+      diffOutput.innerHTML = `
+        <div class="empty-result">
+          <div class="empty-icon">
+            <i class="fa-solid fa-code-compare"></i>
+          </div>
+          <h4>جاهز لمقارنة الأكواد</h4>
+          <p>
+            أدخل الكود الأصلي والكود المعدّل ثم اضغط على
+            <strong>مقارنة</strong>.
+          </p>
+        </div>
+      `;
+
+      statOld.textContent = "0";
+      statNew.textContent = "0";
+      statAdded.textContent = "0";
+      statRemoved.textContent = "0";
+
+      resultState.innerHTML =
+        '<i class="fa-solid fa-circle-info"></i> لم تتم المقارنة';
+
+      resultDescription.textContent =
+        "ستظهر الفروقات هنا بعد المقارنة";
+
+      status.innerHTML =
+        '<span class="status-dot"></span> جاهز للمقارنة';
+    }
+
+    function enableTab(textarea) {
+      textarea.addEventListener("keydown", function (event) {
+        if (event.key !== "Tab") return;
+
+        event.preventDefault();
+
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        textarea.value =
+          textarea.value.substring(0, start) +
+          "  " +
+          textarea.value.substring(end);
+
+        textarea.selectionStart = start + 2;
+        textarea.selectionEnd = start + 2;
+
+        updateLineNumbers();
+      });
+    }
+
+    function syncScroll(source, target) {
+      source.addEventListener("scroll", function () {
+        target.scrollTop = source.scrollTop;
+      });
+    }
+
+    oldCode.addEventListener("input", updateLineNumbers);
+    newCode.addEventListener("input", updateLineNumbers);
+
+    oldCode.addEventListener("input", function () {
+      status.innerHTML =
+        '<span class="status-dot"></span> تم تعديل الكود الأصلي';
+    });
+
+    newCode.addEventListener("input", function () {
+      status.innerHTML =
+        '<span class="status-dot"></span> تم تعديل الكود الجديد';
+    });
+
+    compareBtn.addEventListener("click", compareCodes);
+    swapBtn.addEventListener("click", swapEditors);
+    copyBtn.addEventListener("click", copyResult);
+    clearBtn.addEventListener("click", clearAll);
+
+    enableTab(oldCode);
+    enableTab(newCode);
+
+    syncScroll(oldCode, oldNumbers);
+    syncScroll(newCode, newNumbers);
+
+    updateLineNumbers();
+  </script>
+
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #4f46e5;
+      --accent: #60a5fa;
+
+      --bg: #f6f8fc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+
+      --text: #111827;
+      --muted: #64748b;
+      --border: #e2e8f0;
+
+      --editor: #0b1220;
+      --editor-2: #111827;
+      --editor-text: #dbeafe;
+
+      --green: #16a34a;
+      --green-bg: #ecfdf3;
+
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+
+      --shadow:
+        0 16px 45px rgba(15, 23, 42, 0.08);
+
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 30px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .hero-icon {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 26px;
+      background:
+        linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow:
+        0 12px 25px rgba(37, 99, 235, 0.22);
+    }
+
+    .hero-content {
+      min-width: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 11px;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: #eff6ff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(27px, 4vw, 38px);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+
+    /* TOOL CARD */
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--primary);
+      background: #eff6ff;
+      font-size: 18px;
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .tool-title span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 1px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .status-dot.success {
+      background: var(--green);
+    }
+
+    .status-dot.changed {
+      background: #f59e0b;
+    }
+
+
+    /* ACTION BAR */
+
+    .actionbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 13px 16px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .actionbar button {
+      height: 38px;
+      border-radius: 10px;
+      padding: 0 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .actionbar button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      color: #fff;
+      border-color: var(--primary) !important;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18);
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .action-btn {
+      color: #334155;
+      background: #fff;
+    }
+
+    .action-btn:hover {
+      color: var(--primary);
+      border-color: #bfdbfe !important;
+    }
+
+    .danger-btn {
+      color: var(--red);
+      background: #fff;
+    }
+
+    .danger-btn:hover {
+      border-color: #fecaca !important;
+      background: #fff5f5;
+    }
+
+    .language-box {
+      margin-right: auto;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .language-box select {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+
+    /* EDITORS */
+
+    .editors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 16px;
+      background: #eef2f7;
+    }
+
+    .editor-panel {
+      overflow: hidden;
+      border: 1px solid #dbe3ed;
+      border-radius: 15px;
+      background: var(--editor);
+    }
+
+    .editor-header {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 13px;
+      background: var(--editor-2);
+      border-bottom: 1px solid #253247;
+    }
+
+    .editor-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .editor-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      font-size: 14px;
+    }
+
+    .original-panel .editor-icon {
+      color: #fca5a5;
+      background: rgba(220, 38, 38, 0.14);
+    }
+
+    .modified-panel .editor-icon {
+      color: #86efac;
+      background: rgba(22, 163, 74, 0.14);
+    }
+
+    .editor-name strong {
+      display: block;
+      color: #f8fafc;
+      font-size: 13px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .editor-name small {
+      display: block;
+      color: #94a3b8;
+      font-size: 10px;
+      margin-top: 1px;
+    }
+
+    .editor-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      font-size: 10px;
+      font-weight: 800;
+      direction: ltr;
+    }
+
+    .removed-tag {
+      color: #fca5a5;
+      background: rgba(220, 38, 38, 0.12);
+    }
+
+    .added-tag {
+      color: #86efac;
+      background: rgba(22, 163, 74, 0.12);
+    }
+
+    .editor {
+      height: 350px;
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      direction: ltr;
+      overflow: hidden;
+    }
+
+    .line-numbers {
+      padding: 14px 9px;
+      overflow: hidden;
+      color: #475569;
+      background: #080e19;
+      border-right: 1px solid #1e293b;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      text-align: right;
+      white-space: pre;
+      user-select: none;
+    }
+
+    .editor textarea {
+      width: 100%;
+      height: 100%;
+      resize: none;
+      outline: 0;
+      border: 0;
+      padding: 14px 16px;
+      color: var(--editor-text);
+      background: var(--editor);
+      font-family: "Courier New", Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      tab-size: 2;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      overflow: auto;
+    }
+
+    .editor textarea::placeholder {
+      color: #475569;
+    }
+
+    .editor textarea:focus {
+      box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.35);
+    }
+
+    .editor-footer {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      color: #64748b;
+      background: #080e19;
+      border-top: 1px solid #1e293b;
+      font-family: "Cairo", sans-serif;
+      font-size: 10px;
+    }
+
+    .editor-footer span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+      margin: 0 16px 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .result-header {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .result-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .result-icon {
+      width: 37px;
+      height: 37px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: var(--primary);
+      background: #dbeafe;
+    }
+
+    .result-title h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .result-title span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .result-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      color: var(--muted);
+      background: #f1f5f9;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .diff-output {
+      max-height: 430px;
+      overflow: auto;
+      background: #0b1220;
+      direction: ltr;
+    }
+
+    .empty-result {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      text-align: center;
+      direction: rtl;
+    }
+
+    .empty-icon {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 15px;
+      color: #93c5fd;
+      background: rgba(37, 99, 235, 0.14);
+      font-size: 21px;
+    }
+
+    .empty-icon.warning {
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .empty-result h4 {
+      margin: 0;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    .empty-result p {
+      max-width: 480px;
+      margin: 6px 0 0;
+      color: #64748b;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .diff-row {
+      min-height: 31px;
+      display: grid;
+      grid-template-columns: 55px 55px 38px 1fr;
+      align-items: stretch;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+      font-family: "Courier New", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .diff-row:last-child {
+      border-bottom: 0;
+    }
+
+    .diff-row .diff-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      border-right: 1px solid rgba(148, 163, 184, 0.1);
+      user-select: none;
+    }
+
+    .diff-row .diff-symbol {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      border-right: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .diff-row code {
+      display: block;
+      padding: 5px 12px;
+      color: #cbd5e1;
+      white-space: pre;
+      overflow-x: auto;
+      text-align: left;
+    }
+
+    .diff-added {
+      background: rgba(22, 163, 74, 0.13);
+    }
+
+    .diff-added .diff-symbol {
+      color: #4ade80;
+    }
+
+    .diff-added code {
+      color: #bbf7d0;
+    }
+
+    .diff-removed {
+      background: rgba(220, 38, 38, 0.13);
+    }
+
+    .diff-removed .diff-symbol {
+      color: #f87171;
+    }
+
+    .diff-removed code {
+      color: #fecaca;
+    }
+
+    .diff-same .diff-symbol {
+      color: #64748b;
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0 16px 16px;
+    }
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+    }
+
+    .original-stat {
+      color: #64748b;
+      background: #f1f5f9;
+    }
+
+    .modified-stat {
+      color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .added-stat {
+      color: var(--green);
+      background: var(--green-bg);
+    }
+
+    .removed-stat {
+      color: var(--red);
+      background: var(--red-bg);
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 1px;
+      font-size: 19px;
+      line-height: 1.2;
+      direction: ltr;
+      text-align: right;
+    }
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .guide-section,
+    .faq-section {
+      margin-top: 52px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .section-heading p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+
+    /* INFO CARDS */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .info-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      transition: 0.2s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      border-color: #bfdbfe;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    }
+
+    .info-card-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 13px;
+      border-radius: 11px;
+      color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .info-card h3 {
+      margin: 0 0 5px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .faq-list details {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .faq-list summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 15px 17px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-list summary i {
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .faq-list details[open] summary i {
+      transform: rotate(180deg);
+    }
+
+    .faq-list details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+
+    /* DARK MODE */
+
+    @media (prefers-color-scheme: dark) {
       :root {
-        --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --secondary: #4f46e5;
-        --accent: #60a5fa;
-
-        --bg: #f6f8fc;
-        --surface: #ffffff;
-        --surface-2: #f8fafc;
-        --border: #e2e8f0;
-
-        --text: #0f172a;
-        --muted: #64748b;
-
-        --code-bg: #07101f;
-        --code-surface: #0b1628;
-        --code-border: #1e293b;
-
-        --success: #22c55e;
-        --danger: #ef4444;
-
-        color-scheme: light;
-      }
-
-      html.dark {
         --bg: #060b14;
-        --surface: #0b1220;
-        --surface-2: #101827;
-        --border: #1e293b;
-
-        --text: #f1f5f9;
+        --surface: #0d1522;
+        --surface-2: #111b2b;
+        --text: #e5e7eb;
         --muted: #94a3b8;
-
-        --code-bg: #040914;
-        --code-surface: #08101d;
-        --code-border: #1e293b;
-
-        color-scheme: dark;
+        --border: #1e293b;
       }
 
-      * {
-        box-sizing: border-box;
+      .badge {
+        border-color: #1e40af;
+        color: #93c5fd;
+        background: rgba(37, 99, 235, 0.12);
       }
 
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--text);
-        font-family: "Cairo", sans-serif;
-        transition: background .25s ease, color .25s ease;
+      .tool-title-icon,
+      .section-heading-icon {
+        background: rgba(37, 99, 235, 0.12);
       }
 
-      button,
-      select,
-      textarea {
-        font-family: inherit;
-      }
-
-      .container {
-        width: min(1180px, calc(100% - 32px));
-        margin: auto;
-      }
-
-      /* HERO */
-
-      .hero {
-        position: relative;
-        overflow: hidden;
-        padding: 72px 0 110px;
-        background:
-          radial-gradient(
-            circle at 50% 0%,
-            rgba(37, 99, 235, .16),
-            transparent 42%
-          ),
-          var(--bg);
-      }
-
-      .hero-glow {
-        position: absolute;
-        width: 420px;
-        height: 420px;
-        border-radius: 50%;
-        background: rgba(79, 70, 229, .10);
-        filter: blur(80px);
-        top: -230px;
-        left: 50%;
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
-
-      .hero-inner {
-        position: relative;
-        text-align: center;
-      }
-
-      .tool-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        padding: 8px 15px;
-        border: 1px solid rgba(37, 99, 235, .25);
-        background: rgba(37, 99, 235, .08);
-        color: var(--primary);
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .hero h1 {
-        margin: 20px 0 8px;
-        font-size: clamp(38px, 7vw, 70px);
-        line-height: 1.1;
-        font-weight: 800;
-        letter-spacing: -1.5px;
-      }
-
-      .hero h1 span {
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--secondary)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .hero p {
-        margin: 0 auto 28px;
-        max-width: 680px;
-        color: var(--muted);
-        font-size: 16px;
-      }
-
-      .hero-icon {
-        width: 82px;
-        height: 82px;
-        margin: 20px auto 0;
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 34px;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--secondary)
-        );
-        box-shadow:
-          0 20px 50px rgba(37, 99, 235, .25);
-      }
-
-      /* TOOL */
-
-      .tool-section {
-        margin-top: -60px;
-        position: relative;
-        z-index: 2;
-        padding-bottom: 80px;
-      }
-
-      .tool-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 25px 70px rgba(15, 23, 42, .10);
-      }
-
-      .tool-topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 18px 22px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .tool-title {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .mini-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 13px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--secondary)
-        );
-      }
-
-      .tool-title strong {
-        display: block;
-        font-size: 15px;
-      }
-
-      .tool-title span {
-        display: block;
-        color: var(--muted);
-        font-size: 12px;
-        margin-top: 2px;
-      }
-
-      .tool-status {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .status-dot {
-        width: 8px;
-        height: 8px;
-        background: var(--success);
-        border-radius: 50%;
-        box-shadow: 0 0 0 4px rgba(34, 197, 94, .10);
-      }
-
-      /* ACTIONBAR */
-
-      .actionbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        padding: 14px 18px;
-        background: var(--surface-2);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .action-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .action {
-        border: 1px solid var(--border);
-        background: var(--surface);
-        color: var(--text);
-        border-radius: 10px;
-        padding: 9px 13px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 12px;
-        font-weight: 700;
-        transition: .2s ease;
-      }
-
-      .action:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-        transform: translateY(-1px);
-      }
-
-      .action.primary {
-        border-color: transparent;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--secondary)
-        );
-        color: #fff;
-      }
-
-      .action.primary:hover {
-        color: #fff;
-        box-shadow: 0 8px 20px rgba(37, 99, 235, .25);
-      }
-
-      .action.danger:hover {
-        border-color: var(--danger);
-        color: var(--danger);
-      }
-
+      .action-btn,
+      .danger-btn,
       .language-box {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        border: 1px solid var(--border);
-        background: var(--surface);
-        border-radius: 10px;
-        padding: 0 10px;
-        color: var(--muted);
+        color: #cbd5e1;
+        background: #0d1522;
+        border-color: #253247;
       }
 
       .language-box select {
-        border: 0;
-        outline: 0;
-        background: transparent;
-        color: var(--text);
-        padding: 9px 5px;
-        font-size: 12px;
-        cursor: pointer;
+        color: #cbd5e1;
       }
 
-      /* EDITORS */
-
-      .editors-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1px;
-        background: var(--border);
+      .editors {
+        background: #080e19;
       }
 
-      .editor-panel {
-        background: var(--code-bg);
-        min-width: 0;
+      .result-box,
+      .stat-card,
+      .info-card,
+      .step,
+      .faq-list details {
+        background: var(--surface);
       }
 
-      .editor-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 13px 15px;
-        background: var(--code-surface);
-        border-bottom: 1px solid var(--code-border);
-      }
-
-      .editor-heading {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-      }
-
-      .editor-heading strong {
-        display: block;
-        color: #e2e8f0;
-        font-size: 12px;
-      }
-
-      .editor-heading small {
-        display: block;
-        color: #64748b;
-        font-size: 10px;
-      }
-
-      .editor-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-      }
-
-      .old-dot {
-        background: var(--danger);
-        box-shadow: 0 0 10px rgba(239, 68, 68, .45);
-      }
-
-      .new-dot {
-        background: var(--success);
-        box-shadow: 0 0 10px rgba(34, 197, 94, .45);
-      }
-
-      .line-count {
-        color: #64748b;
-        font-size: 10px;
-      }
-
-      .editor-body {
-        display: grid;
-        grid-template-columns: 46px 1fr;
-        min-height: 310px;
-      }
-
-      .line-numbers {
-        padding: 17px 8px;
-        background: rgba(255,255,255,.02);
-        border-left: 1px solid var(--code-border);
-        color: #475569;
-        font: 12px/1.75 monospace;
-        text-align: center;
-        overflow: hidden;
-        user-select: none;
-        white-space: pre;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 310px;
-        resize: vertical;
-        border: 0;
-        outline: 0;
-        padding: 17px;
-        background: transparent;
-        color: #dbeafe;
-        font: 13px/1.75 "Courier New", monospace;
-        direction: ltr;
-        text-align: left;
-        tab-size: 2;
-      }
-
-      textarea::placeholder {
-        color: #475569;
-      }
-
-      /* RESULT */
-
-      .result-panel {
-        margin: 18px;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
+      .result-header,
+      .actionbar {
         background: var(--surface-2);
       }
 
-      .result-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        padding: 15px 17px;
-        border-bottom: 1px solid var(--border);
+      .result-state {
+        background: #172033;
       }
 
-      .result-title {
-        font-size: 13px;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .result-icon {
+        background: rgba(37, 99, 235, 0.14);
       }
 
-      .result-title i {
-        color: var(--primary);
+      .original-stat {
+        background: #172033;
       }
 
-      .result-header small {
-        display: block;
-        margin-top: 3px;
-        color: var(--muted);
-        font-size: 10px;
+      .modified-stat {
+        background: rgba(37, 99, 235, 0.12);
       }
 
-      .result-summary {
-        display: flex;
+      .added-stat {
+        background: rgba(22, 163, 74, 0.12);
+      }
+
+      .removed-stat {
+        background: rgba(220, 38, 38, 0.12);
+      }
+    }
+
+
+    /* TABLET */
+
+    @media (max-width: 850px) {
+      .editors {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+      .page {
+        width: min(100% - 18px, 1180px);
+        padding-top: 24px;
+      }
+
+      .hero {
+        align-items: flex-start;
         gap: 12px;
-        flex-wrap: wrap;
-        font-size: 10px;
-      }
-
-      .result-summary span {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      #addedStat {
-        color: var(--success);
-      }
-
-      #removedStat {
-        color: var(--danger);
-      }
-
-      #sameStat {
-        color: var(--muted);
-      }
-
-      .diff-output {
-        max-height: 420px;
-        overflow: auto;
-        direction: ltr;
-        text-align: left;
-        font: 12px/1.7 "Courier New", monospace;
-      }
-
-      .empty-result {
-        min-height: 180px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        color: var(--muted);
-        direction: rtl;
-        text-align: center;
-      }
-
-      .empty-result i {
-        font-size: 32px;
-        color: var(--primary);
-        margin-bottom: 6px;
-      }
-
-      .empty-result strong {
-        color: var(--text);
-        font-size: 13px;
-      }
-
-      .empty-result span {
-        font-size: 11px;
-      }
-
-      .diff-line {
-        display: flex;
-        min-height: 28px;
-        border-bottom: 1px solid rgba(148,163,184,.07);
-      }
-
-      .diff-number {
-        flex: 0 0 48px;
-        padding: 4px 8px;
-        text-align: right;
-        color: #64748b;
-        background: rgba(255,255,255,.015);
-        user-select: none;
-      }
-
-      .diff-symbol {
-        flex: 0 0 26px;
-        padding: 4px 0;
-        text-align: center;
-        font-weight: 800;
-      }
-
-      .diff-content {
-        flex: 1;
-        padding: 4px 10px;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .diff-line.added {
-        background: rgba(34, 197, 94, .10);
-      }
-
-      .diff-line.added .diff-symbol {
-        color: var(--success);
-      }
-
-      .diff-line.removed {
-        background: rgba(239, 68, 68, .10);
-      }
-
-      .diff-line.removed .diff-symbol {
-        color: var(--danger);
-      }
-
-      .diff-line.same {
-        opacity: .72;
-      }
-
-      .diff-line.same .diff-symbol {
-        color: #64748b;
-      }
-
-      /* STATS */
-
-      .tool-stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        border-top: 1px solid var(--border);
-      }
-
-      .stat {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 17px;
-        border-left: 1px solid var(--border);
-      }
-
-      .stat:last-child {
-        border-left: 0;
-      }
-
-      .stat-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 11px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        background: rgba(37, 99, 235, .09);
-      }
-
-      .stat strong {
-        display: block;
-        font-size: 17px;
-      }
-
-      .stat span {
-        display: block;
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      /* SECTIONS */
-
-      .info-section,
-      .how-section,
-      .faq-section {
-        padding: 80px 0;
-      }
-
-      .how-section {
-        background: var(--surface);
-      }
-
-      .section-heading {
-        text-align: center;
-        max-width: 720px;
-        margin: 0 auto 38px;
-      }
-
-      .section-heading > span {
-        color: var(--primary);
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.5px;
-      }
-
-      .section-heading h2 {
-        margin: 8px 0;
-        font-size: clamp(25px, 4vw, 34px);
-      }
-
-      .section-heading p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-      }
-
-      .feature-card {
-        padding: 25px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        transition: .25s ease;
-      }
-
-      .feature-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(37, 99, 235, .4);
-      }
-
-      .feature-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        background: rgba(37, 99, 235, .09);
-        font-size: 19px;
         margin-bottom: 17px;
       }
 
-      .feature-card h3 {
-        margin: 0 0 8px;
-        font-size: 15px;
+      .hero-icon {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+        border-radius: 14px;
+        font-size: 20px;
       }
 
-      .feature-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.8;
+      .badge {
+        font-size: 10px;
+        padding: 4px 8px;
       }
 
-      /* STEPS */
-
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
+      .hero h1 {
+        font-size: 25px;
       }
 
-      .step {
-        display: flex;
-        gap: 15px;
-        padding: 20px;
-        border: 1px solid var(--border);
-        border-radius: 17px;
-        background: var(--surface-2);
-      }
-
-      .step-number {
-        flex: 0 0 43px;
-        height: 43px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--secondary)
-        );
-        font-size: 12px;
-        font-weight: 800;
-      }
-
-      .step h3 {
-        margin: 0 0 5px;
-        font-size: 14px;
-      }
-
-      .step p {
-        margin: 0;
-        color: var(--muted);
+      .hero p {
         font-size: 11px;
         line-height: 1.7;
       }
 
-      /* FAQ */
-
-      .faq-list {
-        max-width: 850px;
-        margin: auto;
+      .tool-card {
+        border-radius: 17px;
       }
 
-      .faq-item {
-        border: 1px solid var(--border);
-        border-radius: 15px;
-        margin-bottom: 10px;
-        background: var(--surface);
-        overflow: hidden;
+      .tool-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px;
       }
 
-      .faq-item summary {
-        cursor: pointer;
-        list-style: none;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        padding: 17px 19px;
-        font-size: 13px;
-        font-weight: 700;
+      .status {
+        width: 100%;
       }
 
-      .faq-item summary::-webkit-details-marker {
-        display: none;
+      .actionbar {
+        padding: 10px;
       }
 
-      .faq-item summary i {
-        color: var(--primary);
-        transition: .2s ease;
+      .actionbar button {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+        padding: 0 8px;
+        font-size: 10px;
       }
 
-      .faq-item[open] summary i {
-        transform: rotate(180deg);
+      .language-box {
+        width: 100%;
+        margin-right: 0;
+        justify-content: center;
       }
 
-      .faq-item p {
-        margin: 0;
-        padding: 0 19px 18px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.9;
+      .language-box select {
+        width: 100%;
       }
 
-      /* MOBILE */
-
-      @media (max-width: 800px) {
-        .hero {
-          padding: 55px 0 90px;
-        }
-
-        .tool-section {
-          margin-top: -45px;
-        }
-
-        .actionbar {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .action-group {
-          width: 100%;
-        }
-
-        .language-box {
-          width: 100%;
-          justify-content: center;
-        }
-
-        .language-box select {
-          flex: 1;
-        }
-
-        .editors-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .tool-stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .stat:nth-child(2) {
-          border-left: 0;
-        }
-
-        .stat:nth-child(3),
-        .stat:nth-child(4) {
-          border-top: 1px solid var(--border);
-        }
-
-        .features-grid,
-        .steps {
-          grid-template-columns: 1fr;
-        }
-
-        .result-header {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .result-summary {
-          width: 100%;
-        }
+      .editors {
+        padding: 10px;
+        gap: 10px;
       }
 
-      @media (max-width: 520px) {
-        .container {
-          width: min(100% - 20px, 1180px);
-        }
-
-        .hero h1 {
-          font-size: 39px;
-        }
-
-        .hero-icon {
-          width: 68px;
-          height: 68px;
-          border-radius: 20px;
-          font-size: 27px;
-        }
-
-        .tool-topbar {
-          padding: 14px;
-        }
-
-        .tool-status {
-          display: none;
-        }
-
-        .action {
-          flex: 1;
-          justify-content: center;
-          padding: 9px 8px;
-        }
-
-        .result-panel {
-          margin: 12px;
-        }
-
-        .editor-body {
-          grid-template-columns: 35px 1fr;
-        }
-
-        textarea {
-          padding: 14px 11px;
-          font-size: 12px;
-        }
-
-        .line-numbers {
-          padding: 14px 4px;
-        }
-
-        .diff-number {
-          flex-basis: 38px;
-        }
-
-        .diff-symbol {
-          flex-basis: 22px;
-        }
-
-        .tool-stats {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .stat {
-          padding: 13px 10px;
-          gap: 8px;
-        }
-
-        .stat-icon {
-          width: 34px;
-          height: 34px;
-          font-size: 12px;
-        }
-
-        .stat strong {
-          font-size: 15px;
-        }
+      .editor {
+        height: 285px;
+        grid-template-columns: 42px 1fr;
       }
-    </style>
-
-    <script is:inline>
-      (function () {
-        var oldCode = document.getElementById("oldCode");
-        var newCode = document.getElementById("newCode");
-
-        var oldNumbers = document.getElementById("oldNumbers");
-        var newNumbers = document.getElementById("newNumbers");
-
-        var oldLines = document.getElementById("oldLines");
-        var newLines = document.getElementById("newLines");
-
-        var compareBtn = document.getElementById("compareBtn");
-        var swapBtn = document.getElementById("swapBtn");
-        var copyBtn = document.getElementById("copyBtn");
-        var clearBtn = document.getElementById("clearBtn");
-
-        var diffOutput = document.getElementById("diffOutput");
-
-        var addedStat = document.getElementById("addedStat");
-        var removedStat = document.getElementById("removedStat");
-        var sameStat = document.getElementById("sameStat");
-
-        var totalOld = document.getElementById("totalOld");
-        var totalNew = document.getElementById("totalNew");
-        var totalAdded = document.getElementById("totalAdded");
-        var totalRemoved = document.getElementById("totalRemoved");
-
-        function escapeHtml(value) {
-          return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-        }
-
-        function getLines(value) {
-          if (!value) return [];
-          return value.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
-        }
-
-        function updateLineNumbers(textarea, numbers, counter) {
-          var lines = getLines(textarea.value);
-          var count = Math.max(lines.length, 1);
-
-          var result = [];
-
-          for (var i = 1; i <= count; i++) {
-            result.push(i);
-          }
-
-          numbers.textContent = result.join("\n");
-          counter.textContent = count + " سطر";
-
-          if (textarea.id === "oldCode") {
-            totalOld.textContent = count;
-          } else {
-            totalNew.textContent = count;
-          }
-        }
-
-        function syncScroll(textarea, numbers) {
-          numbers.scrollTop = textarea.scrollTop;
-        }
-
-        function buildLcs(a, b) {
-          var m = a.length;
-          var n = b.length;
-
-          var dp = [];
-
-          for (var i = 0; i <= m; i++) {
-            dp[i] = [];
-
-            for (var j = 0; j <= n; j++) {
-              dp[i][j] = 0;
-            }
-          }
-
-          for (var x = 1; x <= m; x++) {
-            for (var y = 1; y <= n; y++) {
-              if (a[x - 1] === b[y - 1]) {
-                dp[x][y] = dp[x - 1][y - 1] + 1;
-              } else {
-                dp[x][y] = Math.max(
-                  dp[x - 1][y],
-                  dp[x][y - 1]
-                );
-              }
-            }
-          }
-
-          var result = [];
-          var i2 = m;
-          var j2 = n;
-
-          while (i2 > 0 || j2 > 0) {
-            if (
-              i2 > 0 &&
-              j2 > 0 &&
-              a[i2 - 1] === b[j2 - 1]
-            ) {
-              result.unshift({
-                type: "same",
-                text: a[i2 - 1]
-              });
-
-              i2--;
-              j2--;
-            } else if (
-              j2 > 0 &&
-              (i2 === 0 || dp[i2][j2 - 1] >= dp[i2 - 1][j2])
-            ) {
-              result.unshift({
-                type: "added",
-                text: b[j2 - 1]
-              });
-
-              j2--;
-            } else {
-              result.unshift({
-                type: "removed",
-                text: a[i2 - 1]
-              });
-
-              i2--;
-            }
-          }
-
-          return result;
-        }
-
-        function compare() {
-          var oldLinesArray = getLines(oldCode.value);
-          var newLinesArray = getLines(newCode.value);
-
-          var diff = buildLcs(
-            oldLinesArray,
-            newLinesArray
-          );
-
-          var added = 0;
-          var removed = 0;
-          var same = 0;
-
-          var oldNumber = 0;
-          var newNumber = 0;
-
-          var html = "";
-
-          diff.forEach(function (item) {
-            var number = "";
-
-            if (item.type === "same") {
-              oldNumber++;
-              newNumber++;
-              same++;
-
-              number = oldNumber + ":" + newNumber;
-            }
-
-            if (item.type === "added") {
-              newNumber++;
-              added++;
-
-              number = "+" + newNumber;
-            }
-
-            if (item.type === "removed") {
-              oldNumber++;
-              removed++;
-
-              number = "-" + oldNumber;
-            }
-
-            var symbol = "=";
-
-            if (item.type === "added") {
-              symbol = "+";
-            }
-
-            if (item.type === "removed") {
-              symbol = "-";
-            }
-
-            html +=
-              '<div class="diff-line ' +
-              item.type +
-              '">' +
-              '<div class="diff-number">' +
-              escapeHtml(number) +
-              "</div>" +
-              '<div class="diff-symbol">' +
-              escapeHtml(symbol) +
-              "</div>" +
-              '<div class="diff-content">' +
-              escapeHtml(item.text) +
-              "</div>" +
-              "</div>";
-          });
-
-          if (!html) {
-            html =
-              '<div class="empty-result">' +
-              '<i class="fa-solid fa-code-compare"></i>' +
-              "<strong>لا توجد بيانات للمقارنة</strong>" +
-              "<span>أدخل الكود في المحررين أولاً.</span>" +
-              "</div>";
-          }
-
-          diffOutput.innerHTML = html;
-
-          addedStat.innerHTML =
-            '<i class="fa-solid fa-plus"></i> ' +
-            added +
-            " مضاف";
-
-          removedStat.innerHTML =
-            '<i class="fa-solid fa-minus"></i> ' +
-            removed +
-            " محذوف";
-
-          sameStat.innerHTML =
-            '<i class="fa-solid fa-equals"></i> ' +
-            same +
-            " بدون تغيير";
-
-          totalAdded.textContent = added;
-          totalRemoved.textContent = removed;
-        }
-
-        function copyResult() {
-          var text = "";
-
-          var lines = diffOutput.querySelectorAll(
-            ".diff-line"
-          );
-
-          lines.forEach(function (line) {
-            var symbol =
-              line.querySelector(".diff-symbol").textContent;
-
-            var content =
-              line.querySelector(".diff-content").textContent;
-
-            text += symbol + " " + content + "\n";
-          });
-
-          if (!text.trim()) {
-            return;
-          }
-
-          if (
-            navigator.clipboard &&
-            navigator.clipboard.writeText
-          ) {
-            navigator.clipboard.writeText(text);
-          } else {
-            var temp = document.createElement("textarea");
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand("copy");
-            temp.remove();
-          }
-
-          copyBtn.innerHTML =
-            '<i class="fa-solid fa-check"></i> تم النسخ';
-
-          setTimeout(function () {
-            copyBtn.innerHTML =
-              '<i class="fa-regular fa-copy"></i> نسخ النتيجة';
-          }, 1500);
-        }
-
-        function swapEditors() {
-          var value = oldCode.value;
-
-          oldCode.value = newCode.value;
-          newCode.value = value;
-
-          updateLineNumbers(
-            oldCode,
-            oldNumbers,
-            oldLines
-          );
-
-          updateLineNumbers(
-            newCode,
-            newNumbers,
-            newLines
-          );
-
-          compare();
-        }
-
-        function clearAll() {
-          oldCode.value = "";
-          newCode.value = "";
-
-          updateLineNumbers(
-            oldCode,
-            oldNumbers,
-            oldLines
-          );
-
-          updateLineNumbers(
-            newCode,
-            newNumbers,
-            newLines
-          );
-
-          totalOld.textContent = "0";
-          totalNew.textContent = "0";
-          totalAdded.textContent = "0";
-          totalRemoved.textContent = "0";
-
-          addedStat.innerHTML =
-            '<i class="fa-solid fa-plus"></i> 0 مضاف';
-
-          removedStat.innerHTML =
-            '<i class="fa-solid fa-minus"></i> 0 محذوف';
-
-          sameStat.innerHTML =
-            '<i class="fa-solid fa-equals"></i> 0 بدون تغيير';
-
-          diffOutput.innerHTML =
-            '<div class="empty-result">' +
-            '<i class="fa-solid fa-code-compare"></i>' +
-            "<strong>لم تتم المقارنة بعد</strong>" +
-            '<span>أدخل النسختين ثم اضغط على زر "مقارنة"</span>' +
-            "</div>";
-        }
-
-        oldCode.addEventListener("input", function () {
-          updateLineNumbers(
-            oldCode,
-            oldNumbers,
-            oldLines
-          );
-        });
-
-        newCode.addEventListener("input", function () {
-          updateLineNumbers(
-            newCode,
-            newNumbers,
-            newLines
-          );
-        });
-
-        oldCode.addEventListener("scroll", function () {
-          syncScroll(oldCode, oldNumbers);
-        });
-
-        newCode.addEventListener("scroll", function () {
-          syncScroll(newCode, newNumbers);
-        });
-
-        compareBtn.addEventListener("click", compare);
-        swapBtn.addEventListener("click", swapEditors);
-        copyBtn.addEventListener("click", copyResult);
-        clearBtn.addEventListener("click", clearAll);
-
-        oldCode.addEventListener("keydown", function (event) {
-          if (event.key === "Tab") {
-            event.preventDefault();
-
-            var start = oldCode.selectionStart;
-            var end = oldCode.selectionEnd;
-
-            oldCode.value =
-              oldCode.value.substring(0, start) +
-              "  " +
-              oldCode.value.substring(end);
-
-            oldCode.selectionStart = start + 2;
-            oldCode.selectionEnd = start + 2;
-
-            updateLineNumbers(
-              oldCode,
-              oldNumbers,
-              oldLines
-            );
-          }
-        });
-
-        newCode.addEventListener("keydown", function (event) {
-          if (event.key === "Tab") {
-            event.preventDefault();
-
-            var start = newCode.selectionStart;
-            var end = newCode.selectionEnd;
-
-            newCode.value =
-              newCode.value.substring(0, start) +
-              "  " +
-              newCode.value.substring(end);
-
-            newCode.selectionStart = start + 2;
-            newCode.selectionEnd = start + 2;
-
-            updateLineNumbers(
-              newCode,
-              newNumbers,
-              newLines
-            );
-          }
-        });
-
-        updateLineNumbers(
-          oldCode,
-          oldNumbers,
-          oldLines
-        );
-
-        updateLineNumbers(
-          newCode,
-          newNumbers,
-          newLines
-        );
-      })();
-    </script>
-  </body>
+
+      .line-numbers {
+        padding: 12px 6px;
+        font-size: 10px;
+      }
+
+      .editor textarea {
+        padding: 12px;
+        font-size: 11px;
+      }
+
+      .editor-header {
+        height: 52px;
+        padding: 0 10px;
+      }
+
+      .editor-name small {
+        font-size: 9px;
+      }
+
+      .editor-tag {
+        font-size: 9px;
+      }
+
+      .result-box {
+        margin: 0 10px 10px;
+      }
+
+      .result-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .result-state {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .diff-row {
+        grid-template-columns: 38px 38px 30px 1fr;
+        font-size: 10px;
+      }
+
+      .diff-row code {
+        padding: 5px 8px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 0 10px 10px;
+      }
+
+      .stat-card {
+        padding: 10px;
+      }
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+        font-size: 11px;
+      }
+
+      .stat-card span {
+        font-size: 9px;
+      }
+
+      .stat-card strong {
+        font-size: 16px;
+      }
+
+      .info-section,
+      .guide-section,
+      .faq-section {
+        margin-top: 38px;
+      }
+
+      .section-heading h2 {
+        font-size: 17px;
+      }
+
+      .section-heading p {
+        font-size: 10px;
+      }
+
+      .info-card,
+      .step {
+        padding: 15px;
+      }
+
+      .info-card p,
+      .step p,
+      .faq-list details p {
+        font-size: 10px;
+      }
+
+      .faq-list summary {
+        padding: 13px;
+        font-size: 11px;
+      }
+    }
+  </style>
+
+</body>
 </html>
