@@ -1,0 +1,2794 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "JavaScript Minifier - تصغير JavaScript أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة JavaScript Minifier مجانية لتصغير وضغط كود JavaScript وإزالة التعليقات والمسافات غير الضرورية وتقليل حجم الملفات مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو JavaScript Minifier؟",
+    a: "أداة تقوم بتصغير كود JavaScript عن طريق إزالة التعليقات والمسافات والأسطر غير الضرورية مع الحفاظ على الكود قابلاً للتنفيذ."
+  },
+  {
+    q: "هل يتم رفع الكود إلى الخادم؟",
+    a: "لا. تتم عملية التصغير مباشرة داخل المتصفح، لذلك لا يحتاج الكود إلى مغادرة جهازك."
+  },
+  {
+    q: "هل يمكنني معرفة مقدار التوفير في الحجم؟",
+    a: "نعم، تعرض الأداة حجم الكود قبل التصغير وبعده ونسبة تقليل الحجم."
+  },
+  {
+    q: "هل يمكن تنزيل الكود المصغر؟",
+    a: "نعم، يمكنك تنزيل النتيجة مباشرة كملف JavaScript بصيغة JS."
+  }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="icon" href={`${base}/logo1.png`} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          } else {
+            document.documentElement.classList.remove("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <Header />
+
+    <main>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
+
+          <div class="breadcrumb">
+            <a href={`${base}/`}>الرئيسية</a>
+            <span>/</span>
+            <a href={`${base}/tools/`}>الأدوات</a>
+            <span>/</span>
+            <span>JavaScript Minifier</span>
+          </div>
+
+          <div class="tool-icon">
+            <i class="fa-brands fa-js"></i>
+          </div>
+
+          <div class="eyebrow">
+            <i class="fa-solid fa-compress"></i>
+            JavaScript
+          </div>
+
+          <h1>
+            JavaScript <span>Minifier</span>
+          </h1>
+
+          <p>
+            صغّر كود JavaScript واحذف العناصر غير الضرورية لتقليل حجم الملف
+            وتحسين سرعة تحميله.
+          </p>
+
+        </div>
+      </section>
+
+
+      <!-- MINIFIER -->
+      <section class="minifier-section">
+        <div class="container">
+
+          <div class="minifier-card">
+
+            <!-- HEADER -->
+            <div class="topbar">
+
+              <div class="tool-name">
+
+                <div class="mini-icon">
+                  <i class="fa-brands fa-js"></i>
+                </div>
+
+                <div>
+                  <strong>JavaScript Minifier</strong>
+                  <small>تصغير وضغط كود JavaScript</small>
+                </div>
+
+              </div>
+
+              <div class="local-badge">
+                <span></span>
+                يعمل محلياً
+              </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+            <div class="actions">
+
+              <button id="minifyBtn" class="btn btn-primary">
+                <i class="fa-solid fa-compress"></i>
+                تصغير
+              </button>
+
+              <button id="copyBtn" class="btn">
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+
+              <button id="downloadBtn" class="btn">
+                <i class="fa-solid fa-download"></i>
+                تنزيل
+              </button>
+
+              <button id="clearBtn" class="btn btn-clear">
+                <i class="fa-solid fa-rotate-left"></i>
+                مسح
+              </button>
+
+            </div>
+
+
+            <!-- WORKSPACE -->
+            <div class="workspace">
+
+              <!-- ORIGINAL -->
+              <div class="editor-box">
+
+                <div class="editor-header">
+
+                  <div class="editor-title">
+                    <span class="indicator input-indicator"></span>
+                    <strong>الكود الأصلي</strong>
+                  </div>
+
+                  <div class="editor-info">
+                    <span id="inputLines">0 سطر</span>
+                    <span>•</span>
+                    <span id="inputBytes">0 B</span>
+                  </div>
+
+                </div>
+
+                <div class="editor-body">
+
+                  <div
+                    class="line-numbers"
+                    id="inputNumbers"
+                  >1</div>
+
+                  <textarea
+                    id="inputCode"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder={`// JavaScript example
+
+function greet(name) {
+  const message = "Hello " + name;
+  console.log(message);
+}
+
+greet("Ahmed");`}
+                  ></textarea>
+
+                </div>
+
+              </div>
+
+
+              <!-- MINIFIED -->
+              <div class="editor-box output-box">
+
+                <div class="editor-header">
+
+                  <div class="editor-title">
+                    <span class="indicator output-indicator"></span>
+                    <strong>الكود المصغر</strong>
+                  </div>
+
+                  <div class="editor-info">
+                    <span id="outputLines">0 سطر</span>
+                    <span>•</span>
+                    <span id="outputBytes">0 B</span>
+                  </div>
+
+                </div>
+
+                <div class="editor-body">
+
+                  <div
+                    class="line-numbers output-numbers"
+                    id="outputNumbers"
+                  >1</div>
+
+                  <textarea
+                    id="outputCode"
+                    spellcheck="false"
+                    readonly
+                    placeholder="سيظهر الكود المصغر هنا..."
+                  ></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div id="status" class="status hidden">
+              <i></i>
+              <span></span>
+            </div>
+
+
+            <!-- SAVING -->
+            <div class="saving-box">
+
+              <div class="saving-icon">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+
+              <div class="saving-content">
+
+                <div class="saving-title">
+                  <strong>حجم الملف</strong>
+                  <span id="savingPercent">—</span>
+                </div>
+
+                <div class="progress">
+                  <span id="progressBar"></span>
+                </div>
+
+                <div class="saving-stats">
+
+                  <span>
+                    الأصلي:
+                    <strong id="originalSize">0 B</strong>
+                  </span>
+
+                  <span>
+                    المصغر:
+                    <strong id="minifiedSize">0 B</strong>
+                  </span>
+
+                  <span>
+                    التوفير:
+                    <strong id="savedSize">0 B</strong>
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- BOTTOM -->
+            <div class="bottom-bar">
+
+              <div class="privacy">
+                <i class="fa-solid fa-shield-halved"></i>
+                تتم معالجة الكود داخل المتصفح
+              </div>
+
+              <div class="characters">
+
+                <span>
+                  <strong id="charCount">0</strong>
+                  حرف
+                </span>
+
+                <span>
+                  <strong id="outputCharCount">0</strong>
+                  بعد التصغير
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- FEATURES -->
+      <section class="features-section">
+        <div class="container">
+
+          <div class="section-title">
+            <span>المميزات</span>
+
+            <h2>
+              JavaScript Minifier سريع وعملي
+            </h2>
+
+            <p>
+              قلّل حجم كود JavaScript بسهولة مباشرة من المتصفح.
+            </p>
+          </div>
+
+
+          <div class="features-grid">
+
+            <div class="feature">
+
+              <div class="feature-icon">
+                <i class="fa-solid fa-compress"></i>
+              </div>
+
+              <div>
+                <h3>تصغير الكود</h3>
+                <p>
+                  إزالة المسافات والتعليقات غير الضرورية.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="feature-icon">
+                <i class="fa-solid fa-gauge-high"></i>
+              </div>
+
+              <div>
+                <h3>حجم أقل</h3>
+                <p>
+                  تقليل حجم كود JavaScript قبل استخدامه.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="feature-icon">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+
+              <div>
+                <h3>خصوصية</h3>
+                <p>
+                  تتم المعالجة محلياً داخل المتصفح.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="feature-icon">
+                <i class="fa-solid fa-download"></i>
+              </div>
+
+              <div>
+                <h3>تنزيل مباشر</h3>
+                <p>
+                  احفظ الكود المصغر كملف JavaScript.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- HOW TO -->
+      <section class="how-section">
+        <div class="container">
+
+          <div class="section-title">
+
+            <span>طريقة الاستخدام</span>
+
+            <h2>
+              كيف تستخدم JavaScript Minifier؟
+            </h2>
+
+          </div>
+
+
+          <div class="steps">
+
+            <div class="step">
+
+              <b>01</b>
+
+              <div>
+                <h3>أدخل الكود</h3>
+
+                <p>
+                  الصق كود JavaScript في المحرر الأول.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <b>02</b>
+
+              <div>
+                <h3>اضغط تصغير</h3>
+
+                <p>
+                  اضغط على زر تصغير لمعالجة الكود.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <b>03</b>
+
+              <div>
+                <h3>راجع الحجم</h3>
+
+                <p>
+                  شاهد الحجم قبل التصغير وبعده ونسبة التوفير.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <b>04</b>
+
+              <div>
+                <h3>انسخ أو نزّل</h3>
+
+                <p>
+                  انسخ الكود المصغر أو احفظه كملف JS.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- FAQ -->
+      <section class="faq-section">
+        <div class="container">
+
+          <div class="section-title">
+
+            <span>FAQ</span>
+
+            <h2>
+              الأسئلة الشائعة
+            </h2>
+
+          </div>
+
+
+          <div class="faq-list">
+
+            {
+              faqs.map((faq) => (
+                <details class="faq-item">
+
+                  <summary>
+                    <span>{faq.q}</span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </summary>
+
+                  <p>
+                    {faq.a}
+                  </p>
+
+                </details>
+              ))
+            }
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+
+
+    <style>
+
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family: "Cairo", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+
+      :global(:root) {
+        --bg: #f8fafc;
+        --section: #f1f5f9;
+        --card: #ffffff;
+        --editor: #f8fafc;
+
+        --text: #0f172a;
+        --muted: #64748b;
+
+        --border: rgba(15, 23, 42, .09);
+
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+
+        --cyan: #0891b2;
+        --green: #16a34a;
+        --red: #dc2626;
+
+        --shadow:
+          0 18px 55px rgba(15, 23, 42, .08);
+      }
+
+
+      :global(html.dark-mode) {
+
+        --bg: #07101f;
+        --section: #0b1426;
+        --card: #111d32;
+        --editor: #0d1729;
+
+        --text: #f8fafc;
+        --muted: #94a3b8;
+
+        --border:
+          rgba(148, 163, 184, .12);
+
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+
+        --cyan: #06b6d4;
+        --green: #22c55e;
+        --red: #ef4444;
+
+        --shadow:
+          0 20px 65px rgba(0, 0, 0, .3);
+      }
+
+
+      .container {
+        width: min(
+          1120px,
+          calc(100% - 28px)
+        );
+
+        margin-inline: auto;
+      }
+
+
+      /* HERO */
+
+      .hero {
+        padding: 38px 0 30px;
+        text-align: center;
+      }
+
+      .breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        margin-bottom: 22px;
+
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+
+      .tool-icon {
+        width: 58px;
+        height: 58px;
+
+        margin: 0 auto 13px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        background:
+          rgba(37, 99, 235, .09);
+
+        color: var(--primary);
+
+        font-size: 28px;
+      }
+
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        color: var(--cyan);
+
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+
+      .hero h1 {
+        margin: 5px 0 7px;
+
+        font-size:
+          clamp(30px, 5vw, 46px);
+
+        line-height: 1.25;
+
+        font-weight: 800;
+
+        letter-spacing: -.8px;
+      }
+
+      .hero h1 span {
+        color: var(--primary);
+      }
+
+
+      .hero p {
+        max-width: 680px;
+
+        margin: auto;
+
+        color: var(--muted);
+
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+
+      /* TOOL */
+
+      .minifier-section {
+        padding: 5px 0 65px;
+      }
+
+
+      .minifier-card {
+
+        overflow: hidden;
+
+        background: var(--card);
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 20px;
+
+        box-shadow: var(--shadow);
+      }
+
+
+      /* TOPBAR */
+
+      .topbar {
+
+        min-height: 65px;
+
+        padding: 12px 17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        border-bottom:
+          1px solid var(--border);
+      }
+
+
+      .tool-name {
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+      }
+
+
+      .mini-icon {
+
+        width: 38px;
+        height: 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background:
+          rgba(37, 99, 235, .09);
+
+        color: var(--primary);
+
+        font-size: 19px;
+      }
+
+
+      .tool-name strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .tool-name small {
+        display: block;
+
+        margin-top: 1px;
+
+        color: var(--muted);
+
+        font-size: 9px;
+      }
+
+
+      .local-badge {
+
+        display: flex;
+        align-items: center;
+
+        gap: 6px;
+
+        color: var(--green);
+
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+
+      .local-badge span {
+
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: var(--green);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(22, 163, 74, .1);
+      }
+
+
+      /* ACTIONS */
+
+      .actions {
+
+        padding: 10px 13px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        border-bottom:
+          1px solid var(--border);
+
+        background: var(--section);
+      }
+
+
+      .btn {
+
+        height: 36px;
+
+        padding: 0 13px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 9px;
+
+        background: var(--card);
+
+        color: var(--text);
+
+        font-family: inherit;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+      }
+
+
+      .btn:hover {
+
+        border-color: var(--primary);
+
+        color: var(--primary);
+
+        transform:
+          translateY(-1px);
+      }
+
+
+      .btn-primary {
+
+        padding-inline: 17px;
+
+        background: var(--primary);
+
+        border-color: var(--primary);
+
+        color: white;
+
+        box-shadow:
+          0 5px 15px
+          rgba(37, 99, 235, .18);
+      }
+
+
+      .btn-primary:hover {
+
+        background:
+          var(--primary-hover);
+
+        color: white;
+      }
+
+
+      .btn-clear {
+        color: var(--red);
+      }
+
+
+      /* WORKSPACE */
+
+      .workspace {
+
+        display: grid;
+
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 1px;
+
+        background:
+          var(--border);
+      }
+
+
+      .editor-box {
+
+        min-width: 0;
+
+        background: var(--card);
+      }
+
+
+      .editor-header {
+
+        height: 45px;
+
+        padding: 0 14px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        border-bottom:
+          1px solid var(--border);
+      }
+
+
+      .editor-title {
+
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+      }
+
+
+      .editor-title strong {
+        font-size: 11px;
+      }
+
+
+      .indicator {
+
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+      }
+
+
+      .input-indicator {
+
+        background: var(--cyan);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(8, 145, 178, .1);
+      }
+
+
+      .output-indicator {
+
+        background: var(--primary);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(37, 99, 235, .1);
+      }
+
+
+      .editor-info {
+
+        display: flex;
+
+        gap: 5px;
+
+        color: var(--muted);
+
+        font-size: 9px;
+      }
+
+
+      .editor-body {
+
+        display: flex;
+
+        height: 390px;
+
+        overflow: hidden;
+
+        background: var(--editor);
+      }
+
+
+      .output-box .editor-body {
+        background: var(--card);
+      }
+
+
+      .line-numbers {
+
+        width: 43px;
+
+        flex-shrink: 0;
+
+        padding: 17px 8px;
+
+        overflow: hidden;
+
+        color: var(--muted);
+
+        opacity: .5;
+
+        border-left:
+          1px solid var(--border);
+
+        font:
+          12px/1.8
+          Consolas,
+          Monaco,
+          monospace;
+
+        text-align: center;
+
+        user-select: none;
+      }
+
+
+      textarea {
+
+        width:
+          calc(100% - 43px);
+
+        height: 100%;
+
+        padding: 17px 14px;
+
+        border: 0;
+
+        outline: none;
+
+        resize: none;
+
+        background: transparent;
+
+        color: var(--text);
+
+        font:
+          12px/1.8
+          Consolas,
+          Monaco,
+          "Courier New",
+          monospace;
+
+        direction: ltr;
+
+        text-align: left;
+
+        tab-size: 2;
+
+        white-space: pre;
+
+        overflow: auto;
+      }
+
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: .55;
+      }
+
+
+      /* STATUS */
+
+      .status {
+
+        margin:
+          12px 13px 0;
+
+        padding:
+          9px 12px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        border-radius: 9px;
+
+        background:
+          rgba(22, 163, 74, .08);
+
+        color: var(--green);
+
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+
+      .status.error {
+
+        color: var(--red);
+
+        background:
+          rgba(220, 38, 38, .08);
+      }
+
+
+      .status.hidden {
+        display: none;
+      }
+
+
+      /* SAVING */
+
+      .saving-box {
+
+        margin: 13px;
+
+        padding: 13px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 12px;
+
+        background: var(--section);
+      }
+
+
+      .saving-icon {
+
+        width: 40px;
+        height: 40px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(22, 163, 74, .09);
+
+        color: var(--green);
+      }
+
+
+      .saving-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+
+      .saving-title {
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 7px;
+
+        font-size: 10px;
+      }
+
+
+      .saving-title span {
+
+        color: var(--green);
+
+        font-weight: 800;
+      }
+
+
+      .progress {
+
+        height: 5px;
+
+        overflow: hidden;
+
+        border-radius: 99px;
+
+        background:
+          rgba(100, 116, 139, .13);
+      }
+
+
+      .progress span {
+
+        display: block;
+
+        width: 0;
+        height: 100%;
+
+        border-radius: inherit;
+
+        background: var(--green);
+
+        transition:
+          width .35s ease;
+      }
+
+
+      .saving-stats {
+
+        margin-top: 7px;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 14px;
+
+        color: var(--muted);
+
+        font-size: 8px;
+      }
+
+
+      .saving-stats strong {
+        color: var(--text);
+      }
+
+
+      /* BOTTOM */
+
+      .bottom-bar {
+
+        min-height: 51px;
+
+        padding: 10px 14px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        border-top:
+          1px solid var(--border);
+      }
+
+
+      .privacy {
+
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        color: var(--muted);
+
+        font-size: 9px;
+      }
+
+
+      .privacy i {
+        color: var(--green);
+      }
+
+
+      .characters {
+
+        display: flex;
+        align-items: center;
+
+        gap: 16px;
+
+        color: var(--muted);
+
+        font-size: 9px;
+      }
+
+
+      .characters strong {
+
+        color: var(--text);
+
+        font-size: 11px;
+      }
+
+
+      /* SECTIONS */
+
+      .features-section {
+
+        padding: 65px 0;
+
+        background: var(--section);
+      }
+
+
+      .how-section,
+      .faq-section {
+        padding: 65px 0;
+      }
+
+
+      .section-title {
+
+        margin-bottom: 30px;
+
+        text-align: center;
+      }
+
+
+      .section-title > span {
+
+        color: var(--primary);
+
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+
+      .section-title h2 {
+
+        margin: 5px 0 6px;
+
+        font-size:
+          clamp(23px, 4vw, 31px);
+
+        font-weight: 800;
+      }
+
+
+      .section-title p {
+
+        margin: auto;
+
+        color: var(--muted);
+
+        font-size: 12px;
+      }
+
+
+      /* FEATURES */
+
+      .features-grid {
+
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        gap: 13px;
+      }
+
+
+      .feature {
+
+        padding: 19px;
+
+        display: flex;
+        align-items: flex-start;
+
+        gap: 12px;
+
+        background: var(--card);
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 14px;
+
+        transition: .2s ease;
+      }
+
+
+      .feature:hover {
+
+        transform:
+          translateY(-3px);
+
+        box-shadow: var(--shadow);
+      }
+
+
+      .feature-icon {
+
+        width: 38px;
+        height: 38px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(37, 99, 235, .09);
+
+        color: var(--primary);
+      }
+
+
+      .feature h3 {
+
+        margin: 0 0 3px;
+
+        font-size: 13px;
+      }
+
+
+      .feature p {
+
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 10px;
+
+        line-height: 1.7;
+      }
+
+
+      /* STEPS */
+
+      .steps {
+
+        max-width: 820px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 12px;
+      }
+
+
+      .step {
+
+        padding: 18px;
+
+        display: flex;
+        align-items: flex-start;
+
+        gap: 12px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 14px;
+
+        background: var(--card);
+      }
+
+
+      .step > b {
+
+        width: 38px;
+        height: 38px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(37, 99, 235, .09);
+
+        color: var(--primary);
+
+        font-size: 9px;
+      }
+
+
+      .step h3 {
+
+        margin: 0 0 3px;
+
+        font-size: 13px;
+      }
+
+
+      .step p {
+
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 10px;
+
+        line-height: 1.7;
+      }
+
+
+      /* FAQ */
+
+      .faq-list {
+
+        max-width: 820px;
+
+        margin: auto;
+
+        display: grid;
+
+        gap: 8px;
+      }
+
+
+      .faq-item {
+
+        overflow: hidden;
+
+        border:
+          1px solid var(--border);
+
+        border-radius: 13px;
+
+        background: var(--card);
+      }
+
+
+      .faq-item summary {
+
+        padding: 15px 17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+
+        cursor: pointer;
+
+        list-style: none;
+
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+
+      .faq-item summary i {
+
+        color: var(--primary);
+
+        font-size: 9px;
+
+        transition: .2s;
+      }
+
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+
+      .faq-item p {
+
+        margin: 0;
+
+        padding:
+          0 17px 16px;
+
+        color: var(--muted);
+
+        font-size: 11px;
+
+        line-height: 1.8;
+      }
+
+
+      /* TABLET */
+
+      @media (max-width: 900px) {
+
+        .features-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+        }
+
+      }
+
+
+      /* MOBILE */
+
+      @media (max-width: 700px) {
+
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .editor-body {
+          height: 300px;
+        }
+
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .local-badge {
+          display: none;
+        }
+
+      }
+
+
+      @media (max-width: 520px) {
+
+        .container {
+          width:
+            calc(100% - 18px);
+        }
+
+
+        .hero {
+          padding:
+            28px 0 24px;
+        }
+
+
+        .hero h1 {
+          font-size: 31px;
+        }
+
+
+        .hero p {
+          font-size: 11px;
+        }
+
+
+        .minifier-card {
+          border-radius: 16px;
+        }
+
+
+        .topbar {
+          padding: 11px;
+        }
+
+
+        .mini-icon {
+
+          width: 34px;
+          height: 34px;
+        }
+
+
+        .tool-name strong {
+          font-size: 11px;
+        }
+
+
+        .actions {
+
+          display: grid;
+
+          grid-template-columns:
+            1.3fr 1fr 1fr 1fr;
+
+          gap: 5px;
+
+          padding: 8px;
+        }
+
+
+        .btn {
+
+          padding: 0 5px;
+
+          height: 34px;
+
+          font-size: 9px;
+
+          gap: 4px;
+        }
+
+
+        .editor-header {
+          padding: 0 10px;
+        }
+
+
+        .editor-title strong {
+          font-size: 10px;
+        }
+
+
+        .editor-info {
+          font-size: 8px;
+        }
+
+
+        .editor-body {
+          height: 270px;
+        }
+
+
+        .line-numbers {
+
+          width: 34px;
+
+          padding-inline: 4px;
+
+          font-size: 10px;
+        }
+
+
+        textarea {
+
+          width:
+            calc(100% - 34px);
+
+          padding:
+            14px 10px;
+
+          font-size: 11px;
+        }
+
+
+        .saving-box {
+
+          margin: 9px;
+
+          padding: 10px;
+        }
+
+
+        .saving-stats {
+
+          gap: 8px;
+
+          font-size: 7px;
+        }
+
+
+        .bottom-bar {
+
+          padding:
+            9px 11px;
+        }
+
+
+        .privacy {
+          font-size: 8px;
+        }
+
+
+        .characters {
+
+          gap: 9px;
+
+          font-size: 8px;
+        }
+
+
+        .features-grid {
+
+          grid-template-columns:
+            1fr 1fr;
+
+          gap: 8px;
+        }
+
+
+        .feature {
+
+          padding: 13px;
+
+          gap: 8px;
+
+          flex-direction: column;
+        }
+
+
+        .feature-icon {
+
+          width: 34px;
+          height: 34px;
+        }
+
+      }
+
+
+      @media (max-width: 360px) {
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+
+        .actions .btn {
+          font-size: 0;
+        }
+
+
+        .actions .btn i {
+          font-size: 12px;
+        }
+
+      }
+
+    </style>
+
+
+    <script is:inline>
+      (() => {
+
+        const input =
+          document.getElementById("inputCode");
+
+        const output =
+          document.getElementById("outputCode");
+
+        const minifyBtn =
+          document.getElementById("minifyBtn");
+
+        const copyBtn =
+          document.getElementById("copyBtn");
+
+        const downloadBtn =
+          document.getElementById("downloadBtn");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const status =
+          document.getElementById("status");
+
+        const inputLines =
+          document.getElementById("inputLines");
+
+        const outputLines =
+          document.getElementById("outputLines");
+
+        const inputBytes =
+          document.getElementById("inputBytes");
+
+        const outputBytes =
+          document.getElementById("outputBytes");
+
+        const charCount =
+          document.getElementById("charCount");
+
+        const outputCharCount =
+          document.getElementById("outputCharCount");
+
+        const inputNumbers =
+          document.getElementById("inputNumbers");
+
+        const outputNumbers =
+          document.getElementById("outputNumbers");
+
+        const originalSize =
+          document.getElementById("originalSize");
+
+        const minifiedSize =
+          document.getElementById("minifiedSize");
+
+        const savedSize =
+          document.getElementById("savedSize");
+
+        const savingPercent =
+          document.getElementById("savingPercent");
+
+        const progressBar =
+          document.getElementById("progressBar");
+
+
+        function getLines(text) {
+
+          if (!text) return 0;
+
+          return text
+            .split(/\r\n|\r|\n/)
+            .length;
+        }
+
+
+        function getBytes(text) {
+          return new Blob([text]).size;
+        }
+
+
+        function formatBytes(bytes) {
+
+          if (!bytes) return "0 B";
+
+          const units = [
+            "B",
+            "KB",
+            "MB",
+            "GB"
+          ];
+
+          const index = Math.min(
+            Math.floor(
+              Math.log(bytes) /
+              Math.log(1024)
+            ),
+            units.length - 1
+          );
+
+          const value =
+            bytes /
+            Math.pow(1024, index);
+
+          return (
+            value.toFixed(
+              index === 0 ? 0 : 1
+            ) +
+            " " +
+            units[index]
+          );
+        }
+
+
+        function updateNumbers(
+          element,
+          count
+        ) {
+
+          const safeCount =
+            Math.max(1, count);
+
+          let html = "";
+
+          for (
+            let i = 1;
+            i <= safeCount;
+            i++
+          ) {
+            html += i + "<br>";
+          }
+
+          element.innerHTML = html;
+        }
+
+
+        function updateStats() {
+
+          const original =
+            input.value;
+
+          const minified =
+            output.value;
+
+          const inLines =
+            getLines(original);
+
+          const outLines =
+            getLines(minified);
+
+          inputLines.textContent =
+            `${inLines} ${inLines === 1 ? "سطر" : "أسطر"}`;
+
+          outputLines.textContent =
+            `${outLines} ${outLines === 1 ? "سطر" : "أسطر"}`;
+
+          inputBytes.textContent =
+            formatBytes(
+              getBytes(original)
+            );
+
+          outputBytes.textContent =
+            formatBytes(
+              getBytes(minified)
+            );
+
+          charCount.textContent =
+            original.length.toLocaleString();
+
+          outputCharCount.textContent =
+            minified.length.toLocaleString();
+
+          originalSize.textContent =
+            formatBytes(
+              getBytes(original)
+            );
+
+          minifiedSize.textContent =
+            formatBytes(
+              getBytes(minified)
+            );
+
+          updateNumbers(
+            inputNumbers,
+            inLines
+          );
+
+          updateNumbers(
+            outputNumbers,
+            outLines
+          );
+
+          updateSaving();
+        }
+
+
+        function updateSaving() {
+
+          const original =
+            getBytes(input.value);
+
+          const minified =
+            getBytes(output.value);
+
+          if (!original || !minified) {
+
+            savedSize.textContent =
+              "0 B";
+
+            savingPercent.textContent =
+              "—";
+
+            progressBar.style.width =
+              "0%";
+
+            return;
+          }
+
+
+          const saved =
+            Math.max(
+              0,
+              original - minified
+            );
+
+          const percentage =
+            Math.max(
+              0,
+              Math.min(
+                100,
+                (saved / original) * 100
+              )
+            );
+
+
+          savedSize.textContent =
+            formatBytes(saved);
+
+          savingPercent.textContent =
+            `${percentage.toFixed(1)}%`;
+
+          progressBar.style.width =
+            `${percentage}%`;
+        }
+
+
+        function showStatus(
+          message,
+          error = false
+        ) {
+
+          status.classList.remove(
+            "hidden",
+            "error"
+          );
+
+          status.classList.toggle(
+            "error",
+            error
+          );
+
+          const icon =
+            status.querySelector("i");
+
+          const text =
+            status.querySelector("span");
+
+          icon.className = error
+            ? "fa-solid fa-circle-exclamation"
+            : "fa-solid fa-circle-check";
+
+          text.textContent =
+            message;
+
+          clearTimeout(
+            window.__thMinifierStatus
+          );
+
+          window.__thMinifierStatus =
+            setTimeout(() => {
+
+              status.classList.add(
+                "hidden"
+              );
+
+            }, 3000);
+        }
+
+
+        function isIdentifierChar(char) {
+
+          return !!char &&
+            /[A-Za-z0-9_$]/.test(char);
+        }
+
+
+        function shouldKeepSpace(
+          previous,
+          current
+        ) {
+
+          if (!previous || !current) {
+            return false;
+          }
+
+          if (
+            isIdentifierChar(previous) &&
+            isIdentifierChar(current)
+          ) {
+            return true;
+          }
+
+          if (
+            (previous === "+" &&
+              current === "+") ||
+            (previous === "-" &&
+              current === "-")
+          ) {
+            return true;
+          }
+
+          if (
+            (previous === "/" &&
+              current === "/")
+          ) {
+            return true;
+          }
+
+          return false;
+        }
+
+
+        function minifyJavaScript(source) {
+
+          let result = "";
+
+          let quote = null;
+
+          let template = false;
+
+          let lineComment = false;
+
+          let blockComment = false;
+
+          let escaped = false;
+
+          let pendingSpace = false;
+
+          let previousSignificant = "";
+
+          let regexPossible = true;
+
+
+          const pushChar = (char) => {
+
+            if (pendingSpace) {
+
+              if (
+                shouldKeepSpace(
+                  previousSignificant,
+                  char
+                )
+              ) {
+                result += " ";
+              }
+
+              pendingSpace = false;
+            }
+
+            result += char;
+
+            if (!/\s/.test(char)) {
+              previousSignificant = char;
+            }
+          };
+
+
+          for (
+            let i = 0;
+            i < source.length;
+            i++
+          ) {
+
+            const ch = source[i];
+
+            const next =
+              source[i + 1];
+
+
+            /* LINE COMMENT */
+
+            if (lineComment) {
+
+              if (
+                ch === "\n" ||
+                ch === "\r"
+              ) {
+                lineComment = false;
+                pendingSpace = true;
+              }
+
+              continue;
+            }
+
+
+            /* BLOCK COMMENT */
+
+            if (blockComment) {
+
+              if (
+                ch === "*" &&
+                next === "/"
+              ) {
+
+                blockComment = false;
+
+                i++;
+
+                pendingSpace = true;
+              }
+
+              continue;
+            }
+
+
+            /* STRING */
+
+            if (quote) {
+
+              pushChar(ch);
+
+              if (escaped) {
+                escaped = false;
+              } else if (
+                ch === "\\"
+              ) {
+                escaped = true;
+              } else if (
+                ch === quote
+              ) {
+                quote = null;
+              }
+
+              continue;
+            }
+
+
+            /* TEMPLATE */
+
+            if (template) {
+
+              pushChar(ch);
+
+              if (escaped) {
+
+                escaped = false;
+
+              } else if (
+                ch === "\\"
+              ) {
+
+                escaped = true;
+
+              } else if (
+                ch === "`"
+              ) {
+
+                template = false;
+              }
+
+              continue;
+            }
+
+
+            /* COMMENTS */
+
+            if (
+              ch === "/" &&
+              next === "/"
+            ) {
+
+              lineComment = true;
+
+              i++;
+
+              continue;
+            }
+
+
+            if (
+              ch === "/" &&
+              next === "*"
+            ) {
+
+              blockComment = true;
+
+              i++;
+
+              continue;
+            }
+
+
+            /* QUOTES */
+
+            if (
+              ch === "'" ||
+              ch === '"'
+            ) {
+
+              quote = ch;
+
+              pushChar(ch);
+
+              continue;
+            }
+
+
+            if (ch === "`") {
+
+              template = true;
+
+              pushChar(ch);
+
+              continue;
+            }
+
+
+            /* WHITESPACE */
+
+            if (/\s/.test(ch)) {
+
+              pendingSpace = true;
+
+              continue;
+            }
+
+
+            /*
+             * Remove unnecessary spaces
+             * around common punctuation.
+             */
+
+            if (
+              ch === "," ||
+              ch === ";" ||
+              ch === ")" ||
+              ch === "]"
+            ) {
+
+              pendingSpace = false;
+
+              pushChar(ch);
+
+              continue;
+            }
+
+
+            if (
+              ch === "(" ||
+              ch === "["
+            ) {
+
+              pendingSpace = false;
+
+              pushChar(ch);
+
+              continue;
+            }
+
+
+            if (
+              ch === "{" ||
+              ch === "}"
+            ) {
+
+              pendingSpace = false;
+
+              pushChar(ch);
+
+              continue;
+            }
+
+
+            /*
+             * Basic handling of slash.
+             *
+             * Preserve regular expressions
+             * rather than treating them as comments.
+             */
+
+            if (
+              ch === "/" &&
+              regexPossible &&
+              next !== "/" &&
+              next !== "*"
+            ) {
+
+              pushChar(ch);
+
+              let regexEscaped = false;
+
+              i++;
+
+              while (
+                i < source.length
+              ) {
+
+                const rc =
+                  source[i];
+
+                pushChar(rc);
+
+                if (regexEscaped) {
+
+                  regexEscaped = false;
+
+                } else if (
+                  rc === "\\"
+                ) {
+
+                  regexEscaped = true;
+
+                } else if (
+                  rc === "/"
+                ) {
+
+                  break;
+                }
+
+                i++;
+              }
+
+              while (
+                i + 1 < source.length &&
+                /[a-z]/i.test(
+                  source[i + 1]
+                )
+              ) {
+
+                i++;
+
+                pushChar(
+                  source[i]
+                );
+              }
+
+              regexPossible = false;
+
+              continue;
+            }
+
+
+            pushChar(ch);
+
+
+            /*
+             * Rough context detection for
+             * the next regular expression.
+             */
+
+            if (
+              ch === "=" ||
+              ch === ":" ||
+              ch === "," ||
+              ch === "(" ||
+              ch === "[" ||
+              ch === "{" ||
+              ch === "!" ||
+              ch === "?" ||
+              ch === ";"
+            ) {
+
+              regexPossible = true;
+
+            } else if (
+              /[A-Za-z0-9_$)\]]/.test(ch)
+            ) {
+
+              regexPossible = false;
+            }
+
+          }
+
+
+          return result
+            .trim()
+            .replace(/\s+$/g, "");
+        }
+
+
+        function minifyCode() {
+
+          const source =
+            input.value.trim();
+
+          if (!source) {
+
+            output.value = "";
+
+            updateStats();
+
+            showStatus(
+              "أدخل كود JavaScript أولاً.",
+              true
+            );
+
+            input.focus();
+
+            return;
+          }
+
+
+          try {
+
+            const result =
+              minifyJavaScript(source);
+
+            output.value =
+              result;
+
+            updateStats();
+
+            showStatus(
+              "تم تصغير JavaScript بنجاح."
+            );
+
+          } catch {
+
+            showStatus(
+              "تعذر تصغير الكود.",
+              true
+            );
+          }
+        }
+
+
+        /* MINIFY */
+
+        minifyBtn.addEventListener(
+          "click",
+          minifyCode
+        );
+
+
+        /* COPY */
+
+        copyBtn.addEventListener(
+          "click",
+          async () => {
+
+            if (!output.value) {
+
+              showStatus(
+                "قم بتصغير الكود أولاً.",
+                true
+              );
+
+              return;
+            }
+
+
+            try {
+
+              await navigator.clipboard.writeText(
+                output.value
+              );
+
+              showStatus(
+                "تم نسخ الكود المصغر."
+              );
+
+            } catch {
+
+              output.focus();
+
+              output.select();
+
+              document.execCommand(
+                "copy"
+              );
+
+              showStatus(
+                "تم نسخ الكود المصغر."
+              );
+            }
+          }
+        );
+
+
+        /* DOWNLOAD */
+
+        downloadBtn.addEventListener(
+          "click",
+          () => {
+
+            if (!output.value) {
+
+              showStatus(
+                "قم بتصغير الكود أولاً.",
+                true
+              );
+
+              return;
+            }
+
+
+            const blob =
+              new Blob(
+                [output.value],
+                {
+                  type:
+                    "text/javascript;charset=utf-8"
+                }
+              );
+
+
+            const url =
+              URL.createObjectURL(blob);
+
+            const link =
+              document.createElement("a");
+
+            link.href = url;
+
+            link.download =
+              "minified-javascript.js";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            URL.revokeObjectURL(url);
+
+            showStatus(
+              "تم تنزيل ملف JavaScript المصغر."
+            );
+          }
+        );
+
+
+        /* CLEAR */
+
+        clearBtn.addEventListener(
+          "click",
+          () => {
+
+            input.value = "";
+
+            output.value = "";
+
+            updateStats();
+
+            status.classList.add(
+              "hidden"
+            );
+
+            input.focus();
+          }
+        );
+
+
+        /* INPUT */
+
+        input.addEventListener(
+          "input",
+          updateStats
+        );
+
+
+        /* TAB */
+
+        input.addEventListener(
+          "keydown",
+          (event) => {
+
+            if (event.key === "Tab") {
+
+              event.preventDefault();
+
+              const start =
+                input.selectionStart;
+
+              const end =
+                input.selectionEnd;
+
+              input.value =
+                input.value.substring(
+                  0,
+                  start
+                ) +
+                "  " +
+                input.value.substring(
+                  end
+                );
+
+              input.selectionStart =
+                input.selectionEnd =
+                  start + 2;
+
+              updateStats();
+            }
+
+
+            if (
+              (event.ctrlKey ||
+                event.metaKey) &&
+              event.key === "Enter"
+            ) {
+
+              event.preventDefault();
+
+              minifyCode();
+            }
+
+          }
+        );
+
+
+        /* SCROLL */
+
+        input.addEventListener(
+          "scroll",
+          () => {
+
+            inputNumbers.scrollTop =
+              input.scrollTop;
+          }
+        );
+
+
+        output.addEventListener(
+          "scroll",
+          () => {
+
+            outputNumbers.scrollTop =
+              output.scrollTop;
+          }
+        );
+
+
+        updateStats();
+
+      })();
+    </script>
+
+  </body>
+</html>
