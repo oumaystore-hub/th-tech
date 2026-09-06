@@ -20,85 +20,84 @@ const faqs = [
   },
   {
     q: "هل يمكن استخدام console.log؟",
-    a: "نعم. يمكنك استخدام console.log وconsole.info وconsole.warn وconsole.error وconsole.debug وستظهر المخرجات داخل قسم النتائج."
+    a: "نعم. يمكنك استخدام console.log وconsole.warn وconsole.error وconsole.info وستظهر المخرجات داخل قسم النتائج."
   },
   {
     q: "هل الكود الخاص بي يُرسل إلى الخادم؟",
-    a: "لا. يتم تنفيذ الكود داخل المتصفح، ولا تحتاج الأداة إلى إرسال الكود إلى خادم خارجي."
+    a: "لا. يتم تنفيذ الكود داخل المتصفح باستخدام Web Worker، ولا يتم إرسال الكود إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن إيقاف كود لا نهائي؟",
+    a: "نعم. يتم تشغيل الكود داخل Web Worker ويمكن إيقافه تلقائياً عند تجاوز وقت التنفيذ المحدد."
   }
 ];
 ---
 
 <!doctype html>
 <html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
 
-  <title>{title}</title>
-  <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#2563eb" />
 
-  <link rel="icon" href={`${base}/logo1.png`} />
+    <link rel="icon" href={`${base}/logo1.png`} />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme');
 
-  <script is:inline>
-    (() => {
-      try {
-        const saved = localStorage.getItem('theme');
+          if (saved === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+          } else {
+            document.documentElement.classList.remove('dark-mode');
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
 
-        if (saved === 'dark') {
-          document.documentElement.classList.add('dark-mode');
-        } else {
-          document.documentElement.classList.remove('dark-mode');
-        }
-      } catch {}
-    })();
-  </script>
-</head>
+  <body>
+    <Header />
 
-<body>
+    <main class="page">
 
-  <Header />
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
 
-  <main>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container">
-
-        <div class="breadcrumb">
-          <a href={`${base}/`}>الرئيسية</a>
-          <i class="fa-solid fa-chevron-left"></i>
-
-          <a href={`${base}/tools/`}>الأدوات</a>
-          <i class="fa-solid fa-chevron-left"></i>
-
-          <span>JavaScript Playground</span>
-        </div>
-
-
-        <div class="hero-content">
+          <div class="breadcrumb">
+            <a href={`${base}/`}>الرئيسية</a>
+            <span>/</span>
+            <a href={`${base}/tools/`}>الأدوات</a>
+            <span>/</span>
+            <span>JavaScript Playground</span>
+          </div>
 
           <div class="hero-icon">
             <i class="fa-brands fa-js"></i>
           </div>
 
-          <div class="hero-label">
-            <i class="fa-solid fa-code"></i>
-            JavaScript
+          <div class="hero-kicker">
+            <i class="fa-solid fa-terminal"></i>
+            JavaScript Tools
           </div>
 
           <h1>
@@ -107,115 +106,368 @@ const faqs = [
           </h1>
 
           <p>
-            جرّب وشغّل أكواد JavaScript مباشرة من المتصفح
-            مع عرض النتائج والأخطاء بسهولة.
+            اكتب وشغّل أكواد JavaScript مباشرة من المتصفح
+            وشاهد النتائج والأخطاء في الوقت الحقيقي.
           </p>
 
         </div>
-
-      </div>
-    </section>
+      </section>
 
 
-    <!-- TOOL -->
-    <section class="tool-section">
-      <div class="container">
+      <!-- TOOL -->
+      <section class="tool-section">
+        <div class="container">
 
-        <div class="tool-card">
+          <div class="tool-card">
 
-          <!-- TOOL HEADER -->
-          <div class="tool-header">
+            <!-- TOOL HEADER -->
+            <div class="tool-top">
 
-            <div class="tool-title">
+              <div class="tool-title">
+                <div class="tool-title-icon">
+                  <i class="fa-brands fa-js"></i>
+                </div>
 
-              <div class="tool-title-icon">
-                <i class="fa-brands fa-js"></i>
+                <div>
+                  <h2>JavaScript Playground</h2>
+                  <p>محرر JavaScript تفاعلي لتجربة الأكواد بسرعة.</p>
+                </div>
               </div>
 
-              <div>
-                <h2>JavaScript Playground</h2>
-                <p>اكتب الكود وشغّله مباشرة</p>
+              <div class="tool-actions">
+
+                <button id="exampleBtn" class="btn btn-secondary">
+                  <i class="fa-solid fa-lightbulb"></i>
+                  مثال
+                </button>
+
+                <button id="clearBtn" class="btn btn-secondary">
+                  <i class="fa-solid fa-trash"></i>
+                  مسح
+                </button>
+
+                <button id="runBtn" class="btn btn-primary">
+                  <i class="fa-solid fa-play"></i>
+                  تشغيل
+                </button>
+
               </div>
 
             </div>
 
 
-            <div class="tool-actions">
+            <!-- WORKSPACE -->
+            <div class="workspace">
 
-              <button
-                id="exampleBtn"
-                class="btn btn-secondary"
-                type="button"
-                title="تحميل مثال"
-              >
-                <i class="fa-solid fa-lightbulb"></i>
-                مثال
-              </button>
+              <!-- EDITOR -->
+              <div class="panel editor-panel">
+
+                <div class="panel-header">
+
+                  <div class="panel-name">
+                    <span class="status-dot"></span>
+                    JavaScript
+                  </div>
+
+                  <div class="panel-meta">
+                    <span id="lineCount">1 سطر</span>
+                    <span id="charCount">0 حرف</span>
+                  </div>
+
+                </div>
+
+                <div class="editor-wrapper">
+
+                  <div id="lineNumbers" class="line-numbers">1</div>
+
+                  <textarea
+                    id="codeInput"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder="// اكتب كود JavaScript هنا..."
+                  ></textarea>
+
+                </div>
+
+                <div class="editor-footer">
+                  <span>
+                    <i class="fa-solid fa-keyboard"></i>
+                    Ctrl + Enter للتشغيل
+                  </span>
+
+                  <span>
+                    <i class="fa-solid fa-code"></i>
+                    JavaScript
+                  </span>
+                </div>
+
+              </div>
 
 
-              <button
-                id="clearBtn"
-                class="btn btn-secondary"
-                type="button"
-                title="مسح الكود"
-              >
-                <i class="fa-solid fa-trash"></i>
-                مسح
-              </button>
+              <!-- OUTPUT -->
+              <div class="panel output-panel">
+
+                <div class="panel-header">
+
+                  <div class="panel-name">
+                    <span class="output-icon">
+                      <i class="fa-solid fa-terminal"></i>
+                    </span>
+                    Console
+                  </div>
+
+                  <button id="clearOutputBtn" class="clear-output">
+                    <i class="fa-solid fa-broom"></i>
+                    مسح النتائج
+                  </button>
+
+                </div>
+
+                <div id="output" class="console">
+                  <div class="console-empty">
+                    <i class="fa-solid fa-play"></i>
+                    <p>اضغط على "تشغيل" لعرض النتائج</p>
+                  </div>
+                </div>
+
+                <div class="output-footer">
+
+                  <div id="status" class="status status-idle">
+                    <span class="status-circle"></span>
+                    جاهز للتشغيل
+                  </div>
+
+                  <div id="executionTime">
+                    0 ms
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
 
 
-              <button
-                id="runBtn"
-                class="btn btn-primary"
-                type="button"
-                title="تشغيل الكود"
-              >
-                <i class="fa-solid fa-play"></i>
-                تشغيل
-              </button>
+            <!-- STATS -->
+            <div class="stats-grid">
+
+              <div class="stat-card">
+                <div class="stat-icon blue">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <div>
+                  <strong>فوري</strong>
+                  <span>تشغيل مباشر</span>
+                </div>
+              </div>
+
+
+              <div class="stat-card">
+                <div class="stat-icon cyan">
+                  <i class="fa-solid fa-terminal"></i>
+                </div>
+
+                <div>
+                  <strong>Console</strong>
+                  <span>عرض النتائج</span>
+                </div>
+              </div>
+
+
+              <div class="stat-card">
+                <div class="stat-icon red">
+                  <i class="fa-solid fa-bug"></i>
+                </div>
+
+                <div>
+                  <strong>Errors</strong>
+                  <span>كشف الأخطاء</span>
+                </div>
+              </div>
+
+
+              <div class="stat-card">
+                <div class="stat-icon green">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                  <strong>محلي</strong>
+                  <span>داخل المتصفح</span>
+                </div>
+              </div>
 
             </div>
 
           </div>
 
 
-          <!-- WORKSPACE -->
-          <div class="workspace">
+          <!-- INFO -->
+          <div class="info-grid">
 
-            <!-- EDITOR -->
-            <div class="editor-box">
+            <div class="info-card">
+              <div class="info-icon blue">
+                <i class="fa-solid fa-play"></i>
+              </div>
 
-              <div class="box-header">
+              <h3>تشغيل JavaScript</h3>
 
-                <div class="box-title">
-                  <span class="dot js"></span>
-                  JavaScript
+              <p>
+                اكتب أي كود JavaScript ثم اضغط على زر التشغيل
+                لمشاهدة النتيجة مباشرة.
+              </p>
+            </div>
+
+
+            <div class="info-card">
+              <div class="info-icon cyan">
+                <i class="fa-solid fa-terminal"></i>
+              </div>
+
+              <h3>Console تفاعلي</h3>
+
+              <p>
+                استخدم console.log وconsole.warn وconsole.error
+                لمتابعة مخرجات الكود.
+              </p>
+            </div>
+
+
+            <div class="info-card">
+              <div class="info-icon purple">
+                <i class="fa-solid fa-bug"></i>
+              </div>
+
+              <h3>كشف الأخطاء</h3>
+
+              <p>
+                تظهر أخطاء JavaScript داخل نافذة النتائج
+                مع تفاصيل الخطأ لتسهيل تصحيحه.
+              </p>
+            </div>
+
+          </div>
+
+
+          <!-- HOW TO -->
+          <section class="content-section">
+
+            <div class="section-heading">
+              <span>طريقة الاستخدام</span>
+              <h2>كيف تستخدم JavaScript Playground؟</h2>
+            </div>
+
+            <div class="steps-grid">
+
+              <div class="step-card">
+                <div class="step-number">1</div>
+
+                <div>
+                  <h3>اكتب الكود</h3>
+                  <p>
+                    اكتب JavaScript في محرر الأكواد الموجود في الصفحة.
+                  </p>
                 </div>
-
-                <div id="lineCount">
-                  1 سطر
-                </div>
-
               </div>
 
 
-              <div class="editor">
+              <div class="step-card">
+                <div class="step-number">2</div>
 
-                <div
-                  id="lineNumbers"
-                  class="line-numbers"
-                  aria-hidden="true"
-                >1</div>
+                <div>
+                  <h3>شغّل الكود</h3>
+                  <p>
+                    اضغط على تشغيل أو استخدم الاختصار Ctrl + Enter.
+                  </p>
+                </div>
+              </div>
 
 
-                <textarea
-                  id="codeInput"
-                  spellcheck="false"
-                  autocomplete="off"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  aria-label="JavaScript code editor"
-                >const name = "Th.Tech";
+              <div class="step-card">
+                <div class="step-number">3</div>
+
+                <div>
+                  <h3>شاهد النتيجة</h3>
+                  <p>
+                    ستظهر المخرجات والأخطاء داخل Console مباشرة.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- FAQ -->
+          <section class="content-section faq-section">
+
+            <div class="section-heading">
+              <span>الأسئلة الشائعة</span>
+              <h2>أسئلة حول JavaScript Playground</h2>
+            </div>
+
+            <div class="faq-list">
+
+              {
+                faqs.map((faq) => (
+                  <details>
+                    <summary>
+                      <span>{faq.q}</span>
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+
+                    <div class="faq-answer">
+                      {faq.a}
+                    </div>
+                  </details>
+                ))
+              }
+
+            </div>
+
+          </section>
+
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+
+
+    <!-- JAVASCRIPT -->
+    <script is:inline>
+      (() => {
+
+        const codeInput = document.getElementById('codeInput');
+        const output = document.getElementById('output');
+
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const exampleBtn = document.getElementById('exampleBtn');
+        const clearOutputBtn = document.getElementById('clearOutputBtn');
+
+        const lineNumbers = document.getElementById('lineNumbers');
+        const lineCount = document.getElementById('lineCount');
+        const charCount = document.getElementById('charCount');
+
+        const status = document.getElementById('status');
+        const executionTime = document.getElementById('executionTime');
+
+        let activeWorker = null;
+        let executionTimer = null;
+        let startedAt = 0;
+
+
+        /* =========================================
+           EXAMPLE
+        ========================================= */
+
+        const exampleCode = `const name = "Th.Tech";
 
 console.log("مرحباً بك في " + name);
 
@@ -226,2599 +478,2270 @@ const total = numbers.reduce(
   0
 );
 
-console.log("المجموع:", total);</textarea>
+console.log("المجموع:", total);
 
-              </div>
+const doubled = numbers.map(number => number * 2);
+
+console.log("الأرقام بعد الضرب:", doubled);
+
+total;`;
 
 
-              <div class="editor-footer">
+        /* =========================================
+           UPDATE EDITOR STATS
+        ========================================= */
 
-                <span>
-                  <i class="fa-brands fa-js"></i>
-                  JavaScript
-                </span>
+        function updateStats() {
 
-                <span id="charCount">
-                  0 حرف
-                </span>
+          const code = codeInput.value;
 
-              </div>
+          const lines = code.length
+            ? code.split('\n').length
+            : 1;
 
+          lineCount.textContent =
+            `${lines} ${lines === 1 ? 'سطر' : 'أسطر'}`;
+
+          charCount.textContent =
+            `${code.length} حرف`;
+
+          const numbers = [];
+
+          for (let i = 1; i <= lines; i++) {
+            numbers.push(i);
+          }
+
+          lineNumbers.textContent =
+            numbers.join('\n');
+        }
+
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        function setStatus(type, text) {
+
+          status.className = `status status-${type}`;
+
+          status.innerHTML = `
+            <span class="status-circle"></span>
+            ${text}
+          `;
+        }
+
+
+        /* =========================================
+           ESCAPE HTML
+        ========================================= */
+
+        function escapeHtml(value) {
+
+          return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        }
+
+
+        /* =========================================
+           FORMAT VALUE
+        ========================================= */
+
+        function formatValue(value) {
+
+          if (value === undefined) {
+            return 'undefined';
+          }
+
+          if (value === null) {
+            return 'null';
+          }
+
+          if (typeof value === 'string') {
+            return value;
+          }
+
+          if (typeof value === 'function') {
+            return value.toString();
+          }
+
+          if (typeof value === 'object') {
+
+            try {
+
+              return JSON.stringify(
+                value,
+                null,
+                2
+              );
+
+            } catch {
+
+              return String(value);
+
+            }
+
+          }
+
+          return String(value);
+        }
+
+
+        /* =========================================
+           ADD OUTPUT
+        ========================================= */
+
+        function addOutput(type, values) {
+
+          const empty =
+            output.querySelector('.console-empty');
+
+          if (empty) {
+            empty.remove();
+          }
+
+          const row =
+            document.createElement('div');
+
+          row.className =
+            `console-row console-${type}`;
+
+          const iconMap = {
+            log: 'fa-circle-info',
+            info: 'fa-circle-info',
+            warn: 'fa-triangle-exclamation',
+            error: 'fa-circle-xmark',
+            result: 'fa-arrow-right'
+          };
+
+          const icon =
+            iconMap[type] || 'fa-circle-info';
+
+          const content =
+            values
+              .map(value => escapeHtml(value))
+              .join(' ');
+
+          row.innerHTML = `
+            <div class="console-type">
+              <i class="fa-solid ${icon}"></i>
             </div>
 
+            <pre>${content}</pre>
+          `;
 
-            <!-- OUTPUT -->
-            <div class="output-box">
+          output.appendChild(row);
 
-              <div class="box-header">
+          output.scrollTop =
+            output.scrollHeight;
+        }
 
-                <div class="box-title">
-                  <span class="dot output"></span>
-                  النتائج
-                </div>
 
+        /* =========================================
+           RESET OUTPUT
+        ========================================= */
 
-                <button
-                  id="clearOutput"
-                  class="clear-output"
-                  type="button"
-                  title="مسح النتائج"
-                >
-                  <i class="fa-solid fa-eraser"></i>
-                  مسح
-                </button>
+        function resetOutput() {
 
-              </div>
-
-
-              <div id="output" class="output">
-
-                <div class="output-empty">
-
-                  <div class="empty-icon">
-                    <i class="fa-solid fa-terminal"></i>
-                  </div>
-
-                  <strong>لا توجد نتائج بعد</strong>
-
-                  <span>
-                    اضغط على "تشغيل" لتنفيذ الكود
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div class="output-footer">
-
-                <span id="status">
-                  <i class="fa-solid fa-circle"></i>
-                  جاهز
-                </span>
-
-                <span id="executionTime">
-                  0 ms
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- SHORTCUT HINT -->
-          <div class="shortcut-hint">
-            <span>
-              <i class="fa-solid fa-keyboard"></i>
-              اختصار التشغيل
-            </span>
-
-            <kbd>Ctrl</kbd>
-            <span>+</span>
-            <kbd>Enter</kbd>
-
-            <span class="shortcut-separator"></span>
-
-            <span class="local-badge">
-              <i class="fa-solid fa-shield-halved"></i>
-              تنفيذ محلي
-            </span>
-          </div>
-
-
-          <!-- STATS -->
-          <div class="stats">
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-bolt"></i>
-              </div>
-
-              <div>
-                <strong>تشغيل فوري</strong>
-                <span>داخل المتصفح</span>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-terminal"></i>
-              </div>
-
-              <div>
-                <strong>Console</strong>
-                <span>عرض المخرجات</span>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-              </div>
-
-              <div>
-                <strong>كشف الأخطاء</strong>
-                <span>رسائل واضحة</span>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-
-              <div>
-                <strong>محلي</strong>
-                <span>بدون خادم</span>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- INFORMATION -->
-    <section class="information">
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="section-label">
-            <i class="fa-solid fa-circle-info"></i>
-            حول الأداة
-          </div>
-
-          <h2>
-            جرّب JavaScript
-            <span>بسهولة</span>
-          </h2>
-
-          <p>
-            بيئة تفاعلية بسيطة وسريعة لتجربة أكواد JavaScript
-            واختبار الأفكار البرمجية مباشرة من المتصفح.
-          </p>
-
-        </div>
-
-
-        <div class="info-grid">
-
-          <article class="info-card">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-code"></i>
-            </div>
-
-            <h3>محرر JavaScript</h3>
-
-            <p>
-              اكتب وعدّل كود JavaScript بسهولة داخل محرر
-              يدعم ترقيم الأسطر والتنسيق المناسب للكود.
-            </p>
-
-          </article>
-
-
-          <article class="info-card">
-
-            <div class="info-icon">
+          output.innerHTML = `
+            <div class="console-empty">
               <i class="fa-solid fa-play"></i>
+              <p>اضغط على "تشغيل" لعرض النتائج</p>
             </div>
+          `;
 
-            <h3>تشغيل مباشر</h3>
+          executionTime.textContent = '0 ms';
 
-            <p>
-              نفّذ الكود مباشرة من المتصفح وشاهد النتائج
-              بدون الحاجة إلى إعداد بيئة تطوير كاملة.
-            </p>
+        }
 
-          </article>
 
+        /* =========================================
+           STOP WORKER
+        ========================================= */
 
-          <article class="info-card">
+        function stopWorker() {
 
-            <div class="info-icon">
-              <i class="fa-solid fa-terminal"></i>
-            </div>
+          if (activeWorker) {
 
-            <h3>عرض النتائج</h3>
+            try {
+              activeWorker.terminate();
+            } catch {}
 
-            <p>
-              تظهر مخرجات console والرسائل التحذيرية
-              والأخطاء داخل نافذة نتائج مخصصة.
-            </p>
+            activeWorker = null;
+          }
 
-          </article>
+          if (executionTimer) {
 
-        </div>
+            clearTimeout(executionTimer);
 
-      </div>
-    </section>
+            executionTimer = null;
+          }
 
+        }
 
-    <!-- HOW TO -->
-    <section class="how-to">
-      <div class="container">
 
-        <div class="section-heading">
+        /* =========================================
+           FINISH EXECUTION
+        ========================================= */
 
-          <div class="section-label">
-            <i class="fa-solid fa-list-check"></i>
-            طريقة الاستخدام
-          </div>
+        function finishExecution(error = false) {
 
-          <h2>
-            كيف تستخدم
-            <span>الأداة؟</span>
-          </h2>
+          if (executionTimer) {
 
-        </div>
+            clearTimeout(executionTimer);
 
+            executionTimer = null;
+          }
 
-        <div class="steps">
+          const elapsed =
+            Math.max(
+              0,
+              performance.now() - startedAt
+            );
 
-          <div class="step">
+          executionTime.textContent =
+            `${elapsed.toFixed(1)} ms`;
 
-            <div class="step-number">
-              1
-            </div>
+          if (error) {
+            setStatus('error', 'حدث خطأ أثناء التنفيذ');
+          } else {
+            setStatus('success', 'تم التنفيذ بنجاح');
+          }
 
-            <div>
-              <h3>اكتب الكود</h3>
+          runBtn.disabled = false;
 
-              <p>
-                اكتب كود JavaScript الذي تريد تجربته
-                داخل محرر الكود.
-              </p>
-            </div>
+          runBtn.innerHTML = `
+            <i class="fa-solid fa-play"></i>
+            تشغيل
+          `;
 
-          </div>
+          activeWorker = null;
+        }
 
 
-          <div class="step">
+        /* =========================================
+           RUN CODE
+        ========================================= */
 
-            <div class="step-number">
-              2
-            </div>
+        function runCode() {
 
-            <div>
-              <h3>شغّل الكود</h3>
+          const code =
+            codeInput.value.trim();
 
-              <p>
-                اضغط على زر "تشغيل" أو استخدم
-                الاختصار Ctrl + Enter.
-              </p>
-            </div>
+          if (!code) {
 
-          </div>
+            resetOutput();
 
+            addOutput(
+              'warn',
+              ['اكتب كود JavaScript أولاً.']
+            );
 
-          <div class="step">
+            setStatus(
+              'warning',
+              'لا يوجد كود للتشغيل'
+            );
 
-            <div class="step-number">
-              3
-            </div>
+            return;
+          }
 
-            <div>
-              <h3>شاهد النتيجة</h3>
 
-              <p>
-                ستظهر المخرجات والأخطاء في قسم النتائج
-                مباشرة.
-              </p>
-            </div>
+          /* Stop previous execution */
 
-          </div>
+          stopWorker();
 
-        </div>
 
-      </div>
-    </section>
+          /* Reset */
 
+          resetOutput();
 
-    <!-- FAQ -->
-    <section class="faq">
-      <div class="container">
+          setStatus(
+            'running',
+            'جاري تنفيذ الكود...'
+          );
 
-        <div class="section-heading">
 
-          <div class="section-label">
-            <i class="fa-solid fa-circle-question"></i>
-            الأسئلة الشائعة
-          </div>
+          runBtn.disabled = false;
 
-          <h2>
-            أسئلة حول
-            <span>JavaScript Playground</span>
-          </h2>
+          runBtn.innerHTML = `
+            <i class="fa-solid fa-stop"></i>
+            إيقاف
+          `;
 
-        </div>
 
+          startedAt =
+            performance.now();
 
-        <div class="faq-list">
 
-          {faqs.map((faq) => (
-            <details class="faq-item">
+          /*
+           * Web Worker source.
+           *
+           * String.raw is intentionally used here so
+           * escape sequences such as \n remain valid
+           * inside the generated worker script.
+           */
 
-              <summary>
-                <span>{faq.q}</span>
+          const workerSource = String.raw`
 
-                <i class="fa-solid fa-chevron-down"></i>
-              </summary>
+            self.onmessage = async function(event) {
 
-              <p>{faq.a}</p>
+              const code = event.data.code;
 
-            </details>
-          ))}
 
-        </div>
+              function normalize(value) {
 
-      </div>
-    </section>
+                if (value === undefined) {
+                  return 'undefined';
+                }
 
-  </main>
+                if (value === null) {
+                  return 'null';
+                }
 
+                if (typeof value === 'string') {
+                  return value;
+                }
 
-  <Footer />
+                if (typeof value === 'function') {
+                  return value.toString();
+                }
 
+                if (typeof value === 'object') {
 
-  <style>
+                  try {
 
-    :global(*) {
-      box-sizing: border-box;
-    }
+                    return JSON.stringify(
+                      value,
+                      null,
+                      2
+                    );
 
+                  } catch {
 
-    :global(html) {
-      scroll-behavior: smooth;
-    }
+                    return String(value);
 
+                  }
 
-    :global(body) {
-      margin: 0;
+                }
 
-      font-family: "Cairo", sans-serif;
+                return String(value);
+              }
 
-      background: var(--bg);
 
-      color: var(--text);
+              function send(type, values) {
 
-      transition:
-        background .25s ease,
-        color .25s ease;
-    }
+                self.postMessage({
+                  type,
+                  values
+                });
 
+              }
 
-    :global(button),
-    :global(textarea) {
-      font-family: inherit;
-    }
 
+              console.log = function() {
 
-    :root {
-      --bg: #f8fafc;
-      --bg2: #f1f5f9;
+                send(
+                  'log',
+                  Array.from(arguments).map(normalize)
+                );
 
-      --card: #ffffff;
-      --card2: #f8fafc;
+              };
 
-      --text: #0f172a;
-      --muted: #64748b;
 
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+              console.info = function() {
 
-      --cyan: #0891b2;
-      --green: #16a34a;
-      --red: #dc2626;
+                send(
+                  'info',
+                  Array.from(arguments).map(normalize)
+                );
 
-      --border: rgba(15, 23, 42, .09);
+              };
 
-      --shadow:
-        0 20px 60px rgba(15, 23, 42, .08);
 
-      --code-bg: #0b1220;
-      --code-text: #e2e8f0;
-    }
+              console.warn = function() {
 
+                send(
+                  'warn',
+                  Array.from(arguments).map(normalize)
+                );
 
-    :global(.dark-mode) {
+              };
 
-      --bg: #07101f;
-      --bg2: #0b1426;
 
-      --card: #111d32;
-      --card2: #0d1729;
+              console.error = function() {
 
-      --text: #f8fafc;
-      --muted: #94a3b8;
+                send(
+                  'error',
+                  Array.from(arguments).map(normalize)
+                );
 
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
+              };
 
-      --cyan: #06b6d4;
-      --green: #22c55e;
-      --red: #ef4444;
 
-      --border: rgba(148, 163, 184, .12);
+              try {
 
-      --shadow:
-        0 20px 60px rgba(0, 0, 0, .28);
+                /*
+                 * The important part:
+                 *
+                 * \n is a real JavaScript escape sequence
+                 * inside the generated Function source.
+                 */
 
-      --code-bg: #07101d;
-      --code-text: #e2e8f0;
-    }
+                const fn =
+                  new Function(
+                    '"use strict";\n' + code
+                  );
 
 
-    .container {
-      width: min(1120px, calc(100% - 32px));
+                const result =
+                  await fn();
 
-      margin-inline: auto;
-    }
 
+                if (typeof result !== 'undefined') {
 
-    /* =========================
-       HERO
-    ========================= */
+                  send(
+                    'result',
+                    [normalize(result)]
+                  );
 
-    .hero {
-      padding: 32px 0 48px;
+                }
 
-      background:
-        radial-gradient(
-          circle at 20% 20%,
-          rgba(37, 99, 235, .08),
-          transparent 32%
-        ),
-        radial-gradient(
-          circle at 80% 20%,
-          rgba(8, 145, 178, .07),
-          transparent 32%
+
+                self.postMessage({
+                  type: 'done',
+                  error: false
+                });
+
+
+              } catch (error) {
+
+                send(
+                  'error',
+                  [
+                    error && error.stack
+                      ? error.stack
+                      : String(error)
+                  ]
+                );
+
+
+                self.postMessage({
+                  type: 'done',
+                  error: true
+                });
+
+              }
+
+            };
+
+          `;
+
+
+          let workerUrl = null;
+
+
+          try {
+
+            const blob =
+              new Blob(
+                [workerSource],
+                {
+                  type: 'application/javascript'
+                }
+              );
+
+
+            workerUrl =
+              URL.createObjectURL(blob);
+
+
+            activeWorker =
+              new Worker(workerUrl);
+
+
+            activeWorker.onmessage =
+              function(event) {
+
+                const data =
+                  event.data;
+
+
+                if (
+                  data.type === 'log' ||
+                  data.type === 'info' ||
+                  data.type === 'warn' ||
+                  data.type === 'error' ||
+                  data.type === 'result'
+                ) {
+
+                  addOutput(
+                    data.type,
+                    data.values || []
+                  );
+
+                }
+
+
+                if (data.type === 'done') {
+
+                  const hasError =
+                    Boolean(data.error);
+
+                  finishExecution(
+                    hasError
+                  );
+
+                  if (activeWorker) {
+
+                    try {
+                      activeWorker.terminate();
+                    } catch {}
+
+                  }
+
+                  activeWorker = null;
+
+                  if (workerUrl) {
+
+                    URL.revokeObjectURL(
+                      workerUrl
+                    );
+
+                    workerUrl = null;
+                  }
+
+                }
+
+              };
+
+
+            activeWorker.onerror =
+              function(event) {
+
+                addOutput(
+                  'error',
+                  [
+                    event.message ||
+                    'حدث خطأ أثناء تنفيذ JavaScript.'
+                  ]
+                );
+
+                finishExecution(true);
+
+                if (activeWorker) {
+
+                  try {
+                    activeWorker.terminate();
+                  } catch {}
+
+                }
+
+                activeWorker = null;
+
+                if (workerUrl) {
+
+                  URL.revokeObjectURL(
+                    workerUrl
+                  );
+
+                  workerUrl = null;
+                }
+
+              };
+
+
+            /*
+             * Maximum execution time:
+             * 5 seconds.
+             */
+
+            executionTimer =
+              setTimeout(
+                function() {
+
+                  if (!activeWorker) {
+                    return;
+                  }
+
+
+                  activeWorker.terminate();
+
+                  activeWorker = null;
+
+
+                  if (workerUrl) {
+
+                    URL.revokeObjectURL(
+                      workerUrl
+                    );
+
+                    workerUrl = null;
+                  }
+
+
+                  addOutput(
+                    'error',
+                    [
+                      'تم إيقاف التنفيذ لأن الكود تجاوز الحد الأقصى للوقت (5 ثوانٍ).'
+                    ]
+                  );
+
+
+                  executionTime.textContent =
+                    'Timeout';
+
+
+                  setStatus(
+                    'error',
+                    'تم إيقاف التنفيذ'
+                  );
+
+
+                  runBtn.disabled = false;
+
+                  runBtn.innerHTML = `
+                    <i class="fa-solid fa-play"></i>
+                    تشغيل
+                  `;
+
+                  executionTimer = null;
+
+                },
+                5000
+              );
+
+
+            activeWorker.postMessage({
+              code
+            });
+
+
+          } catch (error) {
+
+            addOutput(
+              'error',
+              [
+                error && error.message
+                  ? error.message
+                  : String(error)
+              ]
+            );
+
+            finishExecution(true);
+
+          }
+
+        }
+
+
+        /* =========================================
+           RUN / STOP BUTTON
+        ========================================= */
+
+        runBtn.addEventListener(
+          'click',
+          function() {
+
+            if (activeWorker) {
+
+              stopWorker();
+
+              setStatus(
+                'warning',
+                'تم إيقاف التنفيذ'
+              );
+
+              executionTime.textContent =
+                `${(
+                  performance.now() - startedAt
+                ).toFixed(1)} ms`;
+
+
+              runBtn.disabled = false;
+
+              runBtn.innerHTML = `
+                <i class="fa-solid fa-play"></i>
+                تشغيل
+              `;
+
+              return;
+            }
+
+
+            runCode();
+
+          }
         );
-    }
 
 
-    .breadcrumb {
-      display: flex;
+        /* =========================================
+           EXAMPLE
+        ========================================= */
 
-      align-items: center;
+        exampleBtn.addEventListener(
+          'click',
+          function() {
 
-      flex-wrap: wrap;
+            stopWorker();
 
-      gap: 8px;
+            codeInput.value =
+              exampleCode;
 
-      color: var(--muted);
+            updateStats();
 
-      font-size: 12px;
+            resetOutput();
 
-      margin-bottom: 28px;
-    }
+            setStatus(
+              'idle',
+              'تم تحميل المثال'
+            );
 
+            codeInput.focus();
 
-    .breadcrumb a {
-      color: var(--muted);
+          }
+        );
 
-      text-decoration: none;
 
-      transition: color .2s ease;
-    }
+        /* =========================================
+           CLEAR CODE
+        ========================================= */
 
+        clearBtn.addEventListener(
+          'click',
+          function() {
 
-    .breadcrumb a:hover {
-      color: var(--primary);
-    }
+            stopWorker();
 
+            codeInput.value = '';
 
-    .breadcrumb i {
-      font-size: 8px;
+            updateStats();
 
-      opacity: .6;
-    }
+            resetOutput();
 
+            setStatus(
+              'idle',
+              'تم مسح الكود'
+            );
 
-    .hero-content {
-      max-width: 720px;
+            runBtn.disabled = false;
 
-      margin-inline: auto;
+            runBtn.innerHTML = `
+              <i class="fa-solid fa-play"></i>
+              تشغيل
+            `;
 
-      text-align: center;
-    }
+            codeInput.focus();
 
+          }
+        );
 
-    .hero-icon {
-      width: 70px;
-      height: 70px;
 
-      margin: 0 auto 16px;
+        /* =========================================
+           CLEAR OUTPUT
+        ========================================= */
 
-      display: grid;
+        clearOutputBtn.addEventListener(
+          'click',
+          function() {
 
-      place-items: center;
+            resetOutput();
 
-      border-radius: 20px;
+            setStatus(
+              'idle',
+              'جاهز للتشغيل'
+            );
 
-      color: #facc15;
+          }
+        );
 
-      background: rgba(37, 99, 235, .09);
 
-      border: 1px solid rgba(37, 99, 235, .13);
+        /* =========================================
+           INPUT
+        ========================================= */
 
-      font-size: 34px;
+        codeInput.addEventListener(
+          'input',
+          updateStats
+        );
 
-      box-shadow: var(--shadow);
-    }
 
+        /* =========================================
+           SCROLL LINE NUMBERS
+        ========================================= */
 
-    .hero-label,
-    .section-label {
-      display: inline-flex;
+        codeInput.addEventListener(
+          'scroll',
+          function() {
 
-      align-items: center;
+            lineNumbers.scrollTop =
+              codeInput.scrollTop;
 
-      gap: 7px;
+          }
+        );
 
-      color: var(--primary);
 
-      font-size: 12px;
+        /* =========================================
+           TAB SUPPORT
+        ========================================= */
 
-      font-weight: 800;
-    }
+        codeInput.addEventListener(
+          'keydown',
+          function(event) {
 
+            if (event.key === 'Tab') {
 
-    .hero-label {
-      margin-bottom: 8px;
-    }
+              event.preventDefault();
 
+              const start =
+                codeInput.selectionStart;
 
-    .hero h1 {
-      margin: 0;
+              const end =
+                codeInput.selectionEnd;
 
-      font-size: clamp(31px, 5vw, 50px);
+              codeInput.value =
+                codeInput.value.substring(
+                  0,
+                  start
+                ) +
+                '  ' +
+                codeInput.value.substring(
+                  end
+                );
 
-      line-height: 1.2;
+              codeInput.selectionStart =
+                codeInput.selectionEnd =
+                  start + 2;
 
-      font-weight: 800;
+              updateStats();
 
-      letter-spacing: -.8px;
-    }
+            }
 
 
-    .hero h1 span,
-    .section-heading h2 span {
-      color: var(--primary);
-    }
+            /* Ctrl + Enter / Cmd + Enter */
 
+            if (
+              event.key === 'Enter' &&
+              (event.ctrlKey || event.metaKey)
+            ) {
 
-    .hero p {
-      max-width: 620px;
+              event.preventDefault();
 
-      margin: 13px auto 0;
+              if (!activeWorker) {
+                runCode();
+              }
 
-      color: var(--muted);
+            }
 
-      font-size: 14px;
+          }
+        );
 
-      line-height: 1.9;
-    }
 
+        /* =========================================
+           INITIAL STATE
+        ========================================= */
 
-    /* =========================
-       TOOL
-    ========================= */
+        updateStats();
 
-    .tool-section {
-      padding-bottom: 70px;
-    }
+      })();
+    </script>
 
 
-    .tool-card {
-      overflow: hidden;
+    <!-- STYLE -->
+    <style>
 
-      background: var(--card);
+      :root {
+        --bg: #f8fafc;
+        --bg2: #f1f5f9;
+        --card: #ffffff;
+        --card2: #f8fafc;
 
-      border: 1px solid var(--border);
+        --text: #0f172a;
+        --muted: #64748b;
 
-      border-radius: 22px;
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
 
-      box-shadow: var(--shadow);
-    }
+        --cyan: #0891b2;
+        --green: #16a34a;
+        --red: #dc2626;
+        --yellow: #d97706;
+        --purple: #7c3aed;
 
+        --border: rgba(15, 23, 42, 0.09);
 
-    .tool-header {
-      min-height: 76px;
-
-      padding: 13px 16px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      border-bottom: 1px solid var(--border);
-
-      background: var(--card2);
-    }
-
-
-    .tool-title {
-      display: flex;
-
-      align-items: center;
-
-      gap: 11px;
-    }
-
-
-    .tool-title-icon {
-      width: 40px;
-      height: 40px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 11px;
-
-      color: #facc15;
-
-      background: rgba(37, 99, 235, .1);
-    }
-
-
-    .tool-title h2 {
-      margin: 0;
-
-      font-size: 14px;
-
-      font-weight: 800;
-    }
-
-
-    .tool-title p {
-      margin: 2px 0 0;
-
-      color: var(--muted);
-
-      font-size: 10px;
-    }
-
-
-    .tool-actions {
-      display: flex;
-
-      gap: 7px;
-    }
-
-
-    .btn {
-      min-height: 40px;
-
-      padding: 0 14px;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 7px;
-
-      border-radius: 10px;
-
-      font-size: 12px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        transform .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
-    }
-
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-
-    .btn:focus-visible,
-    .clear-output:focus-visible {
-      outline: 2px solid var(--primary);
-
-      outline-offset: 2px;
-    }
-
-
-    .btn-primary {
-      color: white;
-
-      background: var(--primary);
-
-      border: 1px solid var(--primary);
-
-      box-shadow:
-        0 8px 20px rgba(37, 99, 235, .18);
-    }
-
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-
-      box-shadow:
-        0 10px 25px rgba(37, 99, 235, .25);
-    }
-
-
-    .btn-secondary {
-      color: var(--text);
-
-      background: var(--bg2);
-
-      border: 1px solid var(--border);
-    }
-
-
-    .btn-secondary:hover {
-      background: var(--card);
-    }
-
-
-    /* =========================
-       WORKSPACE
-    ========================= */
-
-    .workspace {
-      padding: 15px;
-
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 14px;
-
-      background: var(--bg2);
-    }
-
-
-    .editor-box,
-    .output-box {
-      overflow: hidden;
-
-      border-radius: 15px;
-
-      background: var(--code-bg);
-
-      border: 1px solid rgba(148, 163, 184, .14);
-
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.025);
-    }
-
-
-    .box-header {
-      height: 45px;
-
-      padding: 0 13px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      color: #cbd5e1;
-
-      border-bottom: 1px solid rgba(148, 163, 184, .1);
-
-      background: rgba(255,255,255,.025);
-
-      font-size: 11px;
-    }
-
-
-    .box-title {
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      font-weight: 700;
-    }
-
-
-    .dot {
-      width: 8px;
-      height: 8px;
-
-      flex: 0 0 8px;
-
-      border-radius: 50%;
-    }
-
-
-    .dot.js {
-      background: #facc15;
-
-      box-shadow:
-        0 0 8px rgba(250, 204, 21, .3);
-    }
-
-
-    .dot.output {
-      background: #22c55e;
-
-      box-shadow:
-        0 0 8px rgba(34, 197, 94, .3);
-    }
-
-
-    .editor {
-      height: 365px;
-
-      display: flex;
-
-      direction: ltr;
-
-      overflow: hidden;
-    }
-
-
-    .line-numbers {
-      width: 45px;
-
-      flex: 0 0 45px;
-
-      padding: 15px 8px;
-
-      color: #64748b;
-
-      text-align: right;
-
-      white-space: pre;
-
-      overflow: hidden;
-
-      user-select: none;
-
-      border-right: 1px solid rgba(148,163,184,.09);
-
-      background: rgba(255,255,255,.018);
-
-      font:
-        13px/1.75
-        Consolas,
-        monospace;
-    }
-
-
-    #codeInput {
-      width: 100%;
-      height: 100%;
-
-      flex: 1;
-
-      padding: 15px;
-
-      resize: none;
-
-      border: 0;
-
-      outline: 0;
-
-      background: transparent;
-
-      color: var(--code-text);
-
-      direction: ltr;
-
-      text-align: left;
-
-      white-space: pre;
-
-      tab-size: 2;
-
-      overflow: auto;
-
-      font:
-        13px/1.75
-        Consolas,
-        "Courier New",
-        monospace;
-    }
-
-
-    #codeInput::selection {
-      background: rgba(59,130,246,.25);
-    }
-
-
-    #codeInput::-webkit-scrollbar,
-    .output::-webkit-scrollbar {
-      width: 8px;
-
-      height: 8px;
-    }
-
-
-    #codeInput::-webkit-scrollbar-thumb,
-    .output::-webkit-scrollbar-thumb {
-      background: rgba(148,163,184,.25);
-
-      border-radius: 20px;
-    }
-
-
-    #codeInput::-webkit-scrollbar-track,
-    .output::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-
-    .editor-footer,
-    .output-footer {
-      height: 36px;
-
-      padding: 0 12px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      color: #94a3b8;
-
-      border-top: 1px solid rgba(148,163,184,.09);
-
-      background: rgba(255,255,255,.018);
-
-      font-size: 9px;
-    }
-
-
-    .editor-footer span,
-    .output-footer span {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-    }
-
-
-    .output {
-      height: 365px;
-
-      padding: 15px;
-
-      overflow: auto;
-
-      direction: ltr;
-
-      text-align: left;
-
-      color: var(--code-text);
-
-      font:
-        13px/1.7
-        Consolas,
-        monospace;
-    }
-
-
-    .output-empty {
-      height: 100%;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 7px;
-
-      color: #64748b;
-
-      text-align: center;
-    }
-
-
-    .output-empty strong {
-      color: #cbd5e1;
-
-      font-size: 12px;
-    }
-
-
-    .output-empty span {
-      font-size: 10px;
-    }
-
-
-    .empty-icon {
-      width: 48px;
-      height: 48px;
-
-      margin-bottom: 4px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 13px;
-
-      color: #60a5fa;
-
-      background: rgba(37,99,235,.1);
-
-      font-size: 18px;
-    }
-
-
-    .clear-output {
-      padding: 5px 8px;
-
-      border: 0;
-
-      border-radius: 7px;
-
-      color: #94a3b8;
-
-      background: transparent;
-
-      cursor: pointer;
-
-      font-size: 10px;
-
-      transition:
-        color .2s ease,
-        background .2s ease;
-    }
-
-
-    .clear-output:hover {
-      color: white;
-
-      background: rgba(255,255,255,.07);
-    }
-
-
-    .console-line {
-      margin-bottom: 7px;
-
-      padding: 8px 10px;
-
-      border-radius: 7px;
-
-      white-space: pre-wrap;
-
-      word-break: break-word;
-
-      background: rgba(255,255,255,.035);
-
-      animation: outputIn .18s ease both;
-    }
-
-
-    @keyframes outputIn {
-
-      from {
-        opacity: 0;
-
-        transform: translateY(3px);
-      }
-
-      to {
-        opacity: 1;
-
-        transform: translateY(0);
-      }
-
-    }
-
-
-    .console-line.log {
-      color: #e2e8f0;
-    }
-
-
-    .console-line.info {
-      color: #93c5fd;
-
-      background: rgba(59,130,246,.06);
-    }
-
-
-    .console-line.debug {
-      color: #c4b5fd;
-
-      background: rgba(139,92,246,.06);
-    }
-
-
-    .console-line.warn {
-      color: #fbbf24;
-
-      background: rgba(251,191,36,.06);
-    }
-
-
-    .console-line.error {
-      color: #f87171;
-
-      background: rgba(239,68,68,.07);
-    }
-
-
-    .console-prefix {
-      margin-right: 8px;
-
-      color: #64748b;
-
-      font-size: 9px;
-
-      font-weight: 700;
-    }
-
-
-    /* =========================
-       SHORTCUT
-    ========================= */
-
-    .shortcut-hint {
-      min-height: 42px;
-
-      padding: 8px 15px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: flex-start;
-
-      gap: 7px;
-
-      color: var(--muted);
-
-      background: var(--card2);
-
-      border-top: 1px solid var(--border);
-
-      font-size: 9px;
-    }
-
-
-    .shortcut-hint > span:first-child {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-      font-weight: 600;
-    }
-
-
-    kbd {
-      min-width: 25px;
-
-      padding: 3px 6px;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border: 1px solid var(--border);
-
-      border-bottom-width: 2px;
-
-      border-radius: 5px;
-
-      color: var(--text);
-
-      background: var(--bg2);
-
-      font-family: inherit;
-
-      font-size: 9px;
-
-      font-weight: 700;
-    }
-
-
-    .shortcut-separator {
-      width: 1px;
-      height: 18px;
-
-      margin-inline: 5px;
-
-      background: var(--border);
-    }
-
-
-    .local-badge {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 5px;
-
-      color: var(--green);
-
-      font-weight: 700;
-    }
-
-
-    /* =========================
-       STATS
-    ========================= */
-
-    .stats {
-      display: grid;
-
-      grid-template-columns: repeat(4, 1fr);
-
-      background: var(--border);
-    }
-
-
-    .stat {
-      min-height: 72px;
-
-      padding: 13px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      background: var(--card);
-    }
-
-
-    .stat-icon {
-      width: 35px;
-      height: 35px;
-
-      flex: 0 0 35px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 10px;
-
-      color: var(--primary);
-
-      background: rgba(37,99,235,.09);
-
-      font-size: 13px;
-    }
-
-
-    .stat strong {
-      display: block;
-
-      font-size: 11px;
-    }
-
-
-    .stat span {
-      display: block;
-
-      margin-top: 2px;
-
-      color: var(--muted);
-
-      font-size: 9px;
-    }
-
-
-    /* =========================
-       SECTIONS
-    ========================= */
-
-    .information,
-    .how-to,
-    .faq {
-      padding: 75px 0;
-    }
-
-
-    .information {
-      background: var(--bg2);
-    }
-
-
-    .section-heading {
-      max-width: 680px;
-
-      margin: 0 auto 32px;
-
-      text-align: center;
-    }
-
-
-    .section-label {
-      margin-bottom: 7px;
-    }
-
-
-    .section-heading h2 {
-      margin: 0;
-
-      font-size: clamp(24px, 4vw, 34px);
-
-      line-height: 1.35;
-    }
-
-
-    .section-heading p {
-      max-width: 600px;
-
-      margin: 10px auto 0;
-
-      color: var(--muted);
-
-      font-size: 13px;
-
-      line-height: 1.9;
-    }
-
-
-    .info-grid {
-      display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 17px;
-    }
-
-
-    .info-card {
-      padding: 23px;
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 17px;
-
-      box-shadow: var(--shadow);
-
-      transition:
-        transform .2s ease,
-        border-color .2s ease;
-    }
-
-
-    .info-card:hover {
-      transform: translateY(-3px);
-
-      border-color: rgba(37,99,235,.2);
-    }
-
-
-    .info-icon {
-      width: 45px;
-      height: 45px;
-
-      margin-bottom: 15px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 12px;
-
-      color: var(--primary);
-
-      background: rgba(37,99,235,.09);
-
-      font-size: 17px;
-    }
-
-
-    .info-card h3 {
-      margin: 0 0 7px;
-
-      font-size: 15px;
-    }
-
-
-    .info-card p {
-      margin: 0;
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.85;
-    }
-
-
-    /* =========================
-       STEPS
-    ========================= */
-
-    .steps {
-      max-width: 850px;
-
-      margin-inline: auto;
-
-      display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 17px;
-    }
-
-
-    .step {
-      padding: 21px;
-
-      display: flex;
-
-      gap: 12px;
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 17px;
-
-      transition:
-        transform .2s ease,
-        border-color .2s ease;
-    }
-
-
-    .step:hover {
-      transform: translateY(-2px);
-
-      border-color: rgba(37,99,235,.2);
-    }
-
-
-    .step-number {
-      width: 36px;
-      height: 36px;
-
-      flex: 0 0 36px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 10px;
-
-      color: white;
-
-      background: var(--primary);
-
-      font-size: 12px;
-
-      font-weight: 800;
-    }
-
-
-    .step h3 {
-      margin: 0 0 5px;
-
-      font-size: 13px;
-    }
-
-
-    .step p {
-      margin: 0;
-
-      color: var(--muted);
-
-      font-size: 10px;
-
-      line-height: 1.8;
-    }
-
-
-    /* =========================
-       FAQ
-    ========================= */
-
-    .faq-list {
-      max-width: 850px;
-
-      margin-inline: auto;
-
-      display: grid;
-
-      gap: 9px;
-    }
-
-
-    .faq-item {
-      overflow: hidden;
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 14px;
-
-      transition:
-        border-color .2s ease;
-    }
-
-
-    .faq-item:hover {
-      border-color: rgba(37,99,235,.18);
-    }
-
-
-    .faq-item summary {
-      padding: 16px 18px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      cursor: pointer;
-
-      list-style: none;
-
-      font-size: 12px;
-
-      font-weight: 700;
-    }
-
-
-    .faq-item summary::-webkit-details-marker {
-      display: none;
-    }
-
-
-    .faq-item summary i {
-      color: var(--muted);
-
-      font-size: 10px;
-
-      transition: transform .2s ease;
-    }
-
-
-    .faq-item[open] summary i {
-      transform: rotate(180deg);
-    }
-
-
-    .faq-item p {
-      margin: 0;
-
-      padding: 0 18px 17px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      line-height: 1.9;
-    }
-
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 850px) {
-
-      .workspace {
-        grid-template-columns: 1fr;
+        --shadow:
+          0 20px 60px rgba(15, 23, 42, 0.08);
       }
 
 
-      .info-grid {
-        grid-template-columns: 1fr;
+      html.dark-mode {
+
+        --bg: #07101f;
+        --bg2: #0b1426;
+
+        --card: #111d32;
+        --card2: #0d1729;
+
+        --text: #f8fafc;
+        --muted: #94a3b8;
+
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+
+        --cyan: #06b6d4;
+        --green: #22c55e;
+        --red: #ef4444;
+        --yellow: #f59e0b;
+        --purple: #a78bfa;
+
+        --border:
+          rgba(148, 163, 184, 0.12);
+
+        --shadow:
+          0 20px 60px rgba(0, 0, 0, 0.28);
       }
 
 
-      .steps {
-        grid-template-columns: 1fr;
+      * {
+        box-sizing: border-box;
       }
 
-    }
+
+      html {
+        scroll-behavior: smooth;
+      }
 
 
-    @media (max-width: 650px) {
+      body {
+        margin: 0;
+
+        background:
+          radial-gradient(
+            circle at 50% -20%,
+            rgba(37, 99, 235, 0.08),
+            transparent 35%
+          ),
+          var(--bg);
+
+        color: var(--text);
+
+        font-family:
+          "Cairo",
+          sans-serif;
+
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+
+      button,
+      textarea {
+        font-family: inherit;
+      }
+
 
       .container {
-        width: min(100% - 20px, 1120px);
+        width: min(
+          1120px,
+          calc(100% - 32px)
+        );
+
+        margin-inline: auto;
       }
 
 
-      .hero {
-        padding-top: 22px;
+      /* =========================================
+         HERO
+      ========================================= */
 
-        padding-bottom: 38px;
+      .hero {
+        padding:
+          36px
+          0
+          30px;
+
+        text-align: center;
       }
 
 
       .breadcrumb {
-        font-size: 10px;
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+
+        color: var(--muted);
+
+        font-size: 13px;
 
         margin-bottom: 22px;
       }
 
 
+      .breadcrumb a {
+        color: var(--muted);
+
+        text-decoration: none;
+
+        transition: color 0.2s ease;
+      }
+
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+
       .hero-icon {
-        width: 62px;
-        height: 62px;
+        width: 68px;
+        height: 68px;
 
-        border-radius: 17px;
+        margin: 0 auto 16px;
 
-        font-size: 29px;
+        display: grid;
+
+        place-items: center;
+
+        border-radius: 20px;
+
+        background:
+          linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.12),
+            rgba(8, 145, 178, 0.12)
+          );
+
+        color: var(--primary);
+
+        font-size: 32px;
+
+        border:
+          1px solid
+          rgba(37, 99, 235, 0.12);
+      }
+
+
+      .hero-kicker {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        color: var(--primary);
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-bottom: 8px;
+      }
+
+
+      .hero h1 {
+        margin: 0;
+
+        font-size:
+          clamp(30px, 5vw, 46px);
+
+        line-height: 1.2;
+
+        font-weight: 800;
+      }
+
+
+      .hero h1 span {
+        color: var(--primary);
       }
 
 
       .hero p {
-        font-size: 12px;
+        max-width: 720px;
+
+        margin:
+          14px auto 0;
+
+        color: var(--muted);
+
+        font-size: 15px;
+
+        line-height: 1.9;
       }
 
 
-      .tool-header {
-        flex-direction: column;
+      /* =========================================
+         TOOL
+      ========================================= */
 
-        align-items: stretch;
+      .tool-section {
+        padding-bottom: 40px;
       }
 
 
-      .tool-actions {
+      .tool-card {
+        background: var(--card);
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 22px;
+
+        box-shadow: var(--shadow);
+
+        overflow: hidden;
+      }
+
+
+      .tool-top {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 20px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+      }
+
+
+      .tool-title {
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+      }
+
+
+      .tool-title-icon {
+        width: 48px;
+        height: 48px;
+
+        flex: 0 0 48px;
+
         display: grid;
 
-        grid-template-columns: 1fr 1fr;
-      }
+        place-items: center;
 
+        border-radius: 14px;
 
-      .btn-primary {
-        grid-column: 1 / -1;
-      }
+        background:
+          rgba(37, 99, 235, 0.1);
 
+        color: var(--primary);
 
-      .workspace {
-        padding: 10px;
-
-        gap: 10px;
-      }
-
-
-      .editor,
-      .output {
-        height: 315px;
-      }
-
-
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
-
-
-      .stat {
-        min-height: 65px;
-      }
-
-
-      .shortcut-hint {
-        justify-content: center;
-
-        flex-wrap: wrap;
-
-        padding: 10px;
-      }
-
-
-      .shortcut-separator {
-        display: none;
-      }
-
-
-      .local-badge {
-        margin-inline-start: 4px;
-      }
-
-
-      .information,
-      .how-to,
-      .faq {
-        padding: 58px 0;
-      }
-
-
-      .section-heading {
-        margin-bottom: 25px;
-      }
-
-    }
-
-
-    @media (max-width: 420px) {
-
-      .tool-actions {
-        gap: 6px;
-      }
-
-
-      .btn {
-        padding-inline: 10px;
-
-        font-size: 11px;
+        font-size: 22px;
       }
 
 
       .tool-title h2 {
-        font-size: 13px;
+        margin: 0 0 2px;
+
+        font-size: 17px;
       }
 
+
+      .tool-title p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 12px;
+      }
+
+
+      .tool-actions {
+        display: flex;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+      }
+
+
+      .btn {
+        border: 0;
+
+        border-radius: 11px;
+
+        padding:
+          10px
+          14px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        cursor: pointer;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+
+      .btn-primary {
+        background: var(--primary);
+
+        color: white;
+      }
+
+
+      .btn-primary:hover {
+        background: var(--primary-hover);
+      }
+
+
+      .btn-secondary {
+        background: var(--bg2);
+
+        color: var(--text);
+
+        border:
+          1px solid
+          var(--border);
+      }
+
+
+      .btn-secondary:hover {
+        background:
+          rgba(37, 99, 235, 0.08);
+
+        color: var(--primary);
+      }
+
+
+      /* =========================================
+         WORKSPACE
+      ========================================= */
 
       .workspace {
-        padding: 8px;
+        display: grid;
+
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(0, 1fr);
+
+        gap: 16px;
+
+        padding: 18px;
       }
 
 
-      .editor,
-      .output {
-        height: 300px;
+      .panel {
+        min-width: 0;
+
+        overflow: hidden;
+
+        border-radius: 16px;
+
+        border:
+          1px solid
+          var(--border);
+
+        background: #0b1220;
+
+        color: #e5e7eb;
       }
 
 
-      .line-numbers {
-        width: 39px;
+      .panel-header {
+        min-height: 48px;
 
-        flex-basis: 39px;
+        display: flex;
 
-        padding-inline: 6px;
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 10px;
+
+        padding:
+          0 14px;
+
+        border-bottom:
+          1px solid
+          rgba(255,255,255,0.08);
+      }
+
+
+      .panel-name {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 13px;
+
+        font-weight: 700;
+      }
+
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+
+        border-radius: 50%;
+
+        background: #f7df1e;
+
+        box-shadow:
+          0 0 0 4px
+          rgba(247,223,30,0.08);
+      }
+
+
+      .output-icon {
+        color: #67e8f9;
+      }
+
+
+      .panel-meta {
+        display: flex;
+
+        gap: 12px;
+
+        color: #94a3b8;
 
         font-size: 11px;
       }
 
 
-      #codeInput,
-      .output {
+      .editor-wrapper {
+        display: flex;
+
+        height: 410px;
+
+        direction: ltr;
+
+        overflow: hidden;
+      }
+
+
+      .line-numbers {
+        width: 48px;
+
+        flex: 0 0 48px;
+
+        padding:
+          17px 10px;
+
+        text-align: right;
+
+        color: #64748b;
+
+        background: #08101d;
+
+        border-right:
+          1px solid
+          rgba(255,255,255,0.06);
+
+        font:
+          13px/1.75
+          monospace;
+
+        overflow: hidden;
+
+        user-select: none;
+
+        white-space: pre;
+      }
+
+
+      #codeInput {
+        width: 100%;
+
+        height: 100%;
+
+        resize: none;
+
+        border: 0;
+
+        outline: 0;
+
+        padding: 17px;
+
+        background: #0b1220;
+
+        color: #e2e8f0;
+
+        font:
+          13px/1.75
+          "Cairo",
+          monospace;
+
+        direction: ltr;
+
+        text-align: left;
+
+        tab-size: 2;
+      }
+
+
+      #codeInput::placeholder {
+        color: #64748b;
+      }
+
+
+      .editor-footer {
+        min-height: 40px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding:
+          0 14px;
+
+        border-top:
+          1px solid
+          rgba(255,255,255,0.08);
+
+        color: #64748b;
+
+        font-size: 10px;
+      }
+
+
+      .editor-footer span {
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+      }
+
+
+      /* =========================================
+         CONSOLE
+      ========================================= */
+
+      .console {
+        height: 410px;
+
+        padding: 12px;
+
+        overflow: auto;
+
+        direction: ltr;
+
+        text-align: left;
+      }
+
+
+      .console-empty {
+        min-height: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 10px;
+
+        color: #64748b;
+
+        text-align: center;
+
+        direction: rtl;
+      }
+
+
+      .console-empty i {
+        font-size: 30px;
+
+        opacity: 0.45;
+      }
+
+
+      .console-empty p {
+        margin: 0;
+
         font-size: 12px;
       }
 
 
-      .stat {
-        padding: 10px;
+      .console-row {
+        display: grid;
 
-        gap: 8px;
+        grid-template-columns: 24px minmax(0, 1fr);
+
+        gap: 7px;
+
+        padding: 8px 6px;
+
+        border-bottom:
+          1px solid
+          rgba(255,255,255,0.05);
+
+        font:
+          12px/1.65
+          monospace;
+
+        direction: ltr;
+      }
+
+
+      .console-row pre {
+        margin: 0;
+
+        white-space: pre-wrap;
+
+        word-break: break-word;
+      }
+
+
+      .console-type {
+        padding-top: 2px;
+      }
+
+
+      .console-log {
+        color: #e2e8f0;
+      }
+
+
+      .console-info {
+        color: #67e8f9;
+      }
+
+
+      .console-warn {
+        color: #fbbf24;
+      }
+
+
+      .console-error {
+        color: #f87171;
+      }
+
+
+      .console-result {
+        color: #86efac;
+      }
+
+
+      .clear-output {
+        border: 0;
+
+        background: transparent;
+
+        color: #64748b;
+
+        cursor: pointer;
+
+        font:
+          11px
+          "Cairo",
+          sans-serif;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+      }
+
+
+      .clear-output:hover {
+        color: #f87171;
+      }
+
+
+      .output-footer {
+        min-height: 40px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding:
+          0 14px;
+
+        border-top:
+          1px solid
+          rgba(255,255,255,0.08);
+
+        color: #64748b;
+
+        font-size: 10px;
+      }
+
+
+      .status {
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+      }
+
+
+      .status-circle {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #64748b;
+      }
+
+
+      .status-success {
+        color: #4ade80;
+      }
+
+
+      .status-success .status-circle {
+        background: #22c55e;
+      }
+
+
+      .status-error {
+        color: #f87171;
+      }
+
+
+      .status-error .status-circle {
+        background: #ef4444;
+      }
+
+
+      .status-warning {
+        color: #fbbf24;
+      }
+
+
+      .status-warning .status-circle {
+        background: #f59e0b;
+      }
+
+
+      .status-running {
+        color: #60a5fa;
+      }
+
+
+      .status-running .status-circle {
+        background: #3b82f6;
+
+        animation:
+          pulse 1s infinite;
+      }
+
+
+      @keyframes pulse {
+
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.35;
+        }
+
+      }
+
+
+      /* =========================================
+         STATS
+      ========================================= */
+
+      .stats-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        gap: 12px;
+
+        padding:
+          0 18px
+          18px;
+      }
+
+
+      .stat-card {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        padding: 13px;
+
+        border:
+          1px solid
+          var(--border);
+
+        background: var(--card2);
+
+        border-radius: 14px;
       }
 
 
       .stat-icon {
-        width: 32px;
-        height: 32px;
+        width: 38px;
+        height: 38px;
 
-        flex-basis: 32px;
-      }
+        flex: 0 0 38px;
 
-    }
+        display: grid;
 
-  </style>
+        place-items: center;
 
-
-  <script is:inline>
-    (() => {
-
-      const codeInput = document.getElementById("codeInput");
-      const output = document.getElementById("output");
-
-      const runBtn = document.getElementById("runBtn");
-      const clearBtn = document.getElementById("clearBtn");
-
-      const exampleBtn = document.getElementById("exampleBtn");
-      const clearOutput = document.getElementById("clearOutput");
-
-      const lineNumbers = document.getElementById("lineNumbers");
-      const lineCount = document.getElementById("lineCount");
-      const charCount = document.getElementById("charCount");
-
-      const status = document.getElementById("status");
-      const executionTime = document.getElementById("executionTime");
-
-
-      /* =========================
-         EXAMPLE
-      ========================= */
-
-      const exampleCode = `const name = "Th.Tech";
-
-console.log("مرحباً بك في " + name);
-
-const numbers = [10, 20, 30, 40, 50];
-
-const total = numbers.reduce(
-  (sum, number) => sum + number,
-  0
-);
-
-console.log("المجموع:", total);`;
-
-
-      /* =========================
-         UPDATE STATS
-      ========================= */
-
-      function updateStats() {
-
-        const code = codeInput.value;
-
-        const lines =
-          code.length === 0
-            ? 1
-            : code.split("\n").length;
-
-
-        lineNumbers.textContent =
-          Array.from(
-            { length: Math.max(lines, 1) },
-            (_, index) => index + 1
-          ).join("\n");
-
-
-        lineCount.textContent =
-          `${lines} ${lines === 1 ? "سطر" : "أسطر"}`;
-
-
-        charCount.textContent =
-          `${code.length.toLocaleString("ar-MA")} حرف`;
-
+        border-radius: 11px;
       }
 
 
-      /* =========================
-         STATUS
-      ========================= */
+      .stat-icon.blue {
+        background:
+          rgba(37,99,235,.1);
 
-      function setStatus(text, type = "ready") {
-
-        const colors = {
-          ready: "#94a3b8",
-          running: "#60a5fa",
-          success: "#4ade80",
-          error: "#f87171"
-        };
-
-
-        status.style.color =
-          colors[type] || colors.ready;
-
-
-        status.innerHTML =
-          `<i class="fa-solid fa-circle"></i> ${text}`;
-
+        color: var(--primary);
       }
 
 
-      /* =========================
-         ESCAPE HTML
-      ========================= */
+      .stat-icon.cyan {
+        background:
+          rgba(8,145,178,.1);
 
-      function escapeHtml(value) {
-
-        return String(value)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-
+        color: var(--cyan);
       }
 
 
-      /* =========================
-         FORMAT VALUE
-      ========================= */
+      .stat-icon.red {
+        background:
+          rgba(220,38,38,.1);
 
-      function formatValue(value, seen = new WeakSet()) {
-
-        if (typeof value === "string") {
-          return value;
-        }
-
-
-        if (typeof value === "undefined") {
-          return "undefined";
-        }
-
-
-        if (value === null) {
-          return "null";
-        }
-
-
-        if (typeof value === "bigint") {
-          return `${value}n`;
-        }
-
-
-        if (typeof value === "symbol") {
-          return value.toString();
-        }
-
-
-        if (value instanceof Error) {
-          return value.stack || value.message;
-        }
-
-
-        if (typeof value === "function") {
-          return value.toString();
-        }
-
-
-        if (
-          typeof value === "object" &&
-          value !== null
-        ) {
-
-          if (seen.has(value)) {
-            return "[Circular]";
-          }
-
-
-          seen.add(value);
-
-
-          try {
-
-            const result =
-              JSON.stringify(
-                value,
-                (_, currentValue) => {
-
-                  if (
-                    typeof currentValue === "bigint"
-                  ) {
-                    return `${currentValue}n`;
-                  }
-
-
-                  if (
-                    typeof currentValue === "object" &&
-                    currentValue !== null
-                  ) {
-
-                    if (seen.has(currentValue)) {
-                      return "[Circular]";
-                    }
-
-                    seen.add(currentValue);
-
-                  }
-
-
-                  return currentValue;
-
-                },
-                2
-              );
-
-
-            return result === undefined
-              ? String(value)
-              : result;
-
-          } catch {
-
-            return String(value);
-
-          }
-
-        }
-
-
-        return String(value);
-
+        color: var(--red);
       }
 
 
-      /* =========================
-         ADD OUTPUT
-      ========================= */
+      .stat-icon.green {
+        background:
+          rgba(22,163,74,.1);
 
-      function addOutput(type, values) {
-
-        const line =
-          document.createElement("div");
-
-
-        line.className =
-          `console-line ${type}`;
-
-
-        const prefixes = {
-          log: "LOG",
-          info: "INFO",
-          debug: "DEBUG",
-          warn: "WARN",
-          error: "ERROR"
-        };
-
-
-        const prefix =
-          prefixes[type] || "LOG";
-
-
-        const content =
-          values
-            .map((value) => formatValue(value))
-            .join(" ");
-
-
-        line.innerHTML =
-          `<span class="console-prefix">[${prefix}]</span>${escapeHtml(content)}`;
-
-
-        output.appendChild(line);
-
-
-        output.scrollTop =
-          output.scrollHeight;
-
+        color: var(--green);
       }
 
 
-      /* =========================
-         RESET OUTPUT
-      ========================= */
+      .stat-card strong {
+        display: block;
 
-      function resetOutput() {
-
-        output.innerHTML = `
-          <div class="output-empty">
-
-            <div class="empty-icon">
-              <i class="fa-solid fa-terminal"></i>
-            </div>
-
-            <strong>لا توجد نتائج بعد</strong>
-
-            <span>
-              اضغط على "تشغيل" لتنفيذ الكود
-            </span>
-
-          </div>
-        `;
-
-
-        executionTime.textContent =
-          "0 ms";
-
-
-        setStatus(
-          "جاهز",
-          "ready"
-        );
-
+        font-size: 12px;
       }
 
 
-      /* =========================
-         RUN CODE
-      ========================= */
+      .stat-card span {
+        display: block;
 
-      function runCode() {
+        margin-top: 2px;
 
-        const code =
-          codeInput.value.trim();
+        color: var(--muted);
 
-
-        if (!code) {
-
-          output.innerHTML = `
-            <div class="console-line warn">
-              <span class="console-prefix">[WARN]</span>
-              اكتب كود JavaScript أولاً.
-            </div>
-          `;
+        font-size: 10px;
+      }
 
 
-          executionTime.textContent =
-            "0 ms";
+      /* =========================================
+         INFO
+      ========================================= */
+
+      .info-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 14px;
+
+        margin-top: 18px;
+      }
 
 
-          setStatus(
-            "لا يوجد كود",
-            "error"
-          );
+      .info-card {
+        padding: 22px;
+
+        border:
+          1px solid
+          var(--border);
+
+        background: var(--card);
+
+        border-radius: 18px;
+      }
 
 
-          return;
+      .info-icon {
+        width: 42px;
+        height: 42px;
 
+        display: grid;
+
+        place-items: center;
+
+        border-radius: 12px;
+
+        margin-bottom: 13px;
+      }
+
+
+      .info-icon.blue {
+        background:
+          rgba(37,99,235,.1);
+
+        color: var(--primary);
+      }
+
+
+      .info-icon.cyan {
+        background:
+          rgba(8,145,178,.1);
+
+        color: var(--cyan);
+      }
+
+
+      .info-icon.purple {
+        background:
+          rgba(124,58,237,.1);
+
+        color: var(--purple);
+      }
+
+
+      .info-card h3 {
+        margin:
+          0 0 8px;
+
+        font-size: 15px;
+      }
+
+
+      .info-card p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 12px;
+
+        line-height: 1.9;
+      }
+
+
+      /* =========================================
+         CONTENT
+      ========================================= */
+
+      .content-section {
+        margin-top: 46px;
+      }
+
+
+      .section-heading {
+        text-align: center;
+
+        margin-bottom: 22px;
+      }
+
+
+      .section-heading span {
+        display: inline-block;
+
+        margin-bottom: 5px;
+
+        color: var(--primary);
+
+        font-size: 12px;
+
+        font-weight: 700;
+      }
+
+
+      .section-heading h2 {
+        margin: 0;
+
+        font-size:
+          clamp(21px, 4vw, 28px);
+      }
+
+
+      .steps-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 14px;
+      }
+
+
+      .step-card {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 13px;
+
+        padding: 20px;
+
+        background: var(--card);
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 17px;
+      }
+
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+
+        flex: 0 0 38px;
+
+        display: grid;
+
+        place-items: center;
+
+        border-radius: 11px;
+
+        background:
+          rgba(37,99,235,.1);
+
+        color: var(--primary);
+
+        font-weight: 800;
+      }
+
+
+      .step-card h3 {
+        margin:
+          0 0 5px;
+
+        font-size: 14px;
+      }
+
+
+      .step-card p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 11px;
+
+        line-height: 1.8;
+      }
+
+
+      /* =========================================
+         FAQ
+      ========================================= */
+
+      .faq-list {
+        max-width: 850px;
+
+        margin: 0 auto;
+      }
+
+
+      .faq-list details {
+        background: var(--card);
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 14px;
+
+        margin-bottom: 9px;
+
+        overflow: hidden;
+      }
+
+
+      .faq-list summary {
+        list-style: none;
+
+        cursor: pointer;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 17px 18px;
+
+        font-size: 13px;
+
+        font-weight: 700;
+      }
+
+
+      .faq-list summary::-webkit-details-marker {
+        display: none;
+      }
+
+
+      .faq-list summary i {
+        color: var(--muted);
+
+        transition:
+          transform 0.2s ease;
+      }
+
+
+      .faq-list details[open] summary i {
+        transform:
+          rotate(180deg);
+      }
+
+
+      .faq-answer {
+        padding:
+          0 18px
+          18px;
+
+        color: var(--muted);
+
+        font-size: 12px;
+
+        line-height: 1.9;
+      }
+
+
+      /* =========================================
+         RESPONSIVE
+      ========================================= */
+
+      @media (max-width: 900px) {
+
+        .tool-top {
+          align-items: flex-start;
+
+          flex-direction: column;
         }
 
 
-        output.innerHTML = "";
-
-
-        setStatus(
-          "جاري التشغيل...",
-          "running"
-        );
-
-
-        runBtn.disabled = true;
-
-        runBtn.style.opacity = ".75";
-
-
-        const start =
-          performance.now();
-
-
-        const originalLog =
-          console.log;
-
-        const originalInfo =
-          console.info;
-
-        const originalWarn =
-          console.warn;
-
-        const originalError =
-          console.error;
-
-        const originalDebug =
-          console.debug;
-
-
-        let hasError = false;
-
-
-        /* =========================
-           RESTORE CONSOLE
-        ========================= */
-
-        const restoreConsole = () => {
-
-          console.log =
-            originalLog;
-
-          console.info =
-            originalInfo;
-
-          console.warn =
-            originalWarn;
-
-          console.error =
-            originalError;
-
-          console.debug =
-            originalDebug;
-
-        };
-
-
-        /* =========================
-           CONSOLE.LOG
-        ========================= */
-
-        console.log = (...args) => {
-
-          addOutput(
-            "log",
-            args
-          );
-
-
-          originalLog.apply(
-            console,
-            args
-          );
-
-        };
-
-
-        /* =========================
-           CONSOLE.INFO
-        ========================= */
-
-        console.info = (...args) => {
-
-          addOutput(
-            "info",
-            args
-          );
-
-
-          originalInfo.apply(
-            console,
-            args
-          );
-
-        };
-
-
-        /* =========================
-           CONSOLE.WARN
-        ========================= */
-
-        console.warn = (...args) => {
-
-          addOutput(
-            "warn",
-            args
-          );
-
-
-          originalWarn.apply(
-            console,
-            args
-          );
-
-        };
-
-
-        /* =========================
-           CONSOLE.ERROR
-        ========================= */
-
-        console.error = (...args) => {
-
-          addOutput(
-            "error",
-            args
-          );
-
-
-          originalError.apply(
-            console,
-            args
-          );
-
-        };
-
-
-        /* =========================
-           CONSOLE.DEBUG
-        ========================= */
-
-        console.debug = (...args) => {
-
-          addOutput(
-            "debug",
-            args
-          );
-
-
-          originalDebug.apply(
-            console,
-            args
-          );
-
-        };
-
-
-        try {
-
-          /*
-           * IMPORTANT:
-           *
-           * استخدمنا \n الحقيقي هنا.
-           * لا تستخدم \\n.
-           *
-           * هذا هو الإصلاح الأساسي
-           * للخطأ الذي ظهر في الصورة.
-           */
-
-          const runner =
-            new Function(
-              `"use strict";\n${code}`
-            );
-
-
-          const result =
-            runner();
-
-
-          /*
-           * عرض نتيجة آخر تعبير
-           * إذا كانت موجودة.
-           */
-
-          if (
-            typeof result !== "undefined"
-          ) {
-
-            addOutput(
-              "log",
-              [result]
-            );
-
-          }
-
-        } catch (error) {
-
-          hasError = true;
-
-
-          const errorMessage =
-            error &&
-            error.stack
-              ? error.stack
-              : String(error);
-
-
-          addOutput(
-            "error",
-            [errorMessage]
-          );
-
-        } finally {
-
-          restoreConsole();
-
-
-          runBtn.disabled = false;
-
-          runBtn.style.opacity = "1";
-
+        .tool-actions {
+          width: 100%;
         }
 
 
-        const elapsed =
-          performance.now() - start;
-
-
-        executionTime.textContent =
-          `${elapsed.toFixed(2)} ms`;
-
-
-        if (hasError) {
-
-          setStatus(
-            "حدث خطأ",
-            "error"
-          );
-
-        } else {
-
-          setStatus(
-            "تم التنفيذ بنجاح",
-            "success"
-          );
-
+        .tool-actions .btn {
+          flex: 1;
         }
 
 
-        /*
-         * إذا لم ينتج الكود أي مخرجات.
-         */
+        .workspace {
+          grid-template-columns: 1fr;
+        }
 
-        if (!output.children.length) {
 
-          addOutput(
-            "log",
-            [
-              "تم تنفيذ الكود بنجاح بدون مخرجات."
-            ]
-          );
-
+        .info-grid,
+        .steps-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
         }
 
       }
 
 
-      /* =========================
-         INPUT
-      ========================= */
+      @media (max-width: 800px) {
 
-      codeInput.addEventListener(
-        "input",
-        updateStats
-      );
-
-
-      /* =========================
-         SCROLL
-      ========================= */
-
-      codeInput.addEventListener(
-        "scroll",
-        () => {
-
-          lineNumbers.scrollTop =
-            codeInput.scrollTop;
-
+        .stats-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
         }
-      );
+
+      }
 
 
-      /* =========================
-         KEYBOARD
-      ========================= */
+      @media (max-width: 600px) {
 
-      codeInput.addEventListener(
-        "keydown",
-        (event) => {
-
-          /* TAB */
-
-          if (event.key === "Tab") {
-
-            event.preventDefault();
-
-
-            const start =
-              codeInput.selectionStart;
-
-            const end =
-              codeInput.selectionEnd;
-
-
-            /*
-             * إذا كان هناك نص محدد،
-             * نضع مسافتين في مكانه.
-             */
-
-            codeInput.value =
-              codeInput.value.substring(0, start) +
-              "  " +
-              codeInput.value.substring(end);
-
-
-            codeInput.selectionStart =
-              start + 2;
-
-            codeInput.selectionEnd =
-              start + 2;
-
-
-            updateStats();
-
-          }
-
-
-          /* CTRL + ENTER */
-
-          if (
-            (event.ctrlKey || event.metaKey) &&
-            event.key === "Enter"
-          ) {
-
-            event.preventDefault();
-
-            runCode();
-
-          }
-
+        .container {
+          width:
+            calc(100% - 20px);
         }
-      );
 
 
-      /* =========================
-         RUN BUTTON
-      ========================= */
-
-      runBtn.addEventListener(
-        "click",
-        runCode
-      );
-
-
-      /* =========================
-         CLEAR CODE
-      ========================= */
-
-      clearBtn.addEventListener(
-        "click",
-        () => {
-
-          codeInput.value = "";
-
-          updateStats();
-
-          resetOutput();
-
-          codeInput.focus();
-
+        .hero {
+          padding-top: 25px;
         }
-      );
 
 
-      /* =========================
-         LOAD EXAMPLE
-      ========================= */
+        .hero-icon {
+          width: 58px;
+          height: 58px;
 
-      exampleBtn.addEventListener(
-        "click",
-        () => {
-
-          codeInput.value =
-            exampleCode;
-
-          updateStats();
-
-          resetOutput();
-
-          codeInput.focus();
-
+          font-size: 27px;
         }
-      );
 
 
-      /* =========================
-         CLEAR OUTPUT
-      ========================= */
-
-      clearOutput.addEventListener(
-        "click",
-        resetOutput
-      );
+        .hero p {
+          font-size: 13px;
+        }
 
 
-      /* =========================
-         INITIALIZE
-      ========================= */
+        .tool-card {
+          border-radius: 17px;
+        }
 
-      updateStats();
 
-    })();
-  </script>
+        .tool-top {
+          padding: 15px;
+        }
 
-</body>
+
+        .tool-title-icon {
+          width: 42px;
+          height: 42px;
+
+          flex-basis: 42px;
+
+          font-size: 19px;
+        }
+
+
+        .tool-title h2 {
+          font-size: 15px;
+        }
+
+
+        .tool-title p {
+          font-size: 10px;
+        }
+
+
+        .tool-actions {
+          display: grid;
+
+          grid-template-columns:
+            repeat(3, 1fr);
+        }
+
+
+        .tool-actions .btn {
+          padding:
+            9px 7px;
+
+          font-size: 11px;
+        }
+
+
+        .workspace {
+          padding: 10px;
+
+          gap: 10px;
+        }
+
+
+        .editor-wrapper,
+        .console {
+          height: 340px;
+        }
+
+
+        .stats-grid {
+          padding:
+            0 10px
+            10px;
+
+          gap: 8px;
+        }
+
+
+        .stat-card {
+          padding: 10px;
+
+          gap: 8px;
+        }
+
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+
+          flex-basis: 34px;
+        }
+
+
+        .stat-card strong {
+          font-size: 11px;
+        }
+
+
+        .info-grid,
+        .steps-grid {
+          grid-template-columns: 1fr;
+        }
+
+
+        .info-card {
+          padding: 18px;
+        }
+
+
+        .content-section {
+          margin-top: 35px;
+        }
+
+
+        .section-heading h2 {
+          font-size: 21px;
+        }
+
+
+        .breadcrumb {
+          font-size: 11px;
+        }
+
+      }
+
+    </style>
+
+  </body>
 </html>
