@@ -4,9 +4,9 @@ import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const title = "Code Diff - مقارنة الأكواد أونلاين | Th.Tech";
+const title = "Code Diff - مقارنة الأكواد | Th.Tech";
 const description =
-  "أداة Code Diff مجانية لمقارنة نسختين من الأكواد واكتشاف الأسطر المضافة والمحذوفة والمتغيرة مباشرة من المتصفح.";
+  "أداة Code Diff مجانية لمقارنة الأكواد واكتشاف الأسطر المضافة والمحذوفة والمتطابقة.";
 ---
 
 <!doctype html>
@@ -17,7 +17,6 @@ const description =
 
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="theme-color" content="#2563eb" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,83 +35,92 @@ const description =
 
   <Header />
 
-  <main class="page">
+  <main class="tool-page">
 
     <!-- HERO -->
     <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="tool-badge">
+          <i class="fa-solid fa-code-compare"></i>
+          Developer Tool #39
+        </div>
+
+        <h1>
+          Code Diff
+          <span>مقارنة الأكواد</span>
+        </h1>
+
+        <p>
+          قارن بين نسختين من الكود واكتشف الأسطر المضافة والمحذوفة
+          والمتطابقة بسهولة.
+        </p>
+
+      </div>
+
       <div class="hero-icon">
         <i class="fa-solid fa-code-compare"></i>
       </div>
 
-      <div class="hero-content">
-        <div class="badge">
-          <i class="fa-solid fa-code-branch"></i>
-          Developer Tool #39
-        </div>
-
-        <h1>Code Diff</h1>
-
-        <p>
-          قارن بين نسختين من الكود واكتشف الأسطر المضافة والمحذوفة
-          والمتطابقة بسهولة وسرعة.
-        </p>
-      </div>
     </section>
 
 
     <!-- TOOL -->
-    <section class="tool-card">
+    <section class="tool-container">
 
-      <!-- TOOL HEADER -->
-      <div class="tool-header">
+      <!-- TOOL TOP -->
+      <div class="tool-top">
 
-        <div class="tool-title">
-          <div class="tool-title-icon">
+        <div class="tool-heading">
+
+          <div class="tool-heading-icon">
             <i class="fa-solid fa-code-compare"></i>
           </div>
 
           <div>
-            <h2>مقارنة الأكواد</h2>
-            <span>Original vs Modified</span>
+            <h2>Code Diff</h2>
+            <p>Compare two versions of your code</p>
           </div>
+
         </div>
 
-        <div class="status" id="status">
-          <span class="status-dot"></span>
-          جاهز للمقارنة
+        <div class="ready-status" id="status">
+          <span></span>
+          جاهز
         </div>
 
       </div>
 
 
       <!-- ACTION BAR -->
-      <div class="actionbar">
+      <div class="action-bar">
 
-        <button class="primary-btn" id="compareBtn">
+        <button id="compareBtn" class="btn btn-primary">
           <i class="fa-solid fa-code-compare"></i>
           مقارنة
         </button>
 
-        <button class="action-btn" id="swapBtn">
+        <button id="swapBtn" class="btn btn-secondary">
           <i class="fa-solid fa-arrow-right-arrow-left"></i>
           تبديل
         </button>
 
-        <button class="action-btn" id="copyBtn">
+        <button id="copyBtn" class="btn btn-secondary">
           <i class="fa-solid fa-copy"></i>
-          نسخ النتيجة
+          نسخ
         </button>
 
-        <button class="danger-btn" id="clearBtn">
+        <button id="clearBtn" class="btn btn-danger">
           <i class="fa-solid fa-trash"></i>
           مسح
         </button>
 
-        <div class="language-box">
+        <div class="language-select">
           <i class="fa-solid fa-code"></i>
 
           <select id="language">
-            <option value="auto">تلقائي</option>
+            <option value="auto">لغة الكود: تلقائي</option>
             <option value="javascript">JavaScript</option>
             <option value="typescript">TypeScript</option>
             <option value="html">HTML</option>
@@ -121,8 +129,6 @@ const description =
             <option value="python">Python</option>
             <option value="sql">SQL</option>
             <option value="php">PHP</option>
-            <option value="java">Java</option>
-            <option value="cpp">C++</option>
           </select>
         </div>
 
@@ -130,32 +136,36 @@ const description =
 
 
       <!-- EDITORS -->
-      <div class="editors">
+      <div class="editors-grid">
 
         <!-- ORIGINAL -->
-        <div class="editor-panel original-panel">
+        <div class="editor-card original">
 
-          <div class="editor-header">
+          <div class="editor-card-header">
 
-            <div class="editor-name">
-              <span class="editor-icon">
+            <div class="editor-title">
+
+              <div class="editor-title-icon">
                 <i class="fa-solid fa-file-code"></i>
-              </span>
+              </div>
 
               <div>
                 <strong>Original</strong>
                 <small>الكود الأصلي</small>
               </div>
+
             </div>
 
-            <span class="editor-tag removed-tag">
+            <span class="editor-label removed">
               <i class="fa-solid fa-minus"></i>
               Removed
             </span>
 
           </div>
 
-          <div class="editor">
+
+          <div class="code-editor">
+
             <div class="line-numbers" id="oldNumbers">0</div>
 
             <textarea
@@ -164,15 +174,16 @@ const description =
               autocomplete="off"
               autocorrect="off"
               autocapitalize="off"
-              placeholder="// ضع الكود الأصلي هنا..."
-              aria-label="Original code"
+              placeholder="// الصق الكود الأصلي هنا..."
             ></textarea>
+
           </div>
+
 
           <div class="editor-footer">
             <span>
-              <i class="fa-solid fa-file"></i>
-              <span id="oldLineCount">0</span> أسطر
+              <i class="fa-solid fa-lines-leaning"></i>
+              <b id="oldLineCount">0</b> أسطر
             </span>
 
             <span>Original</span>
@@ -182,29 +193,33 @@ const description =
 
 
         <!-- MODIFIED -->
-        <div class="editor-panel modified-panel">
+        <div class="editor-card modified">
 
-          <div class="editor-header">
+          <div class="editor-card-header">
 
-            <div class="editor-name">
-              <span class="editor-icon">
+            <div class="editor-title">
+
+              <div class="editor-title-icon">
                 <i class="fa-solid fa-file-circle-plus"></i>
-              </span>
+              </div>
 
               <div>
                 <strong>Modified</strong>
                 <small>الكود المعدّل</small>
               </div>
+
             </div>
 
-            <span class="editor-tag added-tag">
+            <span class="editor-label added">
               <i class="fa-solid fa-plus"></i>
               Added
             </span>
 
           </div>
 
-          <div class="editor">
+
+          <div class="code-editor">
+
             <div class="line-numbers" id="newNumbers">0</div>
 
             <textarea
@@ -213,15 +228,16 @@ const description =
               autocomplete="off"
               autocorrect="off"
               autocapitalize="off"
-              placeholder="// ضع الكود المعدّل هنا..."
-              aria-label="Modified code"
+              placeholder="// الصق الكود المعدّل هنا..."
             ></textarea>
+
           </div>
+
 
           <div class="editor-footer">
             <span>
-              <i class="fa-solid fa-file"></i>
-              <span id="newLineCount">0</span> أسطر
+              <i class="fa-solid fa-lines-leaning"></i>
+              <b id="newLineCount">0</b> أسطر
             </span>
 
             <span>Modified</span>
@@ -233,24 +249,26 @@ const description =
 
 
       <!-- RESULT -->
-      <div class="result-box">
+      <div class="result-card">
 
-        <div class="result-header">
+        <div class="result-top">
 
-          <div class="result-title">
+          <div class="result-heading">
+
             <div class="result-icon">
               <i class="fa-solid fa-code-compare"></i>
             </div>
 
             <div>
               <h3>نتيجة المقارنة</h3>
-              <span id="resultDescription">
-                ستظهر الفروقات هنا بعد المقارنة
-              </span>
+              <p id="resultDescription">
+                ستظهر الفروقات بين الكودين هنا
+              </p>
             </div>
+
           </div>
 
-          <div class="result-state" id="resultState">
+          <div class="result-status" id="resultState">
             <i class="fa-solid fa-circle-info"></i>
             لم تتم المقارنة
           </div>
@@ -258,20 +276,21 @@ const description =
         </div>
 
 
-        <!-- DIFF OUTPUT -->
         <div class="diff-output" id="diffOutput">
 
-          <div class="empty-result">
+          <div class="empty-state">
+
             <div class="empty-icon">
               <i class="fa-solid fa-code-compare"></i>
             </div>
 
-            <h4>جاهز لمقارنة الأكواد</h4>
+            <h4>ابدأ مقارنة الأكواد</h4>
 
             <p>
-              أدخل الكود الأصلي والكود المعدّل ثم اضغط على
+              أدخل النسخة الأصلية والنسخة المعدّلة ثم اضغط على
               <strong>مقارنة</strong>.
             </p>
+
           </div>
 
         </div>
@@ -283,7 +302,7 @@ const description =
       <div class="stats-grid">
 
         <div class="stat-card">
-          <div class="stat-icon original-stat">
+          <div class="stat-icon blue">
             <i class="fa-solid fa-file-code"></i>
           </div>
 
@@ -295,7 +314,7 @@ const description =
 
 
         <div class="stat-card">
-          <div class="stat-icon modified-stat">
+          <div class="stat-icon indigo">
             <i class="fa-solid fa-file-circle-plus"></i>
           </div>
 
@@ -307,7 +326,7 @@ const description =
 
 
         <div class="stat-card">
-          <div class="stat-icon added-stat">
+          <div class="stat-icon green">
             <i class="fa-solid fa-plus"></i>
           </div>
 
@@ -319,7 +338,7 @@ const description =
 
 
         <div class="stat-card">
-          <div class="stat-icon removed-stat">
+          <div class="stat-icon red">
             <i class="fa-solid fa-minus"></i>
           </div>
 
@@ -334,60 +353,58 @@ const description =
     </section>
 
 
-    <!-- INFO -->
-    <section class="info-section">
+    <!-- FEATURES -->
+    <section class="content-section">
 
-      <div class="section-heading">
-        <div class="section-heading-icon">
+      <div class="section-title">
+        <div class="section-icon">
           <i class="fa-solid fa-circle-info"></i>
         </div>
 
         <div>
-          <h2>حول Code Diff</h2>
-          <p>قارن الأكواد مباشرة من متصفحك</p>
+          <h2>مميزات Code Diff</h2>
+          <p>أداة بسيطة وسريعة للمطورين</p>
         </div>
       </div>
 
 
-      <div class="info-grid">
+      <div class="feature-grid">
 
-        <div class="info-card">
-          <div class="info-card-icon">
+        <div class="feature-card">
+          <div class="feature-icon">
             <i class="fa-solid fa-bolt"></i>
           </div>
 
-          <h3>سريع</h3>
+          <h3>مقارنة سريعة</h3>
 
           <p>
-            تتم المقارنة محليًا داخل المتصفح دون الحاجة إلى رفع ملفاتك
-            إلى خادم خارجي.
+            اكتشف الفروقات بين نسختين من الكود في ثوانٍ.
           </p>
         </div>
 
 
-        <div class="info-card">
-          <div class="info-card-icon">
+        <div class="feature-card">
+          <div class="feature-icon">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
 
-          <h3>خصوصية أفضل</h3>
+          <h3>معالجة محلية</h3>
 
           <p>
-            الكود الذي تضعه في الأداة تتم معالجته محليًا في متصفحك.
+            تتم المقارنة داخل المتصفح دون الحاجة إلى رفع الكود.
           </p>
         </div>
 
 
-        <div class="info-card">
-          <div class="info-card-icon">
+        <div class="feature-card">
+          <div class="feature-icon">
             <i class="fa-solid fa-code"></i>
           </div>
 
-          <h3>عدة لغات</h3>
+          <h3>لغات متعددة</h3>
 
           <p>
-            يمكنك استخدامها مع JavaScript وTypeScript وHTML وCSS وJSON
-            وغيرها.
+            مناسبة لـ JavaScript وTypeScript وHTML وCSS وJSON وغيرها.
           </p>
         </div>
 
@@ -397,55 +414,61 @@ const description =
 
 
     <!-- HOW TO -->
-    <section class="guide-section">
+    <section class="content-section">
 
-      <div class="section-heading">
-        <div class="section-heading-icon">
+      <div class="section-title">
+        <div class="section-icon">
           <i class="fa-solid fa-list-check"></i>
         </div>
 
         <div>
           <h2>كيفية استخدام الأداة</h2>
-          <p>ثلاث خطوات بسيطة</p>
+          <p>قارن الأكواد في ثلاث خطوات</p>
         </div>
       </div>
 
 
-      <div class="steps">
+      <div class="steps-grid">
 
-        <div class="step">
-          <span class="step-number">1</span>
+        <div class="step-card">
+
+          <div class="step-number">1</div>
 
           <div>
             <h3>أدخل الكود الأصلي</h3>
             <p>
-              ضع النسخة القديمة من الكود داخل مربع Original.
+              الصق النسخة القديمة في Original.
             </p>
           </div>
+
         </div>
 
 
-        <div class="step">
-          <span class="step-number">2</span>
+        <div class="step-card">
+
+          <div class="step-number">2</div>
 
           <div>
             <h3>أدخل الكود المعدّل</h3>
             <p>
-              ضع النسخة الجديدة داخل مربع Modified.
+              الصق النسخة الجديدة في Modified.
             </p>
           </div>
+
         </div>
 
 
-        <div class="step">
-          <span class="step-number">3</span>
+        <div class="step-card">
+
+          <div class="step-number">3</div>
 
           <div>
-            <h3>ابدأ المقارنة</h3>
+            <h3>قارن النتائج</h3>
             <p>
-              اضغط على زر مقارنة لرؤية الأسطر المضافة والمحذوفة.
+              اضغط مقارنة وشاهد جميع الاختلافات.
             </p>
           </div>
+
         </div>
 
       </div>
@@ -454,16 +477,16 @@ const description =
 
 
     <!-- FAQ -->
-    <section class="faq-section">
+    <section class="content-section faq-section">
 
-      <div class="section-heading">
-        <div class="section-heading-icon">
+      <div class="section-title">
+        <div class="section-icon">
           <i class="fa-solid fa-circle-question"></i>
         </div>
 
         <div>
           <h2>الأسئلة الشائعة</h2>
-          <p>كل ما تحتاج معرفته</p>
+          <p>إجابات عن أهم الأسئلة</p>
         </div>
       </div>
 
@@ -472,13 +495,12 @@ const description =
 
         <details>
           <summary>
-            هل يتم إرسال الكود إلى الخادم؟
+            هل الكود الذي أدخله يتم رفعه إلى الخادم؟
             <i class="fa-solid fa-chevron-down"></i>
           </summary>
 
           <p>
-            لا. تتم عملية المقارنة داخل متصفحك مباشرة، لذلك لا تحتاج
-            الأداة إلى إرسال الكود إلى خادم خارجي.
+            لا، عملية المقارنة تتم محليًا داخل المتصفح.
           </p>
         </details>
 
@@ -490,34 +512,21 @@ const description =
           </summary>
 
           <p>
-            الأخضر يمثل الأسطر المضافة في النسخة المعدّلة، بينما الأحمر
-            يمثل الأسطر الموجودة في النسخة الأصلية والتي تم حذفها.
+            الأخضر يمثل الأسطر المضافة، والأحمر يمثل الأسطر المحذوفة
+            من النسخة الأصلية.
           </p>
         </details>
 
 
         <details>
           <summary>
-            هل يمكن مقارنة JavaScript وTypeScript؟
+            هل تعمل الأداة مع جميع لغات البرمجة؟
             <i class="fa-solid fa-chevron-down"></i>
           </summary>
 
           <p>
-            نعم. الأداة تعتمد على مقارنة محتوى الأسطر، ويمكن استخدامها
+            نعم، المقارنة تعتمد على محتوى النص، لذلك يمكن استخدامها
             مع معظم لغات البرمجة والملفات النصية.
-          </p>
-        </details>
-
-
-        <details>
-          <summary>
-            هل تعمل الأداة على الهاتف؟
-            <i class="fa-solid fa-chevron-down"></i>
-          </summary>
-
-          <p>
-            نعم. الواجهة مصممة للعمل على الهواتف والأجهزة اللوحية
-            وأجهزة الكمبيوتر.
           </p>
         </details>
 
@@ -531,6 +540,7 @@ const description =
 
 
   <script is:inline>
+
     const oldCode = document.getElementById("oldCode");
     const newCode = document.getElementById("newCode");
 
@@ -556,47 +566,67 @@ const description =
     const copyBtn = document.getElementById("copyBtn");
     const clearBtn = document.getElementById("clearBtn");
 
+
     function getLines(text) {
-      if (!text) return [];
-      return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+
+      if (!text) {
+        return [];
+      }
+
+      return text
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .split("\n");
     }
 
+
     function updateLineNumbers() {
+
       const oldLines = getLines(oldCode.value);
       const newLines = getLines(newCode.value);
 
       if (oldLines.length === 0) {
+
         oldNumbers.textContent = "0";
         oldLineCount.textContent = "0";
+
       } else {
+
         oldNumbers.textContent = oldLines
-          .map(function (_, index) {
-            return String(index + 1);
+          .map(function (_, i) {
+            return String(i + 1);
           })
           .join("\n");
 
         oldLineCount.textContent = String(oldLines.length);
       }
 
+
       if (newLines.length === 0) {
+
         newNumbers.textContent = "0";
         newLineCount.textContent = "0";
+
       } else {
+
         newNumbers.textContent = newLines
-          .map(function (_, index) {
-            return String(index + 1);
+          .map(function (_, i) {
+            return String(i + 1);
           })
           .join("\n");
 
         newLineCount.textContent = String(newLines.length);
       }
 
+
       statOld.textContent = String(oldLines.length);
       statNew.textContent = String(newLines.length);
     }
 
-    function escapeHtml(value) {
-      return value
+
+    function escapeHtml(text) {
+
+      return text
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -604,36 +634,51 @@ const description =
         .replace(/'/g, "&#039;");
     }
 
+
     function buildDiff(oldLines, newLines) {
-      const rows = [];
-      const oldLength = oldLines.length;
-      const newLength = newLines.length;
+
+      const m = oldLines.length;
+      const n = newLines.length;
 
       const matrix = [];
 
-      for (let i = 0; i <= oldLength; i++) {
-        matrix[i] = new Array(newLength + 1).fill(0);
+      for (let i = 0; i <= m; i++) {
+        matrix[i] = new Array(n + 1).fill(0);
       }
 
-      for (let i = oldLength - 1; i >= 0; i--) {
-        for (let j = newLength - 1; j >= 0; j--) {
+
+      for (let i = m - 1; i >= 0; i--) {
+
+        for (let j = n - 1; j >= 0; j--) {
+
           if (oldLines[i] === newLines[j]) {
-            matrix[i][j] = matrix[i + 1][j + 1] + 1;
+
+            matrix[i][j] =
+              matrix[i + 1][j + 1] + 1;
+
           } else {
-            matrix[i][j] = Math.max(
-              matrix[i + 1][j],
-              matrix[i][j + 1]
-            );
+
+            matrix[i][j] =
+              Math.max(
+                matrix[i + 1][j],
+                matrix[i][j + 1]
+              );
           }
         }
       }
 
+
+      const result = [];
+
       let i = 0;
       let j = 0;
 
-      while (i < oldLength && j < newLength) {
+
+      while (i < m && j < n) {
+
         if (oldLines[i] === newLines[j]) {
-          rows.push({
+
+          result.push({
             type: "same",
             oldLine: i + 1,
             newLine: j + 1,
@@ -642,8 +687,13 @@ const description =
 
           i++;
           j++;
-        } else if (matrix[i + 1][j] >= matrix[i][j + 1]) {
-          rows.push({
+
+        } else if (
+          matrix[i + 1][j] >=
+          matrix[i][j + 1]
+        ) {
+
+          result.push({
             type: "removed",
             oldLine: i + 1,
             newLine: "",
@@ -651,8 +701,10 @@ const description =
           });
 
           i++;
+
         } else {
-          rows.push({
+
+          result.push({
             type: "added",
             oldLine: "",
             newLine: j + 1,
@@ -663,8 +715,10 @@ const description =
         }
       }
 
-      while (i < oldLength) {
-        rows.push({
+
+      while (i < m) {
+
+        result.push({
           type: "removed",
           oldLine: i + 1,
           newLine: "",
@@ -674,8 +728,10 @@ const description =
         i++;
       }
 
-      while (j < newLength) {
-        rows.push({
+
+      while (j < n) {
+
+        result.push({
           type: "added",
           oldLine: "",
           newLine: j + 1,
@@ -685,59 +741,91 @@ const description =
         j++;
       }
 
-      return rows;
+
+      return result;
     }
 
+
     function renderDiff(rows) {
-      if (rows.length === 0) {
+
+      if (!rows.length) {
+
         return `
-          <div class="empty-result">
+          <div class="empty-state">
             <div class="empty-icon">
               <i class="fa-solid fa-code-compare"></i>
             </div>
+
             <h4>لا توجد بيانات للمقارنة</h4>
-            <p>أدخل الكود في المربعين ثم حاول مرة أخرى.</p>
+
+            <p>
+              أدخل الكود في المربعين ثم حاول مرة أخرى.
+            </p>
           </div>
         `;
       }
 
+
       let html = "";
 
+
       rows.forEach(function (row) {
-        let icon = "";
-        let className = "";
+
+        let typeClass = "same";
+        let symbol = "=";
+
 
         if (row.type === "added") {
-          icon = "+";
-          className = "diff-added";
+
+          typeClass = "added";
+          symbol = "+";
+
         } else if (row.type === "removed") {
-          icon = "-";
-          className = "diff-removed";
-        } else {
-          icon = "=";
-          className = "diff-same";
+
+          typeClass = "removed";
+          symbol = "-";
         }
 
+
         html += `
-          <div class="diff-row ${className}">
-            <span class="diff-line old-line">${row.oldLine}</span>
-            <span class="diff-line new-line">${row.newLine}</span>
-            <span class="diff-symbol">${icon}</span>
+          <div class="diff-row ${typeClass}">
+
+            <span class="diff-number">
+              ${row.oldLine}
+            </span>
+
+            <span class="diff-number">
+              ${row.newLine}
+            </span>
+
+            <span class="diff-symbol">
+              ${symbol}
+            </span>
+
             <code>${escapeHtml(row.text)}</code>
+
           </div>
         `;
       });
 
+
       return html;
     }
 
+
     function compareCodes() {
+
       const oldLines = getLines(oldCode.value);
       const newLines = getLines(newCode.value);
 
-      if (oldLines.length === 0 && newLines.length === 0) {
+
+      if (
+        oldLines.length === 0 &&
+        newLines.length === 0
+      ) {
+
         status.innerHTML =
-          '<span class="status-dot"></span> أدخل الكود أولاً';
+          '<span></span> أدخل الكود أولاً';
 
         resultState.innerHTML =
           '<i class="fa-solid fa-circle-exclamation"></i> لا توجد بيانات';
@@ -746,12 +834,16 @@ const description =
           "أدخل الكود الأصلي والكود المعدّل للمقارنة.";
 
         diffOutput.innerHTML = `
-          <div class="empty-result">
+          <div class="empty-state">
             <div class="empty-icon warning">
               <i class="fa-solid fa-file-code"></i>
             </div>
+
             <h4>لا توجد أكواد للمقارنة</h4>
-            <p>أدخل الكود في أحد المربعين أو كليهما.</p>
+
+            <p>
+              أدخل الكود في أحد المربعين أو كليهما.
+            </p>
           </div>
         `;
 
@@ -763,226 +855,313 @@ const description =
         return;
       }
 
-      const rows = buildDiff(oldLines, newLines);
+
+      const rows = buildDiff(
+        oldLines,
+        newLines
+      );
+
 
       let added = 0;
       let removed = 0;
-      let same = 0;
+
 
       rows.forEach(function (row) {
-        if (row.type === "added") added++;
-        if (row.type === "removed") removed++;
-        if (row.type === "same") same++;
+
+        if (row.type === "added") {
+          added++;
+        }
+
+        if (row.type === "removed") {
+          removed++;
+        }
       });
 
-      statOld.textContent = String(oldLines.length);
-      statNew.textContent = String(newLines.length);
-      statAdded.textContent = String(added);
-      statRemoved.textContent = String(removed);
 
-      diffOutput.innerHTML = renderDiff(rows);
+      statOld.textContent =
+        String(oldLines.length);
 
-      if (added === 0 && removed === 0) {
+      statNew.textContent =
+        String(newLines.length);
+
+      statAdded.textContent =
+        String(added);
+
+      statRemoved.textContent =
+        String(removed);
+
+
+      diffOutput.innerHTML =
+        renderDiff(rows);
+
+
+      if (
+        added === 0 &&
+        removed === 0
+      ) {
+
         status.innerHTML =
-          '<span class="status-dot success"></span> الأكواد متطابقة';
+          '<span class="success"></span> الأكواد متطابقة';
 
         resultState.innerHTML =
           '<i class="fa-solid fa-check"></i> متطابق';
 
         resultDescription.textContent =
-          "لم يتم العثور على اختلافات بين النسختين.";
+          "لم يتم العثور على اختلافات.";
+
       } else {
+
         status.innerHTML =
-          '<span class="status-dot changed"></span> تم العثور على اختلافات';
+          '<span class="changed"></span> تم العثور على اختلافات';
 
         resultState.innerHTML =
           '<i class="fa-solid fa-code-branch"></i> مختلف';
 
         resultDescription.textContent =
-          added + " أسطر مضافة و " + removed + " أسطر محذوفة.";
+          added +
+          " أسطر مضافة و " +
+          removed +
+          " أسطر محذوفة.";
       }
     }
 
+
     function swapEditors() {
+
       const temp = oldCode.value;
-      oldCode.value = newCode.value;
-      newCode.value = temp;
+
+      oldCode.value =
+        newCode.value;
+
+      newCode.value =
+        temp;
 
       updateLineNumbers();
       compareCodes();
     }
 
+
     async function copyResult() {
-      const rows = diffOutput.querySelectorAll(".diff-row");
+
+      const rows =
+        diffOutput.querySelectorAll(".diff-row");
+
 
       if (!rows.length) {
+
         status.innerHTML =
-          '<span class="status-dot"></span> لا توجد نتيجة لنسخها';
+          '<span></span> لا توجد نتيجة لنسخها';
 
         return;
       }
 
+
       let text = "";
 
+
       rows.forEach(function (row) {
-        const symbol = row.querySelector(".diff-symbol");
-        const code = row.querySelector("code");
+
+        const symbol =
+          row.querySelector(".diff-symbol");
+
+        const code =
+          row.querySelector("code");
+
 
         if (symbol && code) {
-          text += symbol.textContent + " " + code.textContent + "\n";
+
+          text +=
+            symbol.textContent.trim() +
+            " " +
+            code.textContent +
+            "\n";
         }
       });
 
+
       try {
+
         await navigator.clipboard.writeText(text);
 
         status.innerHTML =
-          '<span class="status-dot success"></span> تم نسخ النتيجة';
+          '<span class="success"></span> تم نسخ النتيجة';
 
         setTimeout(function () {
+
           status.innerHTML =
-            '<span class="status-dot"></span> جاهز للمقارنة';
+            '<span></span> جاهز';
+
         }, 1800);
+
       } catch (error) {
+
         status.innerHTML =
-          '<span class="status-dot"></span> تعذر نسخ النتيجة';
+          '<span></span> تعذر النسخ';
       }
     }
 
+
     function clearAll() {
+
       oldCode.value = "";
       newCode.value = "";
 
       updateLineNumbers();
 
+
       diffOutput.innerHTML = `
-        <div class="empty-result">
+        <div class="empty-state">
+
           <div class="empty-icon">
             <i class="fa-solid fa-code-compare"></i>
           </div>
-          <h4>جاهز لمقارنة الأكواد</h4>
+
+          <h4>ابدأ مقارنة الأكواد</h4>
+
           <p>
-            أدخل الكود الأصلي والكود المعدّل ثم اضغط على
+            أدخل النسخة الأصلية والنسخة المعدّلة ثم اضغط على
             <strong>مقارنة</strong>.
           </p>
+
         </div>
       `;
+
 
       statOld.textContent = "0";
       statNew.textContent = "0";
       statAdded.textContent = "0";
       statRemoved.textContent = "0";
 
+
       resultState.innerHTML =
         '<i class="fa-solid fa-circle-info"></i> لم تتم المقارنة';
 
       resultDescription.textContent =
-        "ستظهر الفروقات هنا بعد المقارنة";
+        "ستظهر الفروقات بين الكودين هنا";
+
 
       status.innerHTML =
-        '<span class="status-dot"></span> جاهز للمقارنة';
+        '<span></span> جاهز';
     }
+
 
     function enableTab(textarea) {
-      textarea.addEventListener("keydown", function (event) {
-        if (event.key !== "Tab") return;
 
-        event.preventDefault();
+      textarea.addEventListener(
+        "keydown",
+        function (event) {
 
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
+          if (event.key !== "Tab") {
+            return;
+          }
 
-        textarea.value =
-          textarea.value.substring(0, start) +
-          "  " +
-          textarea.value.substring(end);
+          event.preventDefault();
 
-        textarea.selectionStart = start + 2;
-        textarea.selectionEnd = start + 2;
 
-        updateLineNumbers();
-      });
+          const start =
+            textarea.selectionStart;
+
+          const end =
+            textarea.selectionEnd;
+
+
+          textarea.value =
+            textarea.value.substring(0, start) +
+            "  " +
+            textarea.value.substring(end);
+
+
+          textarea.selectionStart =
+            start + 2;
+
+          textarea.selectionEnd =
+            start + 2;
+
+
+          updateLineNumbers();
+        }
+      );
     }
 
-    function syncScroll(source, target) {
-      source.addEventListener("scroll", function () {
-        target.scrollTop = source.scrollTop;
-      });
-    }
 
-    oldCode.addEventListener("input", updateLineNumbers);
-    newCode.addEventListener("input", updateLineNumbers);
+    oldCode.addEventListener(
+      "input",
+      updateLineNumbers
+    );
 
-    oldCode.addEventListener("input", function () {
-      status.innerHTML =
-        '<span class="status-dot"></span> تم تعديل الكود الأصلي';
-    });
+    newCode.addEventListener(
+      "input",
+      updateLineNumbers
+    );
 
-    newCode.addEventListener("input", function () {
-      status.innerHTML =
-        '<span class="status-dot"></span> تم تعديل الكود الجديد';
-    });
 
-    compareBtn.addEventListener("click", compareCodes);
-    swapBtn.addEventListener("click", swapEditors);
-    copyBtn.addEventListener("click", copyResult);
-    clearBtn.addEventListener("click", clearAll);
+    compareBtn.addEventListener(
+      "click",
+      compareCodes
+    );
+
+    swapBtn.addEventListener(
+      "click",
+      swapEditors
+    );
+
+    copyBtn.addEventListener(
+      "click",
+      copyResult
+    );
+
+    clearBtn.addEventListener(
+      "click",
+      clearAll
+    );
+
 
     enableTab(oldCode);
     enableTab(newCode);
 
-    syncScroll(oldCode, oldNumbers);
-    syncScroll(newCode, newNumbers);
 
     updateLineNumbers();
+
   </script>
 
 
   <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --secondary: #4f46e5;
-      --accent: #60a5fa;
 
-      --bg: #f6f8fc;
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --secondary: #6366f1;
+      --accent: #818cf8;
+
+      --bg: #f6f7fb;
       --surface: #ffffff;
-      --surface-2: #f8fafc;
+      --surface-soft: #f8f9fc;
 
       --text: #111827;
       --muted: #64748b;
-      --border: #e2e8f0;
 
-      --editor: #0b1220;
-      --editor-2: #111827;
-      --editor-text: #dbeafe;
+      --border: #e5e7eb;
 
       --green: #16a34a;
-      --green-bg: #ecfdf3;
-
       --red: #dc2626;
-      --red-bg: #fef2f2;
 
       --shadow:
-        0 16px 45px rgba(15, 23, 42, 0.08);
-
-      --radius: 18px;
+        0 12px 35px rgba(15, 23, 42, 0.07);
     }
+
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
 
     body {
       margin: 0;
-      font-family: "Cairo", sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-family: "Cairo", sans-serif;
     }
+
 
     button,
     select,
@@ -990,10 +1169,11 @@ const description =
       font-family: inherit;
     }
 
-    .page {
-      width: min(1180px, calc(100% - 30px));
-      margin: 0 auto;
-      padding: 38px 0 70px;
+
+    .tool-page {
+      width: min(1160px, calc(100% - 30px));
+      margin: auto;
+      padding: 42px 0 70px;
     }
 
 
@@ -1002,373 +1182,538 @@ const description =
     .hero {
       display: flex;
       align-items: center;
-      gap: 18px;
-      margin-bottom: 22px;
+      justify-content: space-between;
+      gap: 25px;
+      margin-bottom: 28px;
     }
 
-    .hero-icon {
-      width: 62px;
-      height: 62px;
-      flex: 0 0 62px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      color: #fff;
-      font-size: 26px;
-      background:
-        linear-gradient(135deg, var(--primary), var(--secondary));
-      box-shadow:
-        0 12px 25px rgba(37, 99, 235, 0.22);
-    }
 
     .hero-content {
       min-width: 0;
     }
 
-    .badge {
+
+    .tool-badge {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 5px 11px;
-      border: 1px solid #bfdbfe;
+
+      padding: 6px 11px;
+
+      border: 1px solid #c7d2fe;
       border-radius: 999px;
-      color: var(--primary-dark);
-      background: #eff6ff;
-      font-size: 12px;
+
+      color: var(--primary);
+      background: #eef2ff;
+
+      font-size: 11px;
       font-weight: 700;
-      margin-bottom: 6px;
     }
+
 
     .hero h1 {
-      margin: 0;
-      font-size: clamp(27px, 4vw, 38px);
+      margin: 10px 0 5px;
+
+      font-size: clamp(28px, 4vw, 42px);
       line-height: 1.2;
+
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.7px;
     }
+
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
 
     .hero p {
-      margin: 7px 0 0;
+      margin: 0;
+
+      max-width: 650px;
+
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
+
+      font-size: 13px;
+      line-height: 1.9;
     }
 
 
-    /* TOOL CARD */
+    .hero-icon {
+      width: 76px;
+      height: 76px;
 
-    .tool-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      flex: 0 0 76px;
+
+      display: grid;
+      place-items: center;
+
       border-radius: 22px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+
+      font-size: 30px;
+
+      box-shadow:
+        0 14px 30px rgba(79, 70, 229, 0.23);
     }
 
-    .tool-header {
+
+    /* MAIN TOOL */
+
+    .tool-container {
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 20px;
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .tool-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 15px;
+
       padding: 18px 20px;
+
       border-bottom: 1px solid var(--border);
     }
 
-    .tool-title {
+
+    .tool-heading {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .tool-title-icon {
+
+    .tool-heading-icon {
       width: 43px;
       height: 43px;
+
       display: grid;
       place-items: center;
-      border-radius: 13px;
+
+      border-radius: 12px;
+
       color: var(--primary);
-      background: #eff6ff;
+      background: #eef2ff;
+
       font-size: 18px;
     }
 
-    .tool-title h2 {
+
+    .tool-heading h2 {
       margin: 0;
-      font-size: 17px;
+
+      font-size: 16px;
       font-weight: 800;
     }
 
-    .tool-title span {
-      display: block;
+
+    .tool-heading p {
+      margin: 2px 0 0;
+
       color: var(--muted);
-      font-size: 11px;
-      margin-top: 1px;
+
+      font-size: 10px;
       direction: ltr;
       text-align: right;
     }
 
-    .status {
+
+    .ready-status {
       display: flex;
       align-items: center;
       gap: 7px;
+
       color: var(--muted);
-      font-size: 12px;
+
+      font-size: 11px;
       font-weight: 600;
-      white-space: nowrap;
     }
 
-    .status-dot {
+
+    .ready-status span,
+    .ready-status .success,
+    .ready-status .changed {
       width: 8px;
       height: 8px;
+
+      display: inline-block;
+
       border-radius: 50%;
+
       background: #94a3b8;
     }
 
-    .status-dot.success {
+
+    .ready-status .success {
       background: var(--green);
     }
 
-    .status-dot.changed {
+
+    .ready-status .changed {
       background: #f59e0b;
     }
 
 
     /* ACTION BAR */
 
-    .actionbar {
+    .action-bar {
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
-      padding: 13px 16px;
-      background: var(--surface-2);
+
+      padding: 12px 16px;
+
+      background: var(--surface-soft);
+
       border-bottom: 1px solid var(--border);
     }
 
-    .actionbar button {
-      height: 38px;
-      border-radius: 10px;
-      padding: 0 13px;
+
+    .btn {
+      height: 37px;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
+
       gap: 7px;
+
+      padding: 0 13px;
+
+      border-radius: 9px;
+
       border: 1px solid var(--border);
+
       cursor: pointer;
-      font-size: 12px;
+
+      font-size: 11px;
       font-weight: 700;
+
       transition: 0.2s ease;
     }
 
-    .actionbar button:hover {
+
+    .btn:hover {
       transform: translateY(-1px);
     }
 
-    .primary-btn {
-      color: #fff;
-      border-color: var(--primary) !important;
+
+    .btn-primary {
+      color: white;
+
+      border-color: var(--primary);
+
       background: var(--primary);
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18);
     }
 
-    .primary-btn:hover {
+
+    .btn-primary:hover {
       background: var(--primary-dark);
     }
 
-    .action-btn {
-      color: #334155;
-      background: #fff;
+
+    .btn-secondary {
+      color: #475569;
+
+      background: white;
     }
 
-    .action-btn:hover {
+
+    .btn-secondary:hover {
       color: var(--primary);
-      border-color: #bfdbfe !important;
+      border-color: #c7d2fe;
     }
 
-    .danger-btn {
+
+    .btn-danger {
       color: var(--red);
-      background: #fff;
+      background: white;
     }
 
-    .danger-btn:hover {
-      border-color: #fecaca !important;
-      background: #fff5f5;
+
+    .btn-danger:hover {
+      border-color: #fecaca;
+      background: #fff7f7;
     }
 
-    .language-box {
+
+    .language-select {
+      height: 37px;
+
       margin-right: auto;
-      height: 38px;
+
       display: flex;
       align-items: center;
       gap: 7px;
+
       padding: 0 10px;
+
       border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #fff;
+      border-radius: 9px;
+
       color: var(--muted);
+
+      background: white;
     }
 
-    .language-box select {
+
+    .language-select select {
       border: 0;
       outline: 0;
+
+      color: #475569;
       background: transparent;
-      color: #334155;
-      font-size: 12px;
-      font-weight: 700;
+
+      font-size: 11px;
+      font-weight: 600;
+
       cursor: pointer;
     }
 
 
     /* EDITORS */
 
-    .editors {
+    .editors-grid {
       display: grid;
+
       grid-template-columns: 1fr 1fr;
+
       gap: 14px;
+
       padding: 16px;
-      background: #eef2f7;
+
+      background: #f1f4f9;
     }
 
-    .editor-panel {
+
+    .editor-card {
       overflow: hidden;
-      border: 1px solid #dbe3ed;
-      border-radius: 15px;
-      background: var(--editor);
+
+      border: 1px solid #dbe2eb;
+      border-radius: 14px;
+
+      background: #0d1420;
     }
 
-    .editor-header {
-      height: 58px;
+
+    .editor-card-header {
+      height: 56px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 0 13px;
-      background: var(--editor-2);
-      border-bottom: 1px solid #253247;
+
+      padding: 0 12px;
+
+      background: #121b2a;
+
+      border-bottom: 1px solid #253246;
     }
 
-    .editor-name {
+
+    .editor-title {
       display: flex;
       align-items: center;
       gap: 9px;
-      min-width: 0;
     }
 
-    .editor-icon {
-      width: 34px;
-      height: 34px;
+
+    .editor-title-icon {
+      width: 33px;
+      height: 33px;
+
       display: grid;
       place-items: center;
+
       border-radius: 9px;
-      font-size: 14px;
     }
 
-    .original-panel .editor-icon {
-      color: #fca5a5;
-      background: rgba(220, 38, 38, 0.14);
+
+    .original .editor-title-icon {
+      color: #f87171;
+      background: rgba(220, 38, 38, 0.13);
     }
 
-    .modified-panel .editor-icon {
-      color: #86efac;
-      background: rgba(22, 163, 74, 0.14);
+
+    .modified .editor-title-icon {
+      color: #4ade80;
+      background: rgba(22, 163, 74, 0.13);
     }
 
-    .editor-name strong {
+
+    .editor-title strong {
       display: block;
+
       color: #f8fafc;
-      font-size: 13px;
+
+      font-size: 12px;
+
       direction: ltr;
       text-align: right;
     }
 
-    .editor-name small {
+
+    .editor-title small {
       display: block;
-      color: #94a3b8;
-      font-size: 10px;
+
       margin-top: 1px;
+
+      color: #64748b;
+
+      font-size: 9px;
     }
 
-    .editor-tag {
+
+    .editor-label {
       display: inline-flex;
       align-items: center;
       gap: 5px;
+
       padding: 4px 8px;
+
       border-radius: 7px;
-      font-size: 10px;
+
+      font-size: 9px;
       font-weight: 800;
+
       direction: ltr;
     }
 
-    .removed-tag {
+
+    .editor-label.removed {
       color: #fca5a5;
       background: rgba(220, 38, 38, 0.12);
     }
 
-    .added-tag {
+
+    .editor-label.added {
       color: #86efac;
       background: rgba(22, 163, 74, 0.12);
     }
 
-    .editor {
-      height: 350px;
+
+    .code-editor {
+      height: 340px;
+
       display: grid;
-      grid-template-columns: 54px 1fr;
+
+      grid-template-columns: 48px 1fr;
+
       direction: ltr;
+
       overflow: hidden;
     }
 
+
     .line-numbers {
-      padding: 14px 9px;
+      padding: 13px 7px;
+
       overflow: hidden;
+
       color: #475569;
-      background: #080e19;
+
+      background: #090f19;
+
       border-right: 1px solid #1e293b;
-      font-family: "Courier New", monospace;
-      font-size: 12px;
+
+      font-family:
+        "Courier New",
+        Consolas,
+        monospace;
+
+      font-size: 11px;
+
       line-height: 1.65;
+
       text-align: right;
+
       white-space: pre;
+
       user-select: none;
     }
 
-    .editor textarea {
+
+    .code-editor textarea {
       width: 100%;
       height: 100%;
+
       resize: none;
+
       outline: 0;
       border: 0;
-      padding: 14px 16px;
-      color: var(--editor-text);
-      background: var(--editor);
-      font-family: "Courier New", Consolas, monospace;
-      font-size: 13px;
+
+      padding: 13px 14px;
+
+      color: #dbeafe;
+
+      background: #0d1420;
+
+      font-family:
+        "Courier New",
+        Consolas,
+        monospace;
+
+      font-size: 12px;
+
       line-height: 1.65;
-      tab-size: 2;
+
       direction: ltr;
       text-align: left;
+
       white-space: pre;
-      overflow: auto;
+
+      tab-size: 2;
     }
 
-    .editor textarea::placeholder {
+
+    .code-editor textarea::placeholder {
       color: #475569;
     }
 
-    .editor textarea:focus {
-      box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.35);
+
+    .code-editor textarea:focus {
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(99, 102, 241, 0.35);
     }
 
+
     .editor-footer {
-      height: 34px;
+      height: 32px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
+
+      padding: 0 11px;
+
       color: #64748b;
-      background: #080e19;
+
+      background: #090f19;
+
       border-top: 1px solid #1e293b;
-      font-family: "Cairo", sans-serif;
-      font-size: 10px;
+
+      font-size: 9px;
     }
+
 
     .editor-footer span {
       display: flex;
@@ -1379,182 +1724,259 @@ const description =
 
     /* RESULT */
 
-    .result-box {
-      margin: 0 16px 16px;
+    .result-card {
+      margin: 0 16px 14px;
+
       overflow: hidden;
+
       border: 1px solid var(--border);
-      border-radius: 15px;
-      background: #fff;
+      border-radius: 14px;
+
+      background: white;
     }
 
-    .result-header {
-      min-height: 66px;
+
+    .result-top {
+      min-height: 62px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 12px;
-      padding: 11px 14px;
+
+      padding: 10px 13px;
+
+      background: var(--surface-soft);
+
       border-bottom: 1px solid var(--border);
-      background: var(--surface-2);
     }
 
-    .result-title {
+
+    .result-heading {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
+
     .result-icon {
-      width: 37px;
-      height: 37px;
+      width: 36px;
+      height: 36px;
+
       display: grid;
       place-items: center;
+
       border-radius: 10px;
+
       color: var(--primary);
-      background: #dbeafe;
+      background: #eef2ff;
     }
 
-    .result-title h3 {
+
+    .result-heading h3 {
       margin: 0;
-      font-size: 14px;
+
+      font-size: 13px;
       font-weight: 800;
     }
 
-    .result-title span {
-      display: block;
-      margin-top: 2px;
+
+    .result-heading p {
+      margin: 2px 0 0;
+
       color: var(--muted);
-      font-size: 10px;
+
+      font-size: 9px;
     }
 
-    .result-state {
+
+    .result-status {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+
       padding: 5px 9px;
+
       border-radius: 8px;
+
       color: var(--muted);
+
       background: #f1f5f9;
-      font-size: 10px;
+
+      font-size: 9px;
       font-weight: 700;
-      white-space: nowrap;
     }
 
+
     .diff-output {
-      max-height: 430px;
+      max-height: 410px;
+
       overflow: auto;
-      background: #0b1220;
+
+      background: #0d1420;
+
       direction: ltr;
     }
 
-    .empty-result {
-      min-height: 210px;
+
+    .empty-state {
+      min-height: 200px;
+
       display: flex;
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
-      padding: 30px 20px;
+
+      padding: 25px;
+
       text-align: center;
+
       direction: rtl;
     }
 
+
     .empty-icon {
-      width: 55px;
-      height: 55px;
+      width: 52px;
+      height: 52px;
+
       display: grid;
       place-items: center;
-      margin-bottom: 12px;
-      border-radius: 15px;
-      color: #93c5fd;
-      background: rgba(37, 99, 235, 0.14);
-      font-size: 21px;
+
+      margin-bottom: 11px;
+
+      border-radius: 14px;
+
+      color: #a5b4fc;
+
+      background: rgba(79, 70, 229, 0.13);
+
+      font-size: 20px;
     }
+
 
     .empty-icon.warning {
       color: #fbbf24;
       background: rgba(245, 158, 11, 0.12);
     }
 
-    .empty-result h4 {
+
+    .empty-state h4 {
       margin: 0;
+
       color: #e2e8f0;
-      font-size: 14px;
+
+      font-size: 13px;
     }
 
-    .empty-result p {
-      max-width: 480px;
+
+    .empty-state p {
       margin: 6px 0 0;
+
       color: #64748b;
-      font-size: 11px;
+
+      font-size: 10px;
+
       line-height: 1.8;
     }
 
+
     .diff-row {
-      min-height: 31px;
+      min-height: 30px;
+
       display: grid;
-      grid-template-columns: 55px 55px 38px 1fr;
+
+      grid-template-columns:
+        52px
+        52px
+        32px
+        1fr;
+
       align-items: stretch;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
-      font-family: "Courier New", Consolas, monospace;
-      font-size: 12px;
-      line-height: 1.7;
+
+      border-bottom: 1px solid
+        rgba(148, 163, 184, 0.07);
+
+      font-family:
+        "Courier New",
+        Consolas,
+        monospace;
+
+      font-size: 11px;
     }
 
-    .diff-row:last-child {
-      border-bottom: 0;
-    }
 
-    .diff-row .diff-line {
+    .diff-number {
       display: flex;
       align-items: center;
       justify-content: center;
+
       color: #64748b;
-      border-right: 1px solid rgba(148, 163, 184, 0.1);
+
+      border-right: 1px solid
+        rgba(148, 163, 184, 0.09);
+
       user-select: none;
     }
 
-    .diff-row .diff-symbol {
+
+    .diff-symbol {
       display: flex;
       align-items: center;
       justify-content: center;
+
+      border-right: 1px solid
+        rgba(148, 163, 184, 0.09);
+
       font-weight: 800;
-      border-right: 1px solid rgba(148, 163, 184, 0.1);
     }
 
+
     .diff-row code {
-      display: block;
-      padding: 5px 12px;
+      padding: 5px 10px;
+
       color: #cbd5e1;
+
       white-space: pre;
+
       overflow-x: auto;
+
       text-align: left;
     }
 
-    .diff-added {
+
+    .diff-row.added {
       background: rgba(22, 163, 74, 0.13);
     }
 
-    .diff-added .diff-symbol {
+
+    .diff-row.added .diff-symbol {
       color: #4ade80;
     }
 
-    .diff-added code {
+
+    .diff-row.added code {
       color: #bbf7d0;
     }
 
-    .diff-removed {
+
+    .diff-row.removed {
       background: rgba(220, 38, 38, 0.13);
     }
 
-    .diff-removed .diff-symbol {
+
+    .diff-row.removed .diff-symbol {
       color: #f87171;
     }
 
-    .diff-removed code {
+
+    .diff-row.removed code {
       color: #fecaca;
     }
 
-    .diff-same .diff-symbol {
+
+    .diff-row.same .diff-symbol {
       color: #64748b;
     }
 
@@ -1563,198 +1985,236 @@ const description =
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 10px;
+
       padding: 0 16px 16px;
     }
+
 
     .stat-card {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
-      padding: 13px;
+
+      gap: 9px;
+
+      padding: 11px;
+
       border: 1px solid var(--border);
-      border-radius: 13px;
-      background: #fff;
+      border-radius: 12px;
+
+      background: white;
     }
 
+
     .stat-icon {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 38px;
+      width: 36px;
+      height: 36px;
+
+      flex: 0 0 36px;
+
       display: grid;
       place-items: center;
+
       border-radius: 10px;
     }
 
-    .original-stat {
-      color: #64748b;
-      background: #f1f5f9;
-    }
 
-    .modified-stat {
-      color: var(--primary);
+    .stat-icon.blue {
+      color: #2563eb;
       background: #eff6ff;
     }
 
-    .added-stat {
-      color: var(--green);
-      background: var(--green-bg);
+
+    .stat-icon.indigo {
+      color: var(--primary);
+      background: #eef2ff;
     }
 
-    .removed-stat {
-      color: var(--red);
-      background: var(--red-bg);
+
+    .stat-icon.green {
+      color: var(--green);
+      background: #ecfdf5;
     }
+
+
+    .stat-icon.red {
+      color: var(--red);
+      background: #fef2f2;
+    }
+
 
     .stat-card span {
       display: block;
+
       color: var(--muted);
-      font-size: 10px;
-      white-space: nowrap;
+
+      font-size: 9px;
     }
+
 
     .stat-card strong {
       display: block;
+
       margin-top: 1px;
-      font-size: 19px;
+
+      font-size: 17px;
+
       line-height: 1.2;
-      direction: ltr;
-      text-align: right;
     }
 
 
-    /* SECTIONS */
+    /* CONTENT */
 
-    .info-section,
-    .guide-section,
-    .faq-section {
-      margin-top: 52px;
+    .content-section {
+      margin-top: 50px;
     }
 
-    .section-heading {
+
+    .section-title {
       display: flex;
       align-items: center;
-      gap: 11px;
-      margin-bottom: 18px;
+      gap: 10px;
+
+      margin-bottom: 17px;
     }
 
-    .section-heading-icon {
-      width: 42px;
-      height: 42px;
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+
       display: grid;
       place-items: center;
-      border-radius: 12px;
+
+      border-radius: 11px;
+
       color: var(--primary);
-      background: #eff6ff;
+      background: #eef2ff;
     }
 
-    .section-heading h2 {
+
+    .section-title h2 {
       margin: 0;
-      font-size: 20px;
+
+      font-size: 19px;
       font-weight: 800;
     }
 
-    .section-heading p {
+
+    .section-title p {
       margin: 2px 0 0;
+
       color: var(--muted);
-      font-size: 11px;
+
+      font-size: 10px;
     }
 
 
-    /* INFO CARDS */
-
-    .info-grid {
+    .feature-grid,
+    .steps-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 13px;
     }
 
-    .info-card {
-      padding: 20px;
+
+    .feature-card,
+    .step-card {
+      padding: 18px;
+
       border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
+      border-radius: 14px;
+
+      background: white;
+
       transition: 0.2s ease;
     }
 
-    .info-card:hover {
+
+    .feature-card:hover,
+    .step-card:hover {
       transform: translateY(-2px);
-      border-color: #bfdbfe;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+
+      border-color: #c7d2fe;
+
+      box-shadow:
+        0 10px 25px
+        rgba(15, 23, 42, 0.06);
     }
 
-    .info-card-icon {
-      width: 42px;
-      height: 42px;
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+
       display: grid;
       place-items: center;
-      margin-bottom: 13px;
-      border-radius: 11px;
+
+      margin-bottom: 12px;
+
+      border-radius: 10px;
+
       color: var(--primary);
-      background: #eff6ff;
+      background: #eef2ff;
     }
 
-    .info-card h3 {
+
+    .feature-card h3,
+    .step-card h3 {
       margin: 0 0 5px;
-      font-size: 14px;
+
+      font-size: 13px;
       font-weight: 800;
     }
 
-    .info-card p {
+
+    .feature-card p,
+    .step-card p {
       margin: 0;
+
       color: var(--muted);
-      font-size: 11px;
+
+      font-size: 10px;
+
       line-height: 1.9;
     }
 
 
-    /* STEPS */
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .step {
+    .step-card {
       display: flex;
-      gap: 12px;
-      padding: 18px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
+      gap: 11px;
     }
+
 
     .step-number {
-      width: 34px;
-      height: 34px;
-      flex: 0 0 34px;
+      width: 32px;
+      height: 32px;
+
+      flex: 0 0 32px;
+
       display: grid;
       place-items: center;
-      border-radius: 10px;
-      color: #fff;
-      background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-      );
-      font-size: 13px;
-      font-weight: 800;
-    }
 
-    .step h3 {
-      margin: 0 0 4px;
-      font-size: 13px;
-      font-weight: 800;
-    }
+      border-radius: 9px;
 
-    .step p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.8;
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+
+      font-size: 12px;
+      font-weight: 800;
     }
 
 
@@ -1762,124 +2222,138 @@ const description =
 
     .faq-list {
       display: grid;
-      gap: 9px;
+      gap: 8px;
     }
 
+
     .faq-list details {
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: var(--surface);
       overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+
+      background: white;
     }
+
 
     .faq-list summary {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 10px;
-      padding: 15px 17px;
+
+      padding: 14px 16px;
+
       cursor: pointer;
+
       list-style: none;
-      font-size: 12px;
+
+      font-size: 11px;
       font-weight: 700;
     }
+
 
     .faq-list summary::-webkit-details-marker {
       display: none;
     }
 
+
     .faq-list summary i {
       color: var(--muted);
+
       transition: 0.2s ease;
     }
+
 
     .faq-list details[open] summary i {
       transform: rotate(180deg);
     }
 
+
     .faq-list details p {
       margin: 0;
-      padding: 0 17px 16px;
+
+      padding: 0 16px 15px;
+
       color: var(--muted);
-      font-size: 11px;
+
+      font-size: 10px;
+
       line-height: 1.9;
     }
 
 
-    /* DARK MODE */
+    /* DARK */
 
     @media (prefers-color-scheme: dark) {
+
       :root {
-        --bg: #060b14;
-        --surface: #0d1522;
-        --surface-2: #111b2b;
+        --bg: #070b14;
+        --surface: #0e1522;
+        --surface-soft: #111a2a;
+
         --text: #e5e7eb;
         --muted: #94a3b8;
+
         --border: #1e293b;
       }
 
-      .badge {
-        border-color: #1e40af;
-        color: #93c5fd;
-        background: rgba(37, 99, 235, 0.12);
+
+      .tool-badge {
+        color: #a5b4fc;
+        background: rgba(79, 70, 229, 0.12);
+        border-color: #312e81;
       }
 
-      .tool-title-icon,
-      .section-heading-icon {
-        background: rgba(37, 99, 235, 0.12);
+
+      .tool-heading-icon,
+      .section-icon,
+      .result-icon {
+        background: rgba(79, 70, 229, 0.12);
       }
 
-      .action-btn,
-      .danger-btn,
-      .language-box {
+
+      .action-bar {
+        background: var(--surface-soft);
+      }
+
+
+      .btn-secondary,
+      .btn-danger,
+      .language-select {
         color: #cbd5e1;
-        background: #0d1522;
-        border-color: #253247;
+        background: var(--surface);
+        border-color: #263449;
       }
 
-      .language-box select {
+
+      .language-select select {
         color: #cbd5e1;
       }
 
-      .editors {
-        background: #080e19;
+
+      .editors-grid {
+        background: #090f19;
       }
 
-      .result-box,
+
+      .result-card,
       .stat-card,
-      .info-card,
-      .step,
+      .feature-card,
+      .step-card,
       .faq-list details {
         background: var(--surface);
       }
 
-      .result-header,
-      .actionbar {
-        background: var(--surface-2);
+
+      .result-top {
+        background: var(--surface-soft);
       }
 
-      .result-state {
+
+      .result-status {
         background: #172033;
-      }
-
-      .result-icon {
-        background: rgba(37, 99, 235, 0.14);
-      }
-
-      .original-stat {
-        background: #172033;
-      }
-
-      .modified-stat {
-        background: rgba(37, 99, 235, 0.12);
-      }
-
-      .added-stat {
-        background: rgba(22, 163, 74, 0.12);
-      }
-
-      .removed-stat {
-        background: rgba(220, 38, 38, 0.12);
       }
     }
 
@@ -1887,14 +2361,17 @@ const description =
     /* TABLET */
 
     @media (max-width: 850px) {
-      .editors {
+
+      .editors-grid {
         grid-template-columns: 1fr;
       }
 
-      .info-grid,
-      .steps {
+
+      .feature-grid,
+      .steps-grid {
         grid-template-columns: 1fr;
       }
+
 
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1905,185 +2382,233 @@ const description =
     /* MOBILE */
 
     @media (max-width: 600px) {
-      .page {
-        width: min(100% - 18px, 1180px);
-        padding-top: 24px;
+
+      .tool-page {
+        width: calc(100% - 18px);
+
+        padding-top: 25px;
       }
+
 
       .hero {
         align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 17px;
+
+        margin-bottom: 20px;
       }
+
 
       .hero-icon {
-        width: 50px;
-        height: 50px;
-        flex-basis: 50px;
-        border-radius: 14px;
-        font-size: 20px;
+        width: 54px;
+        height: 54px;
+
+        flex: 0 0 54px;
+
+        border-radius: 15px;
+
+        font-size: 21px;
       }
 
-      .badge {
-        font-size: 10px;
-        padding: 4px 8px;
-      }
 
-      .hero h1 {
-        font-size: 25px;
-      }
-
-      .hero p {
-        font-size: 11px;
-        line-height: 1.7;
-      }
-
-      .tool-card {
-        border-radius: 17px;
-      }
-
-      .tool-header {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 14px;
-      }
-
-      .status {
-        width: 100%;
-      }
-
-      .actionbar {
-        padding: 10px;
-      }
-
-      .actionbar button {
-        flex: 1 1 calc(50% - 8px);
-        min-width: 0;
-        padding: 0 8px;
-        font-size: 10px;
-      }
-
-      .language-box {
-        width: 100%;
-        margin-right: 0;
-        justify-content: center;
-      }
-
-      .language-box select {
-        width: 100%;
-      }
-
-      .editors {
-        padding: 10px;
-        gap: 10px;
-      }
-
-      .editor {
-        height: 285px;
-        grid-template-columns: 42px 1fr;
-      }
-
-      .line-numbers {
-        padding: 12px 6px;
-        font-size: 10px;
-      }
-
-      .editor textarea {
-        padding: 12px;
-        font-size: 11px;
-      }
-
-      .editor-header {
-        height: 52px;
-        padding: 0 10px;
-      }
-
-      .editor-name small {
+      .tool-badge {
         font-size: 9px;
-      }
-
-      .editor-tag {
-        font-size: 9px;
-      }
-
-      .result-box {
-        margin: 0 10px 10px;
-      }
-
-      .result-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .result-state {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .diff-row {
-        grid-template-columns: 38px 38px 30px 1fr;
-        font-size: 10px;
-      }
-
-      .diff-row code {
         padding: 5px 8px;
       }
 
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        padding: 0 10px 10px;
+
+      .hero h1 {
+        margin-top: 7px;
+
+        font-size: 25px;
       }
 
-      .stat-card {
-        padding: 10px;
+
+      .hero p {
+        font-size: 10px;
       }
 
-      .stat-icon {
-        width: 32px;
-        height: 32px;
-        flex-basis: 32px;
-        font-size: 11px;
+
+      .tool-top {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding: 14px;
       }
 
-      .stat-card span {
+
+      .ready-status {
+        width: 100%;
+      }
+
+
+      .action-bar {
+        padding: 9px;
+      }
+
+
+      .btn {
+        flex: 1 1 calc(50% - 8px);
+
+        min-width: 0;
+
+        padding: 0 7px;
+
         font-size: 9px;
       }
 
-      .stat-card strong {
-        font-size: 16px;
+
+      .language-select {
+        width: 100%;
+
+        margin-right: 0;
+
+        justify-content: center;
       }
 
-      .info-section,
-      .guide-section,
-      .faq-section {
+
+      .language-select select {
+        flex: 1;
+      }
+
+
+      .editors-grid {
+        padding: 9px;
+
+        gap: 9px;
+      }
+
+
+      .code-editor {
+        height: 275px;
+
+        grid-template-columns: 40px 1fr;
+      }
+
+
+      .line-numbers {
+        font-size: 9px;
+
+        padding: 11px 5px;
+      }
+
+
+      .code-editor textarea {
+        padding: 11px;
+
+        font-size: 10px;
+      }
+
+
+      .editor-card-header {
+        height: 51px;
+
+        padding: 0 9px;
+      }
+
+
+      .editor-title-icon {
+        width: 31px;
+        height: 31px;
+      }
+
+
+      .editor-label {
+        font-size: 8px;
+      }
+
+
+      .result-card {
+        margin: 0 9px 9px;
+      }
+
+
+      .result-top {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .result-status {
+        width: 100%;
+
+        justify-content: center;
+      }
+
+
+      .diff-row {
+        grid-template-columns:
+          35px
+          35px
+          27px
+          1fr;
+
+        font-size: 9px;
+      }
+
+
+      .diff-row code {
+        padding: 5px 7px;
+      }
+
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 7px;
+
+        padding: 0 9px 9px;
+      }
+
+
+      .stat-card {
+        padding: 9px;
+
+        gap: 7px;
+      }
+
+
+      .stat-icon {
+        width: 31px;
+        height: 31px;
+
+        flex-basis: 31px;
+
+        font-size: 10px;
+      }
+
+
+      .stat-card span {
+        font-size: 8px;
+      }
+
+
+      .stat-card strong {
+        font-size: 15px;
+      }
+
+
+      .content-section {
         margin-top: 38px;
       }
 
-      .section-heading h2 {
+
+      .section-title h2 {
         font-size: 17px;
       }
 
-      .section-heading p {
-        font-size: 10px;
+
+      .section-title p {
+        font-size: 9px;
       }
 
-      .info-card,
-      .step {
-        padding: 15px;
-      }
 
-      .info-card p,
-      .step p,
-      .faq-list details p {
-        font-size: 10px;
-      }
-
-      .faq-list summary {
-        padding: 13px;
-        font-size: 11px;
+      .feature-card,
+      .step-card {
+        padding: 14px;
       }
     }
+
   </style>
 
 </body>
