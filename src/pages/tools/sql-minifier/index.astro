@@ -5,7 +5,6 @@ import Footer from '../../../components/Footer.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const title = "SQL Minifier - تصغير SQL أونلاين مجاناً | Th.Tech";
-
 const description =
   "أداة SQL Minifier مجانية لتصغير وضغط استعلامات SQL وإزالة المسافات والتعليقات غير الضرورية مباشرة من المتصفح.";
 
@@ -29,69 +28,68 @@ const faqs = [
 ];
 ---
 
-<!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-  </head>
+<body>
+  <Header />
 
-  <body>
-    <Header />
+  <main>
 
-    <main>
-      <!-- ================= HERO ================= -->
-      <section class="hero">
-        <div class="hero-bg hero-bg-1"></div>
-        <div class="hero-bg hero-bg-2"></div>
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="hero-bg"></div>
 
-        <div class="container hero-container">
-          <div class="breadcrumb">
-            <a href={`${base}/`}>الرئيسية</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <a href={`${base}/tools/`}>الأدوات</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <span>SQL Minifier</span>
+      <div class="container hero-container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>SQL Minifier</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+            <div class="icon-glow"></div>
+            <i class="fa-solid fa-database"></i>
+            <span class="mini-icon">
+              <i class="fa-solid fa-compress"></i>
+            </span>
           </div>
 
-          <div class="hero-content">
-            <div class="hero-badge">
-              <i class="fa-solid fa-database"></i>
-              <span>Developer Tools</span>
-            </div>
+          <div class="hero-text">
 
-            <div class="hero-icon">
-              <div class="icon-glow"></div>
-              <i class="fa-solid fa-compress"></i>
-              <span class="mini-icon">
-                <i class="fa-solid fa-database"></i>
-              </span>
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
             </div>
 
             <h1>
-              SQL
-              <span>Minifier</span>
+              SQL Minifier
+              <span>تصغير وضغط SQL</span>
             </h1>
 
-            <p>
-              تصغير وضغط استعلامات SQL وإزالة المسافات والتعليقات غير الضرورية
-              بسرعة وسهولة.
-            </p>
+            <p>{description}</p>
 
             <div class="hero-features">
               <span>
@@ -100,2198 +98,2457 @@ const faqs = [
               </span>
 
               <span>
-                <i class="fa-solid fa-lock"></i>
-                معالجة محلية
+                <i class="fa-solid fa-shield-halved"></i>
+                آمن
               </span>
 
               <span>
-                <i class="fa-solid fa-code"></i>
-                SQL
+                <i class="fa-solid fa-lock"></i>
+                يعمل محلياً
               </span>
             </div>
+
           </div>
+
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ================= TOOL ================= -->
-      <section class="tool-section">
-        <div class="container">
-          <div class="minifier-card">
 
-            <!-- Top Bar -->
-            <div class="tool-topbar">
-              <div class="tool-brand">
-                <div class="brand-icon">
-                  <i class="fa-solid fa-database"></i>
-                </div>
+    <!-- ================= TOOL ================= -->
+    <section class="tool-section">
+      <div class="container">
 
-                <div>
-                  <strong>SQL Minifier</strong>
-                  <span>تصغير استعلامات SQL</span>
-                </div>
+        <div class="minifier-card">
+
+          <!-- TOP BAR -->
+          <div class="tool-topbar">
+
+            <div class="tool-title">
+              <div class="tool-title-icon">
+                <i class="fa-solid fa-database"></i>
               </div>
 
-              <div class="local-status">
-                <span class="status-dot"></span>
-                <span>Local Processing</span>
+              <div>
+                <strong>SQL Minifier</strong>
+                <small>تصغير استعلامات SQL</small>
               </div>
             </div>
 
-            <!-- Action Bar -->
-            <div class="actionbar">
-
-              <div class="action-group">
-                <button class="action-btn secondary" id="exampleBtn">
-                  <i class="fa-solid fa-wand-magic-sparkles"></i>
-                  مثال
-                </button>
-
-                <button class="action-btn secondary" id="clearBtn">
-                  <i class="fa-solid fa-trash-can"></i>
-                  مسح
-                </button>
-              </div>
-
-              <div class="action-group">
-                <button class="action-btn secondary" id="copyBtn">
-                  <i class="fa-regular fa-copy"></i>
-                  نسخ
-                </button>
-
-                <button class="action-btn primary" id="minifyBtn">
-                  <i class="fa-solid fa-compress"></i>
-                  تصغير SQL
-                </button>
-              </div>
-
+            <div class="tool-status">
+              <span class="status-dot"></span>
+              <span id="statusText">جاهز</span>
             </div>
 
-            <!-- Editors -->
-            <div class="editors-grid">
+          </div>
 
-              <!-- Input -->
-              <div class="editor-card">
-                <div class="editor-header">
-                  <div class="editor-title">
-                    <span class="editor-dot input-dot"></span>
 
-                    <div>
-                      <strong>SQL Input</strong>
-                      <small>الكود الأصلي</small>
-                    </div>
-                  </div>
+          <!-- ACTION BAR -->
+          <div class="actionbar">
 
-                  <span class="language-tag">SQL</span>
-                </div>
+            <button class="action-btn secondary" id="exampleBtn">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              مثال
+            </button>
 
-                <div class="editor-body">
-                  <div class="line-numbers" id="inputLines">1</div>
+            <button class="action-btn secondary" id="clearBtn">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
 
-                  <textarea
-                    id="sqlInput"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocorrect="off"
-                    autocapitalize="off"
-                    placeholder="اكتب أو ألصق كود SQL هنا..."
-                  ></textarea>
-                </div>
+            <button class="action-btn secondary" id="copyBtn">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
 
-                <div class="editor-footer">
-                  <span>
+            <button class="action-btn primary" id="minifyBtn">
+              <i class="fa-solid fa-compress"></i>
+              تصغير SQL
+            </button>
+
+          </div>
+
+
+          <!-- EDITORS -->
+          <div class="editors-grid">
+
+            <!-- INPUT -->
+            <div class="editor-card">
+
+              <div class="editor-header">
+
+                <div class="editor-heading">
+                  <span class="editor-icon input-icon">
                     <i class="fa-solid fa-code"></i>
-                    Input
                   </span>
-
-                  <span id="inputStats">0 chars · 0 lines</span>
-                </div>
-              </div>
-
-              <!-- Output -->
-              <div class="editor-card output-card">
-                <div class="editor-header">
-                  <div class="editor-title">
-                    <span class="editor-dot output-dot"></span>
-
-                    <div>
-                      <strong>Minified SQL</strong>
-                      <small>الكود المصغر</small>
-                    </div>
-                  </div>
-
-                  <span class="language-tag output-tag">MINIFIED</span>
-                </div>
-
-                <div class="editor-body">
-                  <div class="line-numbers output-lines" id="outputLines">1</div>
-
-                  <textarea
-                    id="sqlOutput"
-                    spellcheck="false"
-                    readonly
-                    placeholder="ستظهر نتيجة التصغير هنا..."
-                  ></textarea>
-                </div>
-
-                <div class="editor-footer">
-                  <span>
-                    <i class="fa-solid fa-compress"></i>
-                    Output
-                  </span>
-
-                  <span id="outputStats">0 chars · 0 lines</span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Result -->
-            <div class="result-panel" id="resultPanel">
-
-              <div class="result-header">
-                <div class="result-title">
-                  <div class="result-icon">
-                    <i class="fa-solid fa-chart-simple"></i>
-                  </div>
 
                   <div>
-                    <strong>Compression Result</strong>
-                    <span>نتيجة التصغير</span>
+                    <strong>SQL Input</strong>
+                    <small>SQL الأصلي</small>
                   </div>
                 </div>
 
-                <div class="compression-badge" id="compressionBadge">
-                  0% أصغر
-                </div>
+                <span class="editor-badge" id="inputLines">
+                  0 سطر
+                </span>
+
               </div>
 
-              <div class="result-content">
+              <div class="editor-body">
 
-                <div class="result-main">
-                  <div class="result-message" id="resultMessage">
-                    أدخل كود SQL ثم اضغط على "تصغير SQL".
-                  </div>
-
-                  <div class="progress-wrap">
-                    <div class="progress-label">
-                      <span>نسبة التصغير</span>
-                      <strong id="compressionPercent">0%</strong>
-                    </div>
-
-                    <div class="progress-bar">
-                      <div
-                        class="progress-value"
-                        id="progressValue"
-                        style="width: 0%"
-                      ></div>
-                    </div>
-                  </div>
+                <div class="line-numbers" id="inputNumbers">
+                  <span>1</span>
                 </div>
 
-                <div class="result-numbers">
-
-                  <div class="number-box">
-                    <span>الحجم الأصلي</span>
-                    <strong id="originalSize">0 B</strong>
-                  </div>
-
-                  <div class="number-box">
-                    <span>الحجم الجديد</span>
-                    <strong id="minifiedSize">0 B</strong>
-                  </div>
-
-                  <div class="number-box">
-                    <span>تم توفير</span>
-                    <strong id="savedSize">0 B</strong>
-                  </div>
-
-                </div>
+                <textarea
+                  id="sqlInput"
+                  spellcheck="false"
+                  placeholder="اكتب أو الصق كود SQL هنا..."
+                ></textarea>
 
               </div>
+
             </div>
 
-            <!-- Tool Stats -->
-            <div class="tool-stats">
 
-              <div class="stat-card">
-                <div class="stat-icon blue">
-                  <i class="fa-solid fa-database"></i>
+            <!-- OUTPUT -->
+            <div class="editor-card">
+
+              <div class="editor-header">
+
+                <div class="editor-heading">
+                  <span class="editor-icon output-icon">
+                    <i class="fa-solid fa-compress"></i>
+                  </span>
+
+                  <div>
+                    <strong>Minified SQL</strong>
+                    <small>SQL بعد التصغير</small>
+                  </div>
                 </div>
+
+                <span class="editor-badge success">
+                  مضغوط
+                </span>
+
+              </div>
+
+              <div class="editor-body">
+
+                <div class="line-numbers" id="outputNumbers">
+                  <span>1</span>
+                </div>
+
+                <textarea
+                  id="sqlOutput"
+                  spellcheck="false"
+                  readonly
+                  placeholder="ستظهر نتيجة التصغير هنا..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-panel">
+
+            <div class="result-header">
+
+              <div class="result-title">
+                <span class="result-icon">
+                  <i class="fa-solid fa-chart-simple"></i>
+                </span>
+
                 <div>
-                  <strong>SQL</strong>
-                  <span>Language</span>
+                  <strong>Compression Result</strong>
+                  <small>نتيجة التصغير</small>
                 </div>
               </div>
 
-              <div class="stat-card">
-                <div class="stat-icon green">
-                  <i class="fa-solid fa-bolt"></i>
-                </div>
-                <div>
-                  <strong>Fast</strong>
-                  <span>Processing</span>
-                </div>
+              <div class="compression-badge" id="compressionBadge">
+                0%
               </div>
 
-              <div class="stat-card">
-                <div class="stat-icon purple">
-                  <i class="fa-solid fa-lock"></i>
-                </div>
-                <div>
-                  <strong>Private</strong>
-                  <span>Local Only</span>
-                </div>
+            </div>
+
+
+            <div class="progress-wrapper">
+
+              <div class="progress-bar">
+                <span id="progressBar"></span>
               </div>
 
-              <div class="stat-card">
-                <div class="stat-icon orange">
+            </div>
+
+
+            <div class="result-stats">
+
+              <div class="number-box">
+                <span>
+                  <i class="fa-regular fa-file-code"></i>
+                  الحجم الأصلي
+                </span>
+                <strong id="originalSize">0 B</strong>
+              </div>
+
+              <div class="number-box">
+                <span>
                   <i class="fa-solid fa-compress"></i>
-                </div>
-                <div>
-                  <strong id="savedPercentStat">0%</strong>
-                  <span>Saved</span>
-                </div>
+                  الحجم بعد التصغير
+                </span>
+                <strong id="minifiedSize">0 B</strong>
+              </div>
+
+              <div class="number-box">
+                <span>
+                  <i class="fa-solid fa-arrow-down"></i>
+                  الحجم الموفر
+                </span>
+                <strong id="savedSize">0 B</strong>
               </div>
 
             </div>
 
           </div>
-        </div>
-      </section>
 
-      <!-- ================= INFORMATION ================= -->
-      <section class="info-section">
-        <div class="container">
 
-          <div class="section-heading">
-            <span>SQL MINIFIER</span>
-            <h2>تصغير SQL بطريقة بسيطة وفعالة</h2>
-            <p>
-              قلل حجم استعلامات SQL واجعلها أكثر compact بدون الحاجة إلى رفع
-              ملفاتك أو إرسال بياناتك إلى أي خادم.
-            </p>
-          </div>
+          <!-- TOOL STATS -->
+          <div class="tool-stats">
 
-          <div class="info-grid">
-
-            <article class="info-card">
-              <div class="info-icon blue">
-                <i class="fa-solid fa-compress"></i>
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-database"></i>
               </div>
 
-              <h3>تقليل الحجم</h3>
+              <div>
+                <strong>SQL</strong>
+                <span>متوافق</span>
+              </div>
+            </div>
 
-              <p>
-                إزالة المسافات والأسطر والتعليقات غير الضرورية لتقليل حجم
-                استعلام SQL.
-              </p>
-            </article>
 
-            <article class="info-card">
-              <div class="info-icon green">
+            <div class="stat-card">
+              <div class="stat-icon green">
                 <i class="fa-solid fa-bolt"></i>
               </div>
 
-              <h3>معالجة سريعة</h3>
+              <div>
+                <strong>Fast</strong>
+                <span>معالجة سريعة</span>
+              </div>
+            </div>
 
-              <p>
-                تتم العملية مباشرة داخل المتصفح بدون انتظار رفع البيانات إلى
-                خادم خارجي.
-              </p>
-            </article>
 
-            <article class="info-card">
-              <div class="info-icon purple">
+            <div class="stat-card">
+              <div class="stat-icon purple">
                 <i class="fa-solid fa-shield-halved"></i>
               </div>
 
-              <h3>خصوصية أفضل</h3>
-
-              <p>
-                استعلاماتك تبقى على جهازك، مما يجعل الأداة مناسبة للتعامل مع
-                SQL الخاص بمشاريعك.
-              </p>
-            </article>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ================= HOW TO ================= -->
-      <section class="how-section">
-        <div class="container">
-
-          <div class="section-heading">
-            <span>HOW IT WORKS</span>
-            <h2>كيفية استخدام SQL Minifier</h2>
-            <p>ثلاث خطوات فقط لتصغير استعلام SQL.</p>
-          </div>
-
-          <div class="steps">
-
-            <div class="step">
-              <div class="step-number">01</div>
-
-              <div class="step-icon">
-                <i class="fa-solid fa-paste"></i>
+              <div>
+                <strong>Private</strong>
+                <span>100% محلي</span>
               </div>
-
-              <h3>أدخل SQL</h3>
-
-              <p>
-                الصق استعلام SQL في منطقة الإدخال.
-              </p>
             </div>
 
-            <div class="step">
-              <div class="step-number">02</div>
 
-              <div class="step-icon">
-                <i class="fa-solid fa-compress"></i>
+            <div class="stat-card">
+              <div class="stat-icon orange">
+                <i class="fa-solid fa-chart-line"></i>
               </div>
 
-              <h3>اضغط تصغير</h3>
-
-              <p>
-                اضغط على زر "تصغير SQL" لمعالجة الاستعلام.
-              </p>
-            </div>
-
-            <div class="step">
-              <div class="step-number">03</div>
-
-              <div class="step-icon">
-                <i class="fa-regular fa-copy"></i>
+              <div>
+                <strong id="savedPercent">0%</strong>
+                <span>تم توفيره</span>
               </div>
-
-              <h3>انسخ النتيجة</h3>
-
-              <p>
-                انسخ SQL المصغر واستخدمه في مشروعك.
-              </p>
             </div>
 
           </div>
 
         </div>
-      </section>
 
-      <!-- ================= FAQ ================= -->
-      <section class="faq-section">
-        <div class="container">
+      </div>
+    </section>
 
-          <div class="section-heading">
-            <span>FAQ</span>
-            <h2>الأسئلة الشائعة</h2>
-            <p>كل ما تحتاج معرفته عن أداة SQL Minifier.</p>
+
+    <!-- ================= INFO ================= -->
+    <section class="info-section">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">
+            <i class="fa-solid fa-circle-info"></i>
+            SQL Minifier
+          </span>
+
+          <h2>لماذا تستخدم SQL Minifier؟</h2>
+
+          <p>
+            قم بتصغير استعلامات SQL بسهولة وتحسين حجمها قبل استخدامها
+            في المشاريع والتطبيقات.
+          </p>
+        </div>
+
+
+        <div class="info-grid">
+
+          <div class="info-card">
+            <div class="info-icon blue">
+              <i class="fa-solid fa-compress"></i>
+            </div>
+
+            <h3>تقليل الحجم</h3>
+
+            <p>
+              إزالة المسافات والأسطر والتعليقات غير الضرورية لتقليل حجم
+              استعلام SQL.
+            </p>
           </div>
 
-          <div class="faq-list">
-            {faqs.map((faq) => (
-              <details class="faq-item">
-                <summary>
-                  <span>{faq.q}</span>
-                  <i class="fa-solid fa-chevron-down"></i>
-                </summary>
 
-                <div class="faq-answer">
-                  <p>{faq.a}</p>
-                </div>
-              </details>
-            ))}
+          <div class="info-card">
+            <div class="info-icon green">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>معالجة سريعة</h3>
+
+            <p>
+              تتم معالجة SQL مباشرة داخل المتصفح بدون الحاجة إلى رفع
+              الملفات أو إرسال البيانات.
+            </p>
+          </div>
+
+
+          <div class="info-card">
+            <div class="info-icon purple">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+
+            <h3>خصوصية أفضل</h3>
+
+            <p>
+              كود SQL الخاص بك يبقى داخل جهازك ولا يتم إرساله إلى خادم
+              خارجي.
+            </p>
           </div>
 
         </div>
-      </section>
-    </main>
 
-    <Footer />
+      </div>
+    </section>
 
-    <script is:inline>
-      const sqlInput = document.getElementById("sqlInput");
-      const sqlOutput = document.getElementById("sqlOutput");
 
-      const inputLines = document.getElementById("inputLines");
-      const outputLines = document.getElementById("outputLines");
+    <!-- ================= HOW TO ================= -->
+    <section class="how-section">
+      <div class="container">
 
-      const inputStats = document.getElementById("inputStats");
-      const outputStats = document.getElementById("outputStats");
+        <div class="section-heading">
+          <span class="section-label">
+            <i class="fa-solid fa-list-check"></i>
+            طريقة الاستخدام
+          </span>
 
-      const minifyBtn = document.getElementById("minifyBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const copyBtn = document.getElementById("copyBtn");
-      const exampleBtn = document.getElementById("exampleBtn");
+          <h2>كيف تستخدم الأداة؟</h2>
 
-      const resultMessage = document.getElementById("resultMessage");
-      const compressionPercent = document.getElementById("compressionPercent");
-      const compressionBadge = document.getElementById("compressionBadge");
-      const progressValue = document.getElementById("progressValue");
+          <p>
+            ثلاث خطوات بسيطة لتصغير استعلام SQL.
+          </p>
+        </div>
 
-      const originalSize = document.getElementById("originalSize");
-      const minifiedSize = document.getElementById("minifiedSize");
-      const savedSize = document.getElementById("savedSize");
-      const savedPercentStat = document.getElementById("savedPercentStat");
 
-      const exampleSQL = `-- Get active users
+        <div class="steps-grid">
+
+          <div class="step">
+
+            <span class="step-number">01</span>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-paste"></i>
+            </div>
+
+            <h3>أدخل SQL</h3>
+
+            <p>
+              الصق أو اكتب استعلام SQL في محرر الإدخال.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">02</span>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-compress"></i>
+            </div>
+
+            <h3>اضغط تصغير</h3>
+
+            <p>
+              اضغط على زر تصغير SQL لمعالجة الاستعلام.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <span class="step-number">03</span>
+
+            <div class="step-icon">
+              <i class="fa-regular fa-copy"></i>
+            </div>
+
+            <h3>انسخ النتيجة</h3>
+
+            <p>
+              انسخ SQL المصغر واستخدمه مباشرة في مشروعك.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= FAQ ================= -->
+    <section class="faq-section">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">
+            <i class="fa-regular fa-circle-question"></i>
+            FAQ
+          </span>
+
+          <h2>الأسئلة الشائعة</h2>
+
+          <p>
+            إجابات عن أهم الأسئلة المتعلقة بأداة SQL Minifier.
+          </p>
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>
+                <span>{faq.q}</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <div class="faq-answer">
+                <p>{faq.a}</p>
+              </div>
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script is:inline>
+    const sqlInput = document.getElementById("sqlInput");
+    const sqlOutput = document.getElementById("sqlOutput");
+
+    const minifyBtn = document.getElementById("minifyBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const exampleBtn = document.getElementById("exampleBtn");
+
+    const inputNumbers = document.getElementById("inputNumbers");
+    const outputNumbers = document.getElementById("outputNumbers");
+
+    const inputLines = document.getElementById("inputLines");
+
+    const statusText = document.getElementById("statusText");
+
+    const originalSize = document.getElementById("originalSize");
+    const minifiedSize = document.getElementById("minifiedSize");
+    const savedSize = document.getElementById("savedSize");
+
+    const compressionBadge = document.getElementById("compressionBadge");
+    const progressBar = document.getElementById("progressBar");
+    const savedPercent = document.getElementById("savedPercent");
+
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return "0 B";
+
+      if (bytes < 1024) {
+        return bytes + " B";
+      }
+
+      if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(2) + " KB";
+      }
+
+      return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+
+    function getBytes(text) {
+      return new Blob([text]).size;
+    }
+
+
+    function countLines(text) {
+      if (!text) return 0;
+      return text.split("\n").length;
+    }
+
+
+    function updateLineNumbers(text, container) {
+      const count = Math.max(countLines(text), 1);
+
+      let html = "";
+
+      for (let i = 1; i <= count; i++) {
+        html += "<span>" + i + "</span>";
+      }
+
+      container.innerHTML = html;
+    }
+
+
+    function updateInputStats() {
+      const text = sqlInput.value;
+      const lines = countLines(text);
+
+      inputLines.textContent = lines + (lines === 1 ? " سطر" : " أسطر");
+
+      updateLineNumbers(text, inputNumbers);
+    }
+
+
+    function setStatus(text) {
+      statusText.textContent = text;
+    }
+
+
+    /*
+      SQL Minifier
+      يحافظ على النصوص داخل:
+      '
+      "
+      `
+      ويزيل التعليقات والمسافات غير الضرورية.
+    */
+    function minifySQL(sql) {
+      let result = "";
+
+      let quote = null;
+      let i = 0;
+
+      while (i < sql.length) {
+        const char = sql[i];
+        const next = sql[i + 1];
+
+        // داخل النص
+        if (quote) {
+          result += char;
+
+          // SQL escaping مثل ''
+          if (char === quote && next === quote) {
+            result += next;
+            i += 2;
+            continue;
+          }
+
+          // نهاية النص
+          if (char === quote) {
+            quote = null;
+          }
+
+          i++;
+          continue;
+        }
+
+
+        // بداية string
+        if (char === "'" || char === '"' || char === "`") {
+          quote = char;
+          result += char;
+          i++;
+          continue;
+        }
+
+
+        // تعليق --
+        if (char === "-" && next === "-") {
+          i += 2;
+
+          while (i < sql.length && sql[i] !== "\n") {
+            i++;
+          }
+
+          continue;
+        }
+
+
+        // تعليق #
+        if (char === "#") {
+          i++;
+
+          while (i < sql.length && sql[i] !== "\n") {
+            i++;
+          }
+
+          continue;
+        }
+
+
+        // تعليق /* */
+        if (char === "/" && next === "*") {
+          i += 2;
+
+          while (
+            i < sql.length &&
+            !(sql[i] === "*" && sql[i + 1] === "/")
+          ) {
+            i++;
+          }
+
+          if (i < sql.length) {
+            i += 2;
+          }
+
+          continue;
+        }
+
+
+        result += char;
+        i++;
+      }
+
+
+      // إزالة المسافات المتكررة
+      result = result.replace(/\s+/g, " ");
+
+      // إزالة المسافات حول بعض الرموز
+      result = result.replace(/\s*([(),;])\s*/g, "$1");
+
+      result = result.replace(
+        /\s*(=|<>|!=|<=|>=|<|>|\+|-|\*|\/)\s*/g,
+        "$1"
+      );
+
+      // إعادة مسافة بعد الفواصل
+      result = result.replace(/,([A-Za-z_])/g, ", $1");
+
+      return result.trim();
+    }
+
+
+    function updateResult() {
+      const original = sqlInput.value;
+      const minified = sqlOutput.value;
+
+      const originalBytes = getBytes(original);
+      const minifiedBytes = getBytes(minified);
+
+      const saved = Math.max(originalBytes - minifiedBytes, 0);
+
+      let percent = 0;
+
+      if (originalBytes > 0) {
+        percent = Math.round((saved / originalBytes) * 100);
+      }
+
+      originalSize.textContent = formatBytes(originalBytes);
+      minifiedSize.textContent = formatBytes(minifiedBytes);
+      savedSize.textContent = formatBytes(saved);
+
+      compressionBadge.textContent = percent + "%";
+      savedPercent.textContent = percent + "%";
+
+      progressBar.style.width = Math.min(percent, 100) + "%";
+    }
+
+
+    function minify() {
+      const sql = sqlInput.value.trim();
+
+      if (!sql) {
+        setStatus("أدخل SQL أولاً");
+        sqlInput.focus();
+        return;
+      }
+
+      setStatus("جاري التصغير...");
+
+      requestAnimationFrame(() => {
+        const result = minifySQL(sql);
+
+        sqlOutput.value = result;
+
+        updateLineNumbers(result, outputNumbers);
+        updateResult();
+
+        setStatus("تم التصغير بنجاح");
+      });
+    }
+
+
+    function clearAll() {
+      sqlInput.value = "";
+      sqlOutput.value = "";
+
+      updateInputStats();
+      updateLineNumbers("", outputNumbers);
+      updateResult();
+
+      setStatus("جاهز");
+
+      sqlInput.focus();
+    }
+
+
+    async function copyOutput() {
+      const value = sqlOutput.value;
+
+      if (!value) {
+        setStatus("لا توجد نتيجة للنسخ");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(value);
+        setStatus("تم نسخ SQL");
+      } catch (error) {
+        sqlOutput.select();
+        document.execCommand("copy");
+        setStatus("تم نسخ SQL");
+      }
+    }
+
+
+    function loadExample() {
+      sqlInput.value = `-- Example SQL Query
+
 SELECT
     users.id,
     users.name,
     users.email,
-    users.created_at
-FROM
-    users
-WHERE
-    users.status = 'active'
+    COUNT(orders.id) AS total_orders
+FROM users
+LEFT JOIN orders
+    ON users.id = orders.user_id
+WHERE users.active = 1
     AND users.email IS NOT NULL
-ORDER BY
-    users.created_at DESC;`;
+GROUP BY
+    users.id,
+    users.name,
+    users.email
+ORDER BY users.id DESC;`;
 
-      function formatBytes(bytes) {
-        if (!bytes) return "0 B";
+      sqlOutput.value = "";
 
-        if (bytes < 1024) {
-          return bytes + " B";
-        }
-
-        if (bytes < 1024 * 1024) {
-          return (bytes / 1024).toFixed(2) + " KB";
-        }
-
-        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-      }
-
-      function countLines(text) {
-        if (!text) return 0;
-        return text.split(/\r?\n/).length;
-      }
-
-      function updateLineNumbers(textarea, container) {
-        const lines = countLines(textarea.value);
-
-        if (!lines) {
-          container.textContent = "0";
-          return;
-        }
-
-        const numbers = [];
-
-        for (let i = 1; i <= lines; i++) {
-          numbers.push(i);
-        }
-
-        container.textContent = numbers.join("\n");
-      }
-
-      function updateInputStats() {
-        const text = sqlInput.value;
-
-        inputStats.textContent =
-          text.length.toLocaleString() +
-          " chars · " +
-          countLines(text).toLocaleString() +
-          " lines";
-
-        updateLineNumbers(sqlInput, inputLines);
-      }
-
-      function updateOutputStats() {
-        const text = sqlOutput.value;
-
-        outputStats.textContent =
-          text.length.toLocaleString() +
-          " chars · " +
-          countLines(text).toLocaleString() +
-          " lines";
-
-        updateLineNumbers(sqlOutput, outputLines);
-      }
-
-      /*
-       * SQL Minifier
-       *
-       * The parser keeps quoted strings intact so that spaces
-       * inside strings are not accidentally removed.
-       */
-      function minifySQL(sql) {
-        if (!sql || !sql.trim()) {
-          return "";
-        }
-
-        let result = "";
-        let i = 0;
-
-        let quote = null;
-
-        while (i < sql.length) {
-          const char = sql[i];
-          const next = sql[i + 1];
-
-          /*
-           * Single quoted strings
-           */
-          if (quote === "'") {
-            result += char;
-
-            if (char === "'" && next === "'") {
-              result += next;
-              i += 2;
-              continue;
-            }
-
-            if (char === "\\") {
-              if (i + 1 < sql.length) {
-                result += sql[i + 1];
-                i += 2;
-                continue;
-              }
-            }
-
-            if (char === "'") {
-              quote = null;
-            }
-
-            i++;
-            continue;
-          }
-
-          /*
-           * Double quoted identifiers/strings
-           */
-          if (quote === '"') {
-            result += char;
-
-            if (char === '"' && next === '"') {
-              result += next;
-              i += 2;
-              continue;
-            }
-
-            if (char === "\\") {
-              if (i + 1 < sql.length) {
-                result += sql[i + 1];
-                i += 2;
-                continue;
-              }
-            }
-
-            if (char === '"') {
-              quote = null;
-            }
-
-            i++;
-            continue;
-          }
-
-          /*
-           * Backtick quoted identifiers
-           */
-          if (quote === "`") {
-            result += char;
-
-            if (char === "`" && next === "`") {
-              result += next;
-              i += 2;
-              continue;
-            }
-
-            if (char === "`") {
-              quote = null;
-            }
-
-            i++;
-            continue;
-          }
-
-          /*
-           * Start quoted value
-           */
-          if (char === "'" || char === '"' || char === "`") {
-            quote = char;
-            result += char;
-            i++;
-            continue;
-          }
-
-          /*
-           * Remove -- comments
-           */
-          if (char === "-" && next === "-") {
-            while (i < sql.length && sql[i] !== "\n") {
-              i++;
-            }
-
-            if (result && !/\s$/.test(result)) {
-              result += " ";
-            }
-
-            continue;
-          }
-
-          /*
-           * Remove # comments
-           */
-          if (char === "#") {
-            while (i < sql.length && sql[i] !== "\n") {
-              i++;
-            }
-
-            if (result && !/\s$/.test(result)) {
-              result += " ";
-            }
-
-            continue;
-          }
-
-          /*
-           * Remove /* ... *\/ comments
-           */
-          if (char === "/" && next === "*") {
-            i += 2;
-
-            while (
-              i < sql.length &&
-              !(sql[i] === "*" && sql[i + 1] === "/")
-            ) {
-              i++;
-            }
-
-            if (i < sql.length) {
-              i += 2;
-            }
-
-            if (result && !/\s$/.test(result)) {
-              result += " ";
-            }
-
-            continue;
-          }
-
-          /*
-           * Collapse all whitespace outside strings.
-           */
-          if (/\s/.test(char)) {
-            if (result && !/\s$/.test(result)) {
-              result += " ";
-            }
-
-            i++;
-            continue;
-          }
-
-          result += char;
-          i++;
-        }
-
-        /*
-         * Remove spaces around common SQL punctuation/operators
-         * while keeping spaces between SQL keywords and values.
-         */
-        result = result
-          .replace(/\s*,\s*/g, ",")
-          .replace(/\s*\(\s*/g, "(")
-          .replace(/\s*\)\s*/g, ")")
-          .replace(/\s*;\s*$/g, ";")
-          .replace(/\s*=\s*/g, "=")
-          .replace(/\s*<>\s*/g, "<>")
-          .replace(/\s*!=\s*/g, "!=")
-          .replace(/\s*<=\s*/g, "<=")
-          .replace(/\s*>=\s*/g, ">=")
-          .replace(/\s+/g, " ")
-          .trim();
-
-        return result;
-      }
-
-      function setStatus(type, message) {
-        resultMessage.textContent = message;
-
-        resultMessage.classList.remove(
-          "success-message",
-          "warning-message",
-          "error-message"
-        );
-
-        if (type === "success") {
-          resultMessage.classList.add("success-message");
-        }
-
-        if (type === "warning") {
-          resultMessage.classList.add("warning-message");
-        }
-
-        if (type === "error") {
-          resultMessage.classList.add("error-message");
-        }
-      }
-
-      function resetResult() {
-        compressionPercent.textContent = "0%";
-        compressionBadge.textContent = "0% أصغر";
-        progressValue.style.width = "0%";
-
-        originalSize.textContent = "0 B";
-        minifiedSize.textContent = "0 B";
-        savedSize.textContent = "0 B";
-        savedPercentStat.textContent = "0%";
-
-        setStatus(
-          "warning",
-          'أدخل كود SQL ثم اضغط على "تصغير SQL".'
-        );
-      }
-
-      function minify() {
-        const source = sqlInput.value;
-
-        if (!source.trim()) {
-          sqlOutput.value = "";
-
-          updateInputStats();
-          updateOutputStats();
-          resetResult();
-
-          setStatus("warning", "الرجاء إدخال كود SQL أولاً.");
-          return;
-        }
-
-        try {
-          const result = minifySQL(source);
-
-          sqlOutput.value = result;
-
-          const originalBytes =
-            new Blob([source]).size;
-
-          const minifiedBytes =
-            new Blob([result]).size;
-
-          const savedBytes =
-            Math.max(0, originalBytes - minifiedBytes);
-
-          const percent =
-            originalBytes > 0
-              ? Math.max(
-                  0,
-                  Math.round((savedBytes / originalBytes) * 100)
-                )
-              : 0;
-
-          originalSize.textContent = formatBytes(originalBytes);
-          minifiedSize.textContent = formatBytes(minifiedBytes);
-          savedSize.textContent = formatBytes(savedBytes);
-
-          compressionPercent.textContent = percent + "%";
-          compressionBadge.textContent = percent + "% أصغر";
-          savedPercentStat.textContent = percent + "%";
-
-          progressValue.style.width = Math.min(percent, 100) + "%";
-
-          updateInputStats();
-          updateOutputStats();
-
-          if (result) {
-            setStatus(
-              "success",
-              "تم تصغير استعلام SQL بنجاح."
-            );
-          } else {
-            setStatus(
-              "warning",
-              "لم يتم العثور على محتوى قابل للتصغير."
-            );
-          }
-        } catch (error) {
-          console.error(error);
-
-          setStatus(
-            "error",
-            "حدث خطأ أثناء تصغير SQL."
-          );
-        }
-      }
-
-      function clearAll() {
-        sqlInput.value = "";
-        sqlOutput.value = "";
-
-        updateInputStats();
-        updateOutputStats();
-        resetResult();
-
-        sqlInput.focus();
-      }
-
-      async function copyOutput() {
-        const text = sqlOutput.value;
-
-        if (!text) {
-          setStatus(
-            "warning",
-            "لا توجد نتيجة لنسخها. قم بتصغير SQL أولاً."
-          );
-          return;
-        }
-
-        try {
-          await navigator.clipboard.writeText(text);
-
-          const originalHTML = copyBtn.innerHTML;
-
-          copyBtn.innerHTML =
-            '<i class="fa-solid fa-check"></i> تم النسخ';
-
-          setStatus(
-            "success",
-            "تم نسخ SQL المصغر إلى الحافظة."
-          );
-
-          setTimeout(() => {
-            copyBtn.innerHTML = originalHTML;
-          }, 1600);
-        } catch (error) {
-          sqlOutput.select();
-
-          try {
-            document.execCommand("copy");
-
-            setStatus(
-              "success",
-              "تم نسخ SQL المصغر."
-            );
-          } catch {
-            setStatus(
-              "error",
-              "تعذر نسخ النتيجة تلقائياً."
-            );
-          }
-        }
-      }
-
-      function loadExample() {
-        sqlInput.value = exampleSQL;
-
-        updateInputStats();
-
-        minify();
-
-        sqlInput.focus();
-      }
-
-      /*
-       * Input updates
-       */
-      sqlInput.addEventListener("input", () => {
-        updateInputStats();
-      });
-
-      /*
-       * Keep line numbers synchronized with textarea scroll.
-       */
-      sqlInput.addEventListener("scroll", () => {
-        inputLines.scrollTop = sqlInput.scrollTop;
-      });
-
-      sqlOutput.addEventListener("scroll", () => {
-        outputLines.scrollTop = sqlOutput.scrollTop;
-      });
-
-      /*
-       * Buttons
-       */
-      minifyBtn.addEventListener("click", minify);
-      clearBtn.addEventListener("click", clearAll);
-      copyBtn.addEventListener("click", copyOutput);
-      exampleBtn.addEventListener("click", loadExample);
-
-      /*
-       * Ctrl + Enter / Cmd + Enter
-       */
-      sqlInput.addEventListener("keydown", (event) => {
-        if (
-          (event.ctrlKey || event.metaKey) &&
-          event.key === "Enter"
-        ) {
-          event.preventDefault();
-          minify();
-        }
-
-        /*
-         * Tab inserts two spaces.
-         */
-        if (event.key === "Tab") {
-          event.preventDefault();
-
-          const start = sqlInput.selectionStart;
-          const end = sqlInput.selectionEnd;
-
-          sqlInput.value =
-            sqlInput.value.substring(0, start) +
-            "  " +
-            sqlInput.value.substring(end);
-
-          sqlInput.selectionStart = start + 2;
-          sqlInput.selectionEnd = start + 2;
-
-          updateInputStats();
-        }
-      });
-
-      /*
-       * Initial state
-       */
       updateInputStats();
-      updateOutputStats();
-      resetResult();
-    </script>
+      updateLineNumbers("", outputNumbers);
+      updateResult();
 
-    <style>
-      :root {
-        --primary: #0891b2;
-        --primary-dark: #0e7490;
-        --secondary: #06b6d4;
-        --cyan: #22d3ee;
+      setStatus("تم تحميل المثال");
 
-        --blue: #2563eb;
-        --purple: #7c3aed;
-        --green: #16a34a;
-        --orange: #ea580c;
-        --red: #dc2626;
+      sqlInput.focus();
+    }
 
-        --bg: #f5f8fb;
-        --card: #ffffff;
-        --soft: #f1f7f9;
 
-        --text: #111827;
-        --muted: #6b7280;
-        --border: #e2e8f0;
+    // الأحداث
+    minifyBtn.addEventListener("click", minify);
 
-        --editor: #0f172a;
-        --editor-2: #111827;
-        --editor-text: #dbeafe;
-        --line-number: #64748b;
+    clearBtn.addEventListener("click", clearAll);
 
-        --shadow:
-          0 18px 55px rgba(15, 23, 42, 0.09);
+    copyBtn.addEventListener("click", copyOutput);
+
+    exampleBtn.addEventListener("click", loadExample);
+
+
+    sqlInput.addEventListener("input", () => {
+      updateInputStats();
+      updateResult();
+      setStatus("تم تعديل SQL");
+    });
+
+
+    sqlInput.addEventListener("scroll", () => {
+      inputNumbers.scrollTop = sqlInput.scrollTop;
+    });
+
+
+    sqlOutput.addEventListener("scroll", () => {
+      outputNumbers.scrollTop = sqlOutput.scrollTop;
+    });
+
+
+    // Ctrl + Enter
+    sqlInput.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault();
+        minify();
       }
+    });
 
-      * {
-        box-sizing: border-box;
+
+    // Tab داخل المحرر
+    sqlInput.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        event.preventDefault();
+
+        const start = sqlInput.selectionStart;
+        const end = sqlInput.selectionEnd;
+
+        sqlInput.value =
+          sqlInput.value.substring(0, start) +
+          "  " +
+          sqlInput.value.substring(end);
+
+        sqlInput.selectionStart = start + 2;
+        sqlInput.selectionEnd = start + 2;
+
+        updateInputStats();
       }
+    });
 
-      html {
-        scroll-behavior: smooth;
-      }
 
-      body {
-        margin: 0;
-        font-family: "Cairo", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-      }
+    // الحالة الأولية
+    updateInputStats();
+    updateLineNumbers("", outputNumbers);
+    updateResult();
+  </script>
 
-      button,
-      textarea {
-        font-family: inherit;
-      }
 
-      button {
-        cursor: pointer;
-      }
+  <!-- ================= CSS ================= -->
+  <style>
 
-      .container {
-        width: min(1180px, calc(100% - 32px));
-        margin-inline: auto;
-      }
+    :global(*) {
+      box-sizing: border-box;
+    }
 
-      /* ================= HERO ================= */
 
-      .hero {
-        position: relative;
-        overflow: hidden;
-        padding: 42px 0 85px;
-        background:
-          radial-gradient(
-            circle at 15% 15%,
-            rgba(6, 182, 212, 0.12),
-            transparent 30%
-          ),
-          radial-gradient(
-            circle at 85% 10%,
-            rgba(37, 99, 235, 0.1),
-            transparent 30%
-          ),
-          var(--card);
-      }
+    :global(html) {
+      scroll-behavior: smooth;
+    }
 
-      .hero-bg {
-        position: absolute;
-        border-radius: 50%;
-        pointer-events: none;
-      }
 
-      .hero-bg-1 {
-        width: 330px;
-        height: 330px;
-        top: -190px;
-        left: -100px;
-        background: rgba(6, 182, 212, 0.08);
-      }
+    :global(body) {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition:
+        background .3s ease,
+        color .3s ease;
+    }
 
-      .hero-bg-2 {
-        width: 270px;
-        height: 270px;
-        right: -100px;
-        bottom: -170px;
-        background: rgba(37, 99, 235, 0.08);
-      }
 
-      .hero-container {
-        position: relative;
-        z-index: 2;
-      }
+    :global(button),
+    :global(textarea) {
+      font-family: inherit;
+    }
 
-      .breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        flex-wrap: wrap;
-        color: var(--muted);
-        font-size: 13px;
-        margin-bottom: 38px;
-      }
 
-      .breadcrumb a {
-        color: var(--muted);
-        text-decoration: none;
-        transition: 0.2s;
-      }
+    :root {
+      --primary: #0891b2;
+      --primary-dark: #0e7490;
+      --secondary: #06b6d4;
+      --cyan: #22d3ee;
 
-      .breadcrumb a:hover {
-        color: var(--primary);
-      }
+      --blue: #2563eb;
+      --purple: #7c3aed;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --red: #dc2626;
 
-      .breadcrumb i {
-        font-size: 9px;
-        opacity: 0.6;
-      }
+      --bg: #f5f8fb;
+      --card: #ffffff;
+      --soft: #f1f7f9;
+
+      --text: #111827;
+      --muted: #6b7280;
+
+      --border: #e2e8f0;
+
+      --editor: #0f172a;
+      --editor-2: #111827;
+      --editor-text: #dbeafe;
+      --line-number: #64748b;
+
+      --shadow:
+        0 20px 60px rgba(15, 23, 42, .08);
+    }
+
+
+    /* ================= DARK MODE ================= */
+
+    :global(html.dark) {
+      --bg: #070d16;
+      --card: #0c1421;
+      --soft: #111c2b;
+
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+
+      --border: #1e293b;
+
+      --primary: #22d3ee;
+      --primary-dark: #67e8f9;
+      --secondary: #06b6d4;
+      --cyan: #67e8f9;
+
+      --blue: #60a5fa;
+      --purple: #a78bfa;
+      --green: #4ade80;
+      --orange: #fb923c;
+      --red: #f87171;
+
+      --shadow:
+        0 20px 60px rgba(0, 0, 0, .28);
+    }
+
+
+    /* ================= COMMON ================= */
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+
+    /* ================= HERO ================= */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px 0 60px;
+      background:
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(34, 211, 238, .14),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #effcff,
+          #f5f8fb
+        );
+      border-bottom: 1px solid var(--border);
+      transition: background .3s ease;
+    }
+
+
+    :global(html.dark) .hero {
+      background:
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(34, 211, 238, .12),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #08131d,
+          #070d16
+        );
+    }
+
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .35;
+      background-image:
+        linear-gradient(
+          rgba(8, 145, 178, .05) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(8, 145, 178, .05) 1px,
+          transparent 1px
+        );
+      background-size: 32px 32px;
+    }
+
+
+    .breadcrumb {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: var(--muted);
+      font-size: 13px;
+
+      margin-bottom: 34px;
+    }
+
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+
+
+    .breadcrumb i {
+      font-size: 9px;
+    }
+
+
+    .breadcrumb span {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+
+    .hero-icon {
+      position: relative;
+
+      width: 112px;
+      height: 112px;
+
+      flex: 0 0 112px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 30px;
+
+      color: #fff;
+      font-size: 45px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          #155e75
+        );
+
+      box-shadow:
+        0 20px 45px rgba(8, 145, 178, .25);
+    }
+
+
+    .icon-glow {
+      position: absolute;
+      inset: -15px;
+
+      border-radius: 38px;
+
+      background: rgba(34, 211, 238, .12);
+
+      filter: blur(18px);
+
+      z-index: -1;
+    }
+
+
+    .mini-icon {
+      position: absolute;
+
+      left: -8px;
+      bottom: -8px;
+
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background: var(--card);
+      color: var(--primary);
+
+      font-size: 16px;
+
+      border: 1px solid var(--border);
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .1);
+    }
+
+
+    .hero-text {
+      flex: 1;
+    }
+
+
+    .badge,
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 7px 13px;
+
+      border-radius: 999px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      color: var(--primary);
+
+      background: rgba(8, 145, 178, .09);
+
+      border: 1px solid rgba(8, 145, 178, .15);
+    }
+
+
+    .hero h1 {
+      margin: 13px 0 10px;
+
+      font-size: clamp(30px, 5vw, 48px);
+
+      line-height: 1.2;
+
+      font-weight: 800;
+
+      letter-spacing: -1px;
+
+      color: var(--text);
+    }
+
+
+    .hero h1 span {
+      display: block;
+
+      font-size: .46em;
+
+      margin-top: 6px;
+
+      color: var(--primary);
+
+      letter-spacing: 0;
+    }
+
+
+    .hero p {
+      max-width: 750px;
+
+      margin: 0;
+
+      color: var(--muted);
+
+      line-height: 1.9;
+
+      font-size: 15px;
+    }
+
+
+    .hero-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+
+      margin-top: 20px;
+    }
+
+
+    .hero-features span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 12px;
+
+      border-radius: 10px;
+
+      background: rgba(255, 255, 255, .75);
+
+      border: 1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      transition: all .25s ease;
+    }
+
+
+    :global(html.dark) .hero-features span {
+      background: var(--soft);
+    }
+
+
+    .hero-features i {
+      color: var(--primary);
+    }
+
+
+    /* ================= TOOL SECTION ================= */
+
+    .tool-section {
+      padding: 55px 0;
+    }
+
+
+    .minifier-card {
+      overflow: hidden;
+
+      border-radius: 24px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      box-shadow: var(--shadow);
+
+      transition:
+        background .3s ease,
+        border-color .3s ease;
+    }
+
+
+    .tool-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 17px 20px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+
+    .tool-title-icon {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background: rgba(8, 145, 178, .1);
+
+      color: var(--primary);
+    }
+
+
+    .tool-title strong,
+    .tool-title small {
+      display: block;
+    }
+
+
+    .tool-title strong {
+      font-size: 14px;
+    }
+
+
+    .tool-title small {
+      margin-top: 2px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    .tool-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, .1);
+    }
+
+
+    /* ================= ACTIONBAR ================= */
+
+    .actionbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+
+      padding: 14px 16px;
+
+      background: var(--soft);
+
+      border-bottom: 1px solid var(--border);
+
+      transition: background .3s ease;
+    }
+
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      min-height: 40px;
+
+      padding: 0 15px;
+
+      border-radius: 10px;
+
+      border: 1px solid transparent;
+
+      cursor: pointer;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+    }
+
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+
+    .action-btn.primary {
+      margin-right: auto;
+
+      color: #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+
+      box-shadow:
+        0 8px 18px rgba(8, 145, 178, .2);
+    }
+
+
+    .action-btn.secondary {
+      color: var(--text);
+
+      background: var(--card);
+
+      border-color: var(--border);
+    }
+
+
+    :global(html.dark) .actionbar {
+      background: #0b1522;
+    }
+
+
+    :global(html.dark) .action-btn.secondary {
+      background: #101c2a;
+      color: #e2e8f0;
+      border-color: #243244;
+    }
+
+
+    /* ================= EDITORS ================= */
+
+    .editors-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 1px;
+
+      background: #dce4ec;
+    }
+
+
+    :global(html.dark) .editors-grid {
+      background: #060b12;
+    }
+
+
+    .editor-card {
+      min-width: 0;
+
+      background: var(--card);
+    }
+
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      padding: 13px 15px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .editor-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .editor-icon {
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+    }
+
+
+    .input-icon {
+      color: var(--blue);
+      background: rgba(37, 99, 235, .1);
+    }
+
+
+    .output-icon {
+      color: var(--green);
+      background: rgba(22, 163, 74, .1);
+    }
+
+
+    .editor-heading strong,
+    .editor-heading small {
+      display: block;
+    }
+
+
+    .editor-heading strong {
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 12px;
+    }
+
+
+    .editor-heading small {
+      margin-top: 2px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    .editor-badge {
+      padding: 5px 8px;
+
+      border-radius: 7px;
+
+      color: var(--muted);
+
+      background: var(--soft);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+    }
+
+
+    .editor-badge.success {
+      color: var(--green);
+      background: rgba(22, 163, 74, .1);
+    }
+
+
+    .editor-body {
+      position: relative;
+
+      display: flex;
+
+      min-height: 370px;
+
+      background: var(--editor);
+    }
+
+
+    .line-numbers {
+      width: 52px;
+
+      flex: 0 0 52px;
+
+      padding: 18px 12px;
+
+      overflow: hidden;
+
+      text-align: right;
+
+      background: var(--editor-2);
+
+      color: var(--line-number);
+
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+      user-select: none;
+    }
+
+
+    .line-numbers span {
+      display: block;
+      height: 21.6px;
+    }
+
+
+    textarea {
+      flex: 1;
+
+      width: 100%;
+
+      min-width: 0;
+
+      min-height: 370px;
+
+      resize: vertical;
+
+      padding: 18px;
+
+      border: 0;
+      outline: 0;
+
+      background: var(--editor);
+
+      color: var(--editor-text);
+
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+
+      direction: ltr;
+
+      text-align: left;
+
+      tab-size: 2;
+    }
+
+
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+
+    /* ================= RESULT ================= */
+
+    .result-panel {
+      margin: 16px;
+
+      padding: 18px;
+
+      border-radius: 17px;
+
+      background: var(--soft);
+
+      border: 1px solid var(--border);
+
+      transition: background .3s ease;
+    }
+
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 16px;
+    }
+
+
+    .result-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .result-icon {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      background: rgba(8, 145, 178, .1);
+
+      color: var(--primary);
+    }
+
+
+    .result-title strong,
+    .result-title small {
+      display: block;
+    }
+
+
+    .result-title strong {
+      font-size: 13px;
+    }
+
+
+    .result-title small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+
+    .compression-badge {
+      min-width: 55px;
+
+      padding: 7px 10px;
+
+      text-align: center;
+
+      border-radius: 9px;
+
+      color: var(--green);
+
+      background: rgba(22, 163, 74, .1);
+
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .progress-wrapper {
+      margin-bottom: 16px;
+    }
+
+
+    .progress-bar {
+      height: 8px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background: #dbe4ec;
+    }
+
+
+    :global(html.dark) .progress-bar {
+      background: #1e293b;
+    }
+
+
+    .progress-bar span {
+      display: block;
+
+      width: 0;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--primary),
+          var(--cyan)
+        );
+
+      transition: width .45s ease;
+    }
+
+
+    .result-stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 10px;
+    }
+
+
+    .number-box {
+      padding: 12px;
+
+      border-radius: 11px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      transition: background .3s ease;
+    }
+
+
+    .number-box span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    .number-box strong {
+      display: block;
+
+      margin-top: 5px;
+
+      color: var(--text);
+
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 13px;
+    }
+
+
+    /* ================= TOOL STATS ================= */
+
+    .tool-stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 10px;
+
+      padding: 0 16px 16px;
+    }
+
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 12px;
+
+      border-radius: 13px;
+
+      background: var(--soft);
+
+      border: 1px solid var(--border);
+    }
+
+
+    .stat-icon {
+      width: 37px;
+      height: 37px;
+
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 37px;
+
+      border-radius: 10px;
+    }
+
+
+    .stat-icon.blue {
+      color: var(--blue);
+      background: rgba(37, 99, 235, .1);
+    }
+
+
+    .stat-icon.green {
+      color: var(--green);
+      background: rgba(22, 163, 74, .1);
+    }
+
+
+    .stat-icon.purple {
+      color: var(--purple);
+      background: rgba(124, 58, 237, .1);
+    }
+
+
+    .stat-icon.orange {
+      color: var(--orange);
+      background: rgba(234, 88, 12, .1);
+    }
+
+
+    .stat-card strong,
+    .stat-card span {
+      display: block;
+    }
+
+
+    .stat-card strong {
+      font-size: 12px;
+    }
+
+
+    .stat-card span {
+      margin-top: 2px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    /* ================= SECTIONS ================= */
+
+    .info-section,
+    .faq-section {
+      padding: 70px 0;
+
+      background: var(--card);
+
+      border-top: 1px solid var(--border);
+    }
+
+
+    .how-section {
+      padding: 70px 0;
+
+      background: var(--bg);
+
+      border-top: 1px solid var(--border);
+    }
+
+
+    .section-heading {
+      max-width: 700px;
+
+      margin: 0 auto 38px;
+
+      text-align: center;
+    }
+
+
+    .section-heading h2 {
+      margin: 13px 0 8px;
+
+      font-size: clamp(24px, 4vw, 34px);
+
+      color: var(--text);
+    }
+
+
+    .section-heading p {
+      margin: 0;
+
+      color: var(--muted);
+
+      line-height: 1.9;
+
+      font-size: 14px;
+    }
+
+
+    /* ================= INFO CARDS ================= */
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 16px;
+    }
+
+
+    .info-card {
+      padding: 25px;
+
+      border-radius: 18px;
+
+      background: var(--bg);
+
+      border: 1px solid var(--border);
+
+      transition:
+        transform .25s ease,
+        background .3s ease,
+        border-color .25s ease;
+    }
+
+
+    .info-card:hover {
+      transform: translateY(-4px);
+
+      border-color: rgba(8, 145, 178, .35);
+    }
+
+
+    .info-icon {
+      width: 50px;
+      height: 50px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 18px;
+
+      border-radius: 14px;
+
+      font-size: 19px;
+    }
+
+
+    .info-icon.blue {
+      color: var(--blue);
+      background: rgba(37, 99, 235, .1);
+    }
+
+
+    .info-icon.green {
+      color: var(--green);
+      background: rgba(22, 163, 74, .1);
+    }
+
+
+    .info-icon.purple {
+      color: var(--purple);
+      background: rgba(124, 58, 237, .1);
+    }
+
+
+    .info-card h3 {
+      margin: 0 0 8px;
+
+      font-size: 16px;
+    }
+
+
+    .info-card p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.9;
+    }
+
+
+    /* ================= STEPS ================= */
+
+    .steps-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 16px;
+    }
+
+
+    .step {
+      position: relative;
+
+      padding: 27px;
+
+      border-radius: 18px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      overflow: hidden;
+    }
+
+
+    .step-number {
+      position: absolute;
+
+      top: 14px;
+      left: 18px;
+
+      color: rgba(8, 145, 178, .12);
+
+      font-family: "JetBrains Mono", monospace;
+
+      font-size: 34px;
+
+      font-weight: 700;
+    }
+
+
+    .step-icon {
+      width: 50px;
+      height: 50px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 18px;
+
+      border-radius: 14px;
+
+      color: var(--primary);
+
+      background: rgba(8, 145, 178, .1);
+    }
+
+
+    .step h3 {
+      margin: 0 0 8px;
+
+      font-size: 16px;
+    }
+
+
+    .step p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.9;
+    }
+
+
+    /* ================= FAQ ================= */
+
+    .faq-list {
+      max-width: 900px;
+
+      margin: auto;
+
+      display: grid;
+
+      gap: 10px;
+    }
+
+
+    .faq-item {
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      background: var(--bg);
+
+      overflow: hidden;
+
+      transition:
+        background .3s ease,
+        border-color .25s ease;
+    }
+
+
+    .faq-item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 18px 20px;
+
+      cursor: pointer;
+
+      list-style: none;
+
+      color: var(--text);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    .faq-item summary i {
+      color: var(--primary);
+
+      font-size: 11px;
+
+      transition: transform .25s ease;
+    }
+
+
+    .faq-item[open] summary i {
+      transform: rotate(180deg);
+    }
+
+
+    .faq-answer {
+      padding: 0 20px 18px;
+
+      border-top: 1px solid var(--border);
+    }
+
+
+    .faq-answer p {
+      margin: 14px 0 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.9;
+    }
+
+
+    /* ================= DARK TEXT OVERRIDES ================= */
+
+    :global(html.dark) .hero p,
+    :global(html.dark) .section-heading p,
+    :global(html.dark) .info-card p,
+    :global(html.dark) .step p,
+    :global(html.dark) .faq-answer p {
+      color: #94a3b8;
+    }
+
+
+    :global(html.dark) .breadcrumb a {
+      color: #94a3b8;
+    }
+
+
+    :global(html.dark) .breadcrumb span {
+      color: #67e8f9;
+    }
+
+
+    :global(html.dark) .info-card,
+    :global(html.dark) .step {
+      background: var(--soft);
+    }
+
+
+    :global(html.dark) .faq-item {
+      background: var(--soft);
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 900px) {
 
       .hero-content {
-        text-align: center;
-        max-width: 780px;
-        margin: auto;
+        align-items: flex-start;
       }
 
-      .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: rgba(6, 182, 212, 0.09);
-        border: 1px solid rgba(6, 182, 212, 0.2);
-        color: var(--primary-dark);
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 20px;
-      }
 
       .hero-icon {
-        position: relative;
-        width: 94px;
-        height: 94px;
-        margin: 0 auto 20px;
-        display: grid;
-        place-items: center;
-        border-radius: 28px;
-        background:
-          linear-gradient(
-            145deg,
-            rgba(6, 182, 212, 0.14),
-            rgba(37, 99, 235, 0.1)
-          );
-        color: var(--primary);
-        font-size: 42px;
-        box-shadow:
-          0 15px 40px rgba(6, 182, 212, 0.12);
+        width: 92px;
+        height: 92px;
+        flex-basis: 92px;
+
+        border-radius: 24px;
+
+        font-size: 36px;
       }
 
-      .icon-glow {
-        position: absolute;
-        inset: 12px;
+
+      .editors-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .info-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .tool-stats {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
+
+    @media (max-width: 640px) {
+
+      .container {
+        width: min(100% - 22px, 1180px);
+      }
+
+
+      .hero {
+        padding: 20px 0 42px;
+      }
+
+
+      .breadcrumb {
+        margin-bottom: 24px;
+
+        font-size: 11px;
+
+        flex-wrap: wrap;
+      }
+
+
+      .hero-content {
+        flex-direction: column;
+
+        gap: 20px;
+      }
+
+
+      .hero-icon {
+        width: 82px;
+        height: 82px;
+
+        flex-basis: 82px;
+
+        font-size: 31px;
+
         border-radius: 22px;
-        background: rgba(255, 255, 255, 0.55);
-        z-index: 0;
       }
 
-      .hero-icon > i {
-        position: relative;
-        z-index: 2;
-      }
 
       .mini-icon {
-        position: absolute;
-        right: -5px;
-        bottom: -5px;
         width: 32px;
         height: 32px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-        background: var(--primary);
-        color: white;
-        border: 4px solid white;
-        font-size: 12px;
-        z-index: 3;
+
+        font-size: 13px;
+
+        border-radius: 9px;
       }
+
 
       .hero h1 {
-        margin: 0;
-        font-size: clamp(36px, 6vw, 64px);
-        line-height: 1.1;
-        font-weight: 800;
-        letter-spacing: -1.5px;
+        font-size: 32px;
       }
+
 
       .hero h1 span {
-        background:
-          linear-gradient(
-            100deg,
-            var(--primary),
-            var(--blue)
-          );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-size: 15px;
       }
+
 
       .hero p {
-        max-width: 670px;
-        margin: 20px auto 0;
-        color: var(--muted);
-        line-height: 2;
-        font-size: 16px;
+        font-size: 13px;
       }
 
-      .hero-features {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-top: 24px;
-      }
 
       .hero-features span {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 12px;
-        background: var(--soft);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        color: #475569;
-        font-size: 12px;
-        font-weight: 600;
-      }
-
-      .hero-features i {
-        color: var(--primary);
-      }
-
-      /* ================= TOOL ================= */
-
-      .tool-section {
-        position: relative;
-        z-index: 5;
-        margin-top: -35px;
-        padding-bottom: 90px;
-      }
-
-      .minifier-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .tool-topbar {
-        min-height: 74px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        padding: 14px 20px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .tool-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .brand-icon {
-        width: 44px;
-        height: 44px;
-        display: grid;
-        place-items: center;
-        border-radius: 13px;
-        color: var(--primary);
-        background: rgba(6, 182, 212, 0.1);
-        font-size: 19px;
-      }
-
-      .tool-brand strong,
-      .tool-brand span {
-        display: block;
-      }
-
-      .tool-brand strong {
-        font-size: 14px;
-      }
-
-      .tool-brand span {
-        margin-top: 2px;
-        color: var(--muted);
-        font-size: 11px;
-      }
-
-      .local-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 10px;
-        border-radius: 9px;
-        background: rgba(22, 163, 74, 0.08);
-        color: var(--green);
-        font-family: "JetBrains Mono", monospace;
         font-size: 10px;
       }
 
-      .status-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+
+      .tool-section {
+        padding: 30px 0;
       }
+
+
+      .tool-topbar {
+        padding: 13px;
+
+        align-items: flex-start;
+      }
+
+
+      .tool-status {
+        font-size: 10px;
+      }
+
 
       .actionbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 13px 18px;
-        background: var(--soft);
-        border-bottom: 1px solid var(--border);
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        padding: 10px;
       }
 
-      .action-group {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
 
       .action-btn {
-        min-height: 38px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        border: 0;
-        border-radius: 9px;
-        padding: 0 13px;
-        font-size: 12px;
-        font-weight: 700;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
+        width: 100%;
+
+        padding: 0 8px;
+
+        font-size: 11px;
       }
 
-      .action-btn:hover {
-        transform: translateY(-1px);
-      }
-
-      .action-btn.secondary {
-        background: var(--card);
-        color: #475569;
-        border: 1px solid var(--border);
-      }
-
-      .action-btn.secondary:hover {
-        color: var(--primary);
-        border-color: rgba(6, 182, 212, 0.3);
-      }
 
       .action-btn.primary {
-        color: white;
-        background:
-          linear-gradient(
-            135deg,
-            var(--primary),
-            var(--blue)
-          );
-        box-shadow:
-          0 8px 18px rgba(6, 182, 212, 0.2);
+        margin-right: 0;
+
+        grid-column: span 2;
       }
 
-      .action-btn.primary:hover {
-        box-shadow:
-          0 10px 24px rgba(6, 182, 212, 0.3);
+
+      .editor-body,
+      textarea {
+        min-height: 300px;
       }
 
-      /* ================= EDITORS ================= */
-
-      .editors-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        padding: 16px;
-        background: #eef3f7;
-      }
-
-      .editor-card {
-        overflow: hidden;
-        border: 1px solid #1e293b;
-        border-radius: 16px;
-        background: var(--editor);
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-      }
-
-      .editor-header {
-        min-height: 55px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 14px;
-        background: var(--editor-2);
-        border-bottom: 1px solid #1e293b;
-      }
-
-      .editor-title {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-      }
-
-      .editor-title strong,
-      .editor-title small {
-        display: block;
-      }
-
-      .editor-title strong {
-        color: #f8fafc;
-        font-size: 12px;
-      }
-
-      .editor-title small {
-        color: #64748b;
-        font-size: 9px;
-        margin-top: 1px;
-      }
-
-      .editor-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-      }
-
-      .input-dot {
-        background: var(--cyan);
-        box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
-      }
-
-      .output-dot {
-        background: var(--green);
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
-      }
-
-      .language-tag {
-        padding: 5px 8px;
-        border-radius: 6px;
-        background: rgba(6, 182, 212, 0.1);
-        color: var(--cyan);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 9px;
-        font-weight: 700;
-      }
-
-      .output-tag {
-        color: #4ade80;
-        background: rgba(34, 197, 94, 0.1);
-      }
-
-      .editor-body {
-        position: relative;
-        display: flex;
-        min-height: 330px;
-        max-height: 430px;
-        overflow: hidden;
-        direction: ltr;
-      }
 
       .line-numbers {
-        flex: 0 0 45px;
-        padding: 17px 8px 17px 0;
-        overflow: hidden;
-        background: #0b1220;
-        color: var(--line-number);
-        border-right: 1px solid #1e293b;
-        font-family: "JetBrains Mono", monospace;
+        width: 43px;
+        flex-basis: 43px;
+
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+
+      textarea {
+        padding: 15px;
+
         font-size: 11px;
-        line-height: 1.8;
-        text-align: right;
-        white-space: pre;
-        user-select: none;
       }
 
-      .editor-body textarea {
-        flex: 1;
-        width: 100%;
-        min-width: 0;
-        min-height: 330px;
-        resize: none;
-        border: 0;
-        outline: none;
-        padding: 17px;
-        background: var(--editor);
-        color: var(--editor-text);
-        caret-color: var(--cyan);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        line-height: 1.8;
-        direction: ltr;
-        text-align: left;
-        tab-size: 2;
-        overflow: auto;
+
+      .result-panel {
+        margin: 10px;
+
+        padding: 13px;
       }
 
-      .editor-body textarea::placeholder {
-        color: #475569;
+
+      .result-stats {
+        grid-template-columns: 1fr;
+
       }
 
-      .editor-body textarea::selection {
-        background: rgba(6, 182, 212, 0.25);
+
+      .tool-stats {
+        grid-template-columns: 1fr 1fr;
+
+        padding: 0 10px 10px;
       }
 
-      .editor-footer {
-        min-height: 37px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 7px 13px;
-        background: #0b1220;
-        border-top: 1px solid #1e293b;
-        color: #64748b;
-        font-family: "JetBrains Mono", monospace;
+
+      .stat-card {
+        padding: 10px;
+      }
+
+
+      .stat-card strong {
+        font-size: 10px;
+      }
+
+
+      .stat-card span {
         font-size: 9px;
-        direction: ltr;
       }
 
-      .editor-footer span:first-child {
-        display: inline-flex;
-        align-items: center;
+
+      .info-section,
+      .faq-section,
+      .how-section {
+        padding: 50px 0;
+      }
+
+
+      .section-heading {
+        margin-bottom: 28px;
+      }
+
+
+      .section-heading h2 {
+        font-size: 25px;
+      }
+
+
+      .section-heading p {
+        font-size: 12px;
+      }
+
+
+      .info-card,
+      .step {
+        padding: 20px;
+      }
+
+
+      .faq-item summary {
+        padding: 15px;
+
+        font-size: 12px;
+      }
+
+
+      .faq-answer {
+        padding: 0 15px 15px;
+      }
+
+    }
+
+
+    @media (max-width: 390px) {
+
+      .tool-stats {
+        grid-template-columns: 1fr;
+      }
+
+
+      .hero-features {
         gap: 6px;
       }
 
-      .editor-footer i {
-        color: var(--cyan);
-      }
-
-      /* ================= RESULT ================= */
-
-      .result-panel {
-        margin: 0 16px 16px;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: var(--card);
-        overflow: hidden;
-      }
-
-      .result-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        padding: 14px 16px;
-        background: var(--soft);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .result-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .result-icon {
-        width: 38px;
-        height: 38px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-        color: var(--primary);
-        background: rgba(6, 182, 212, 0.1);
-      }
-
-      .result-title strong,
-      .result-title span {
-        display: block;
-      }
-
-      .result-title strong {
-        font-size: 12px;
-      }
-
-      .result-title span {
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      .compression-badge {
-        padding: 7px 10px;
-        border-radius: 8px;
-        background: rgba(22, 163, 74, 0.1);
-        color: var(--green);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 700;
-      }
-
-      .result-content {
-        display: grid;
-        grid-template-columns: 1fr 1.1fr;
-        gap: 20px;
-        padding: 17px;
-      }
-
-      .result-message {
-        min-height: 30px;
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .success-message {
-        color: var(--green);
-      }
-
-      .warning-message {
-        color: var(--orange);
-      }
-
-      .error-message {
-        color: var(--red);
-      }
-
-      .progress-wrap {
-        margin-top: 16px;
-      }
-
-      .progress-label {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 7px;
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      .progress-label strong {
-        color: var(--primary);
-        font-family: "JetBrains Mono", monospace;
-      }
-
-      .progress-bar {
-        height: 8px;
-        overflow: hidden;
-        border-radius: 99px;
-        background: #e5e7eb;
-      }
-
-      .progress-value {
-        height: 100%;
-        border-radius: inherit;
-        background:
-          linear-gradient(
-            90deg,
-            var(--primary),
-            var(--blue)
-          );
-        transition: width 0.35s ease;
-      }
-
-      .result-numbers {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-      }
-
-      .number-box {
-        padding: 13px;
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        background: var(--soft);
-        text-align: center;
-      }
-
-      .number-box span,
-      .number-box strong {
-        display: block;
-      }
-
-      .number-box span {
-        color: var(--muted);
-        font-size: 9px;
-        margin-bottom: 4px;
-      }
-
-      .number-box strong {
-        color: var(--text);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-      }
-
-      /* ================= STATS ================= */
-
-      .tool-stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        padding: 0 16px 16px;
-      }
-
-      .stat-card {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--card);
-      }
-
-      .stat-icon {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-      }
-
-      .stat-icon.blue {
-        color: var(--blue);
-        background: rgba(37, 99, 235, 0.1);
-      }
-
-      .stat-icon.green {
-        color: var(--green);
-        background: rgba(22, 163, 74, 0.1);
-      }
-
-      .stat-icon.purple {
-        color: var(--purple);
-        background: rgba(124, 58, 237, 0.1);
-      }
-
-      .stat-icon.orange {
-        color: var(--orange);
-        background: rgba(234, 88, 12, 0.1);
-      }
-
-      .stat-card strong,
-      .stat-card span {
-        display: block;
-      }
-
-      .stat-card strong {
-        font-size: 12px;
-      }
-
-      .stat-card span {
-        color: var(--muted);
-        font-size: 9px;
-        margin-top: 2px;
-      }
-
-      /* ================= SECTIONS ================= */
-
-      .info-section,
-      .how-section,
-      .faq-section {
-        padding: 85px 0;
-      }
-
-      .info-section {
-        background: var(--card);
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .section-heading {
-        max-width: 700px;
-        margin: 0 auto 42px;
-        text-align: center;
-      }
-
-      .section-heading > span {
-        display: inline-block;
-        margin-bottom: 9px;
-        color: var(--primary);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1px;
-      }
-
-      .section-heading h2 {
-        margin: 0;
-        font-size: clamp(24px, 4vw, 34px);
-        line-height: 1.35;
-      }
-
-      .section-heading p {
-        margin: 12px auto 0;
-        color: var(--muted);
-        line-height: 1.9;
-        font-size: 13px;
-      }
-
-      .info-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-
-      .info-card {
-        padding: 25px;
-        border: 1px solid var(--border);
-        border-radius: 17px;
-        background: var(--bg);
-        transition:
-          transform 0.25s,
-          box-shadow 0.25s;
-      }
-
-      .info-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
-      }
-
-      .info-icon {
-        width: 50px;
-        height: 50px;
-        display: grid;
-        place-items: center;
-        border-radius: 14px;
-        margin-bottom: 17px;
-        font-size: 20px;
-      }
-
-      .info-icon.blue {
-        color: var(--blue);
-        background: rgba(37, 99, 235, 0.1);
-      }
-
-      .info-icon.green {
-        color: var(--green);
-        background: rgba(22, 163, 74, 0.1);
-      }
-
-      .info-icon.purple {
-        color: var(--purple);
-        background: rgba(124, 58, 237, 0.1);
-      }
-
-      .info-card h3 {
-        margin: 0 0 8px;
-        font-size: 16px;
-      }
-
-      .info-card p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.9;
-        font-size: 12px;
-      }
-
-      /* ================= STEPS ================= */
-
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-      }
-
-      .step {
-        position: relative;
-        padding: 27px;
-        border: 1px solid var(--border);
-        border-radius: 17px;
-        background: var(--card);
-        overflow: hidden;
-      }
-
-      .step-number {
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        color: rgba(6, 182, 212, 0.12);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 35px;
-        font-weight: 800;
-      }
-
-      .step-icon {
-        width: 52px;
-        height: 52px;
-        display: grid;
-        place-items: center;
-        margin-bottom: 17px;
-        border-radius: 14px;
-        background: rgba(6, 182, 212, 0.1);
-        color: var(--primary);
-        font-size: 20px;
-      }
-
-      .step h3 {
-        margin: 0 0 7px;
-        font-size: 16px;
-      }
-
-      .step p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.8;
-        font-size: 12px;
-      }
-
-      /* ================= FAQ ================= */
-
-      .faq-section {
-        background: var(--card);
-        border-top: 1px solid var(--border);
-      }
-
-      .faq-list {
-        max-width: 850px;
-        margin: auto;
-      }
-
-      .faq-item {
-        border: 1px solid var(--border);
-        border-radius: 13px;
-        background: var(--bg);
-        margin-bottom: 10px;
-        overflow: hidden;
-      }
-
-      .faq-item summary {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        padding: 17px 18px;
-        cursor: pointer;
-        list-style: none;
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .faq-item summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .faq-item summary i {
-        color: var(--primary);
-        font-size: 11px;
-        transition: transform 0.2s;
-      }
-
-      .faq-item[open] summary i {
-        transform: rotate(180deg);
-      }
-
-      .faq-answer {
-        padding: 0 18px 17px;
-        border-top: 1px solid var(--border);
-      }
-
-      .faq-answer p {
-        margin: 13px 0 0;
-        color: var(--muted);
-        line-height: 1.9;
-        font-size: 12px;
-      }
-
-      /* ================= RESPONSIVE ================= */
-
-      @media (max-width: 900px) {
-        .editors-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .result-content {
-          grid-template-columns: 1fr;
-        }
-
-        .tool-stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .info-grid,
-        .steps {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 620px) {
-        .container {
-          width: min(100% - 20px, 1180px);
-        }
 
-        .hero {
-          padding: 30px 0 70px;
-        }
-
-        .breadcrumb {
-          margin-bottom: 28px;
-          font-size: 11px;
-        }
-
-        .hero-icon {
-          width: 80px;
-          height: 80px;
-          border-radius: 23px;
-          font-size: 34px;
-        }
-
-        .hero h1 {
-          font-size: 39px;
-        }
-
-        .hero p {
-          font-size: 13px;
-          line-height: 1.9;
-        }
-
-        .hero-features {
-          gap: 7px;
-        }
-
-        .hero-features span {
-          font-size: 10px;
-          padding: 6px 9px;
-        }
-
-        .tool-section {
-          margin-top: -25px;
-          padding-bottom: 65px;
-        }
-
-        .minifier-card {
-          border-radius: 18px;
-        }
-
-        .tool-topbar {
-          padding: 12px;
-        }
-
-        .local-status {
-          font-size: 8px;
-          padding: 6px 7px;
-        }
-
-        .brand-icon {
-          width: 38px;
-          height: 38px;
-        }
-
-        .tool-brand strong {
-          font-size: 12px;
-        }
-
-        .actionbar {
-          flex-direction: column;
-          align-items: stretch;
-          padding: 10px;
-        }
-
-        .action-group {
-          width: 100%;
-        }
-
-        .action-btn {
-          flex: 1;
-          min-height: 36px;
-          padding: 0 8px;
-          font-size: 10px;
-        }
-
-        .editors-grid {
-          padding: 10px;
-          gap: 10px;
-        }
-
-        .editor-body {
-          min-height: 280px;
-        }
-
-        .editor-body textarea {
-          min-height: 280px;
-          font-size: 10px;
-          padding: 13px;
-        }
-
-        .line-numbers {
-          flex-basis: 37px;
-          font-size: 9px;
-          padding-top: 13px;
-        }
-
-        .editor-footer {
-          font-size: 8px;
-        }
-
-        .result-panel {
-          margin: 0 10px 10px;
-        }
-
-        .result-header {
-          padding: 12px;
-        }
-
-        .result-content {
-          padding: 12px;
-        }
-
-        .result-numbers {
-          grid-template-columns: 1fr;
-        }
-
-        .tool-stats {
-          padding: 0 10px 10px;
-          gap: 7px;
-        }
-
-        .stat-card {
-          padding: 9px;
-        }
-
-        .stat-icon {
-          width: 32px;
-          height: 32px;
-          flex-basis: 32px;
-          font-size: 12px;
-        }
-
-        .stat-card strong {
-          font-size: 10px;
-        }
-
-        .stat-card span {
-          font-size: 7px;
-        }
-
-        .info-section,
-        .how-section,
-        .faq-section {
-          padding: 65px 0;
-        }
-
-        .section-heading {
-          margin-bottom: 30px;
-        }
-
-        .section-heading h2 {
-          font-size: 24px;
-        }
-
-        .section-heading p {
-          font-size: 11px;
-        }
-
-        .info-card,
-        .step {
-          padding: 20px;
-        }
+      .hero-features span {
+        padding: 7px 9px;
       }
-
-      /* ================= DARK MODE ================= */
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #070d16;
-          --card: #0c1421;
-          --soft: #111c2b;
+    }
 
-          --text: #f1f5f9;
-          --muted: #94a3b8;
-          --border: #1e293b;
-
-          --primary: #22d3ee;
-          --primary-dark: #67e8f9;
-          --secondary: #06b6d4;
-          --cyan: #67e8f9;
-
-          --blue: #60a5fa;
-          --purple: #a78bfa;
-          --green: #4ade80;
-          --orange: #fb923c;
-          --red: #f87171;
-
-          --shadow:
-            0 20px 60px rgba(0, 0, 0, 0.28);
-        }
-
-        .hero {
-          background:
-            radial-gradient(
-              circle at 15% 15%,
-              rgba(6, 182, 212, 0.08),
-              transparent 30%
-            ),
-            radial-gradient(
-              circle at 85% 10%,
-              rgba(37, 99, 235, 0.07),
-              transparent 30%
-            ),
-            var(--card);
-        }
-
-        .hero-icon .icon-glow {
-          background: rgba(12, 20, 33, 0.65);
-        }
-
-        .mini-icon {
-          border-color: var(--card);
-        }
-
-        .hero-features span,
-        .info-card,
-        .step {
-          background: var(--soft);
-        }
-
-        .editors-grid {
-          background: #060b12;
-        }
-
-        .progress-bar {
-          background: #1e293b;
-        }
-
-        .number-box {
-          background: var(--soft);
-        }
-
-        .info-section,
-        .faq-section {
-          background: var(--card);
-        }
-      }
-    </style>
-  </body>
+  </style>
+</body>
 </html>
