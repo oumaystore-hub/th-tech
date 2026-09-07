@@ -1,0 +1,4508 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title =
+  "Source Code Counter - إحصائيات الكود أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة Source Code Counter مجانية لحساب أسطر الكود والأحرف والكلمات والأسطر الفارغة والتعليقات وحجم الكود مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة Source Code Counter؟",
+    a: "أداة لتحليل الكود وحساب عدد الأسطر والأحرف والكلمات والأسطر الفارغة وغير الفارغة والتعليقات وحجم النص البرمجي."
+  },
+  {
+    q: "هل يتم إرسال الكود إلى الخادم؟",
+    a: "لا. تتم جميع عمليات التحليل داخل المتصفح، لذلك لا تحتاج إلى إرسال الكود إلى خادم خارجي."
+  },
+  {
+    q: "ما أنواع الأكواد التي يمكن تحليلها؟",
+    a: "يمكنك تحليل JavaScript وTypeScript وHTML وCSS وJSON وPython وPHP وJava وC وC++ وغيرها من النصوص البرمجية."
+  },
+  {
+    q: "هل يتم حساب الأسطر الفارغة؟",
+    a: "نعم. تعرض الأداة عدد الأسطر الإجمالي والأسطر الفارغة والأسطر التي تحتوي على كود."
+  },
+  {
+    q: "هل الأداة مجانية؟",
+    a: "نعم. الأداة مجانية بالكامل ويمكن استخدامها مباشرة من المتصفح."
+  }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>{title}</title>
+
+    <meta
+      name="description"
+      content={description}
+    />
+
+    <meta
+      name="robots"
+      content="index, follow"
+    />
+
+    <meta
+      name="theme-color"
+      content="#2563eb"
+    />
+
+    <link
+      rel="icon"
+      href={`${base}/logo1.png`}
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          } else {
+            document.documentElement.classList.remove("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <Header />
+
+    <main>
+
+      <!-- ======================================
+           HERO
+      ======================================= -->
+
+      <section class="hero">
+
+        <div class="hero-glow glow-one"></div>
+        <div class="hero-glow glow-two"></div>
+
+        <div class="container">
+
+          <div class="breadcrumb">
+
+            <a href={`${base}/`}>
+              الرئيسية
+            </a>
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+            <a href={`${base}/tools/`}>
+              الأدوات
+            </a>
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+            <span>
+              Source Code Counter
+            </span>
+
+          </div>
+
+
+          <div class="hero-badge">
+
+            <span class="badge-dot"></span>
+
+            Developer Tools
+
+            <i class="fa-solid fa-chart-column"></i>
+
+          </div>
+
+
+          <div class="hero-icon">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            <span class="count-mark">
+              #
+            </span>
+
+          </div>
+
+
+          <h1>
+
+            Source Code
+
+            <span>Counter</span>
+
+          </h1>
+
+
+          <p>
+
+            احصل على إحصائيات دقيقة للكود الخاص بك،
+            واحسب الأسطر والأحرف والكلمات والتعليقات وحجم الملف مباشرة.
+
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ======================================
+           TOOL
+      ======================================= -->
+
+      <section class="tool-section">
+
+        <div class="container">
+
+          <div class="counter-card">
+
+
+            <!-- TOP BAR -->
+
+            <div class="topbar">
+
+              <div class="project-info">
+
+                <div class="project-logo">
+
+                  <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    Source Code Counter
+                  </strong>
+
+                  <span>
+                    Code Statistics Analyzer
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="topbar-status">
+
+                <span class="online-dot"></span>
+
+                Local Processing
+
+              </div>
+
+            </div>
+
+
+            <!-- ACTION BAR -->
+
+            <div class="actionbar">
+
+              <div class="action-group">
+
+                <button
+                  id="exampleBtn"
+                  class="action secondary"
+                  type="button"
+                >
+
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                  مثال
+
+                </button>
+
+
+                <button
+                  id="clearBtn"
+                  class="action secondary"
+                  type="button"
+                >
+
+                  <i class="fa-solid fa-trash-can"></i>
+
+                  مسح
+
+                </button>
+
+              </div>
+
+
+              <div class="action-group">
+
+                <button
+                  id="analyzeBtn"
+                  class="action primary"
+                  type="button"
+                >
+
+                  <i class="fa-solid fa-chart-simple"></i>
+
+                  تحليل الكود
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- EDITOR -->
+
+            <div class="workspace">
+
+              <div class="editor-card">
+
+                <div class="editor-head">
+
+                  <div class="editor-label">
+
+                    <span class="file-icon">
+
+                      <i class="fa-solid fa-file-code"></i>
+
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        Source Code
+                      </strong>
+
+                      <small>
+                        أدخل الكود المراد تحليله
+                      </small>
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    id="editorStats"
+                    class="editor-stats"
+                  >
+                    0 حرف
+                  </div>
+
+                </div>
+
+
+                <div class="code-area">
+
+                  <div
+                    id="lineNumbers"
+                    class="line-numbers"
+                  >
+                    1
+                  </div>
+
+
+                  <textarea
+                    id="codeInput"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder="// ضع الكود هنا..."
+                  ></textarea>
+
+                </div>
+
+
+                <div class="editor-foot">
+
+                  <span
+                    id="status"
+                    class="status idle"
+                  >
+
+                    <span class="status-dot"></span>
+
+                    جاهز
+
+                  </span>
+
+
+                  <span id="sizeInfo">
+                    0 B
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <!-- QUICK STATS -->
+
+              <div class="quick-panel">
+
+                <div class="quick-head">
+
+                  <div>
+
+                    <strong>
+                      Live Statistics
+                    </strong>
+
+                    <span>
+                      إحصائيات مباشرة
+                    </span>
+
+                  </div>
+
+                  <i class="fa-solid fa-chart-pie"></i>
+
+                </div>
+
+
+                <div class="quick-grid">
+
+                  <div class="quick-item">
+
+                    <span class="quick-icon blue">
+
+                      <i class="fa-solid fa-lines-leaning"></i>
+
+                    </span>
+
+                    <div>
+
+                      <strong id="quickLines">
+                        0
+                      </strong>
+
+                      <span>
+                        الأسطر
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="quick-item">
+
+                    <span class="quick-icon purple">
+
+                      <i class="fa-solid fa-font"></i>
+
+                    </span>
+
+                    <div>
+
+                      <strong id="quickChars">
+                        0
+                      </strong>
+
+                      <span>
+                        الأحرف
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="quick-item">
+
+                    <span class="quick-icon cyan">
+
+                      <i class="fa-solid fa-align-left"></i>
+
+                    </span>
+
+                    <div>
+
+                      <strong id="quickWords">
+                        0
+                      </strong>
+
+                      <span>
+                        الكلمات
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="quick-item">
+
+                    <span class="quick-icon green">
+
+                      <i class="fa-solid fa-code"></i>
+
+                    </span>
+
+                    <div>
+
+                      <strong id="quickCodeLines">
+                        0
+                      </strong>
+
+                      <span>
+                        أسطر الكود
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="quick-note">
+
+                  <i class="fa-solid fa-shield-halved"></i>
+
+                  تتم معالجة الكود محلياً داخل المتصفح
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div class="result-section">
+
+              <div class="result-head">
+
+                <div class="result-title">
+
+                  <div class="result-icon">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      Code Statistics
+                    </strong>
+
+                    <span>
+                      إحصائيات وتحليل الكود
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div class="result-badge">
+
+                  <span class="result-dot"></span>
+
+                  Analyzed
+
+                </div>
+
+              </div>
+
+
+              <div class="statistics-grid">
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon blue">
+
+                    <i class="fa-solid fa-list-ol"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      إجمالي الأسطر
+                    </span>
+
+                    <strong id="totalLines">
+                      0
+                    </strong>
+
+                    <small>
+                      Total Lines
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon green">
+
+                    <i class="fa-solid fa-code"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      أسطر الكود
+                    </span>
+
+                    <strong id="codeLines">
+                      0
+                    </strong>
+
+                    <small>
+                      Code Lines
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon orange">
+
+                    <i class="fa-regular fa-square"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      أسطر فارغة
+                    </span>
+
+                    <strong id="blankLines">
+                      0
+                    </strong>
+
+                    <small>
+                      Blank Lines
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon purple">
+
+                    <i class="fa-solid fa-comment"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      أسطر التعليقات
+                    </span>
+
+                    <strong id="commentLines">
+                      0
+                    </strong>
+
+                    <small>
+                      Comment Lines
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon cyan">
+
+                    <i class="fa-solid fa-font"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      الأحرف
+                    </span>
+
+                    <strong id="characters">
+                      0
+                    </strong>
+
+                    <small>
+                      Characters
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon indigo">
+
+                    <i class="fa-solid fa-align-left"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      الكلمات
+                    </span>
+
+                    <strong id="words">
+                      0
+                    </strong>
+
+                    <small>
+                      Words
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon red">
+
+                    <i class="fa-solid fa-file-code"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      حجم الكود
+                    </span>
+
+                    <strong id="fileSize">
+                      0 B
+                    </strong>
+
+                    <small>
+                      File Size
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                  <div class="stat-card-icon teal">
+
+                    <i class="fa-solid fa-percent"></i>
+
+                  </div>
+
+                  <div class="stat-content">
+
+                    <span>
+                      نسبة التعليقات
+                    </span>
+
+                    <strong id="commentPercent">
+                      0%
+                    </strong>
+
+                    <small>
+                      Comments Ratio
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- TOOL STATS -->
+
+            <div class="tool-stats">
+
+              <div class="tool-stat">
+
+                <div class="tool-stat-icon">
+
+                  <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    Fast
+                  </strong>
+
+                  <span>
+                    تحليل فوري
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="tool-stat">
+
+                <div class="tool-stat-icon">
+
+                  <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    8+
+                  </strong>
+
+                  <span>
+                    إحصائيات
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="tool-stat">
+
+                <div class="tool-stat-icon">
+
+                  <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    Private
+                  </strong>
+
+                  <span>
+                    بدون رفع الكود
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="tool-stat">
+
+                <div class="tool-stat-icon">
+
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    100%
+                  </strong>
+
+                  <span>
+                    متوافق مع الهاتف
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- ======================================
+               INFORMATION
+          ======================================= -->
+
+          <section class="information">
+
+            <div class="section-title">
+
+              <span>
+                Developer Tools
+              </span>
+
+              <h2>
+                إحصائيات دقيقة للكود
+              </h2>
+
+              <p>
+                حلّل الكود بسرعة واعرف حجمه وبنيته وعدد الأسطر
+                والتعليقات والأحرف والكلمات.
+              </p>
+
+            </div>
+
+
+            <div class="info-grid">
+
+
+              <article class="info-card">
+
+                <div class="info-number">
+                  01
+                </div>
+
+                <div class="info-card-icon">
+
+                  <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+                <h3>
+                  تحليل شامل
+                </h3>
+
+                <p>
+                  احصل على مجموعة من الإحصائيات المهمة
+                  حول الكود في نتيجة واحدة.
+                </p>
+
+              </article>
+
+
+              <article class="info-card">
+
+                <div class="info-number">
+                  02
+                </div>
+
+                <div class="info-card-icon">
+
+                  <i class="fa-solid fa-list-ol"></i>
+
+                </div>
+
+                <h3>
+                  حساب الأسطر
+                </h3>
+
+                <p>
+                  تعرف على عدد الأسطر الإجمالي وأسطر الكود
+                  والأسطر الفارغة والتعليقات.
+                </p>
+
+              </article>
+
+
+              <article class="info-card">
+
+                <div class="info-number">
+                  03
+                </div>
+
+                <div class="info-card-icon">
+
+                  <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <h3>
+                  خصوصية كاملة
+                </h3>
+
+                <p>
+                  لا يتم إرسال الكود إلى أي خادم،
+                  وجميع العمليات تتم محلياً في المتصفح.
+                </p>
+
+              </article>
+
+            </div>
+
+          </section>
+
+
+          <!-- ======================================
+               HOW TO
+          ======================================= -->
+
+          <section class="how-section">
+
+            <div class="section-title">
+
+              <span>
+                How It Works
+              </span>
+
+              <h2>
+                طريقة استخدام الأداة
+              </h2>
+
+            </div>
+
+
+            <div class="steps">
+
+
+              <div class="step">
+
+                <div class="step-icon">
+
+                  <span>
+                    01
+                  </span>
+
+                </div>
+
+                <div>
+
+                  <h3>
+                    أدخل الكود
+                  </h3>
+
+                  <p>
+                    الصق الكود الذي تريد معرفة إحصائياته
+                    داخل محرر Source Code.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="step">
+
+                <div class="step-icon">
+
+                  <span>
+                    02
+                  </span>
+
+                </div>
+
+                <div>
+
+                  <h3>
+                    ابدأ التحليل
+                  </h3>
+
+                  <p>
+                    اضغط على زر تحليل الكود للحصول على
+                    جميع الإحصائيات.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="step">
+
+                <div class="step-icon">
+
+                  <span>
+                    03
+                  </span>
+
+                </div>
+
+                <div>
+
+                  <h3>
+                    راجع النتائج
+                  </h3>
+
+                  <p>
+                    راجع عدد الأسطر والأحرف والكلمات
+                    والحجم والتعليقات.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ======================================
+               FAQ
+          ======================================= -->
+
+          <section class="faq-section">
+
+            <div class="section-title">
+
+              <span>
+                FAQ
+              </span>
+
+              <h2>
+                الأسئلة الشائعة
+              </h2>
+
+            </div>
+
+
+            <div class="faq-list">
+
+              {
+                faqs.map((faq) => (
+                  <details>
+
+                    <summary>
+
+                      <span>
+                        {faq.q}
+                      </span>
+
+                      <i class="fa-solid fa-chevron-down"></i>
+
+                    </summary>
+
+                    <div class="faq-answer">
+                      {faq.a}
+                    </div>
+
+                  </details>
+                ))
+              }
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <Footer />
+
+
+    <!-- ======================================
+         JAVASCRIPT
+    ======================================= -->
+
+    <script is:inline>
+      (() => {
+
+        const codeInput =
+          document.getElementById("codeInput");
+
+        const lineNumbers =
+          document.getElementById("lineNumbers");
+
+        const editorStats =
+          document.getElementById("editorStats");
+
+        const sizeInfo =
+          document.getElementById("sizeInfo");
+
+        const status =
+          document.getElementById("status");
+
+        const exampleBtn =
+          document.getElementById("exampleBtn");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const analyzeBtn =
+          document.getElementById("analyzeBtn");
+
+
+        const quickLines =
+          document.getElementById("quickLines");
+
+        const quickChars =
+          document.getElementById("quickChars");
+
+        const quickWords =
+          document.getElementById("quickWords");
+
+        const quickCodeLines =
+          document.getElementById("quickCodeLines");
+
+
+        const totalLines =
+          document.getElementById("totalLines");
+
+        const codeLines =
+          document.getElementById("codeLines");
+
+        const blankLines =
+          document.getElementById("blankLines");
+
+        const commentLines =
+          document.getElementById("commentLines");
+
+        const characters =
+          document.getElementById("characters");
+
+        const words =
+          document.getElementById("words");
+
+        const fileSize =
+          document.getElementById("fileSize");
+
+        const commentPercent =
+          document.getElementById("commentPercent");
+
+
+        /* ======================================
+           EXAMPLE
+        ======================================= */
+
+        const exampleCode = `// Source Code Counter Example
+
+function calculateTotal(items) {
+  let total = 0;
+
+  // Calculate the total price
+  for (const item of items) {
+    total += item.price;
+  }
+
+  return total;
+}
+
+const products = [
+  { name: "Laptop", price: 800 },
+  { name: "Mouse", price: 25 }
+];
+
+const total = calculateTotal(products);
+
+console.log("Total:", total);`;
+
+
+        /* ======================================
+           FORMAT SIZE
+        ======================================= */
+
+        function formatBytes(bytes) {
+
+          if (bytes < 1024) {
+            return `${bytes} B`;
+          }
+
+          if (bytes < 1024 * 1024) {
+            return `${(bytes / 1024).toFixed(2)} KB`;
+          }
+
+          return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+
+        }
+
+
+        /* ======================================
+           UPDATE EDITOR
+        ======================================= */
+
+        function updateEditorStats() {
+
+          const value =
+            codeInput.value;
+
+
+          const lines =
+            value
+              ? value.replace(/\r\n/g, "\n").split("\n")
+              : [];
+
+
+          const lineCount =
+            lines.length;
+
+
+          const chars =
+            value.length;
+
+
+          const byteCount =
+            new Blob([value]).size;
+
+
+          const wordCount =
+            value.trim()
+              ? value.trim().split(/\s+/).length
+              : 0;
+
+
+          editorStats.textContent =
+            `${chars.toLocaleString()} حرف`;
+
+
+          sizeInfo.textContent =
+            formatBytes(byteCount);
+
+
+          if (lineCount === 0) {
+
+            lineNumbers.textContent =
+              "1";
+
+          } else {
+
+            lineNumbers.textContent =
+              Array.from(
+                { length: lineCount },
+                (_, index) => index + 1
+              ).join("\n");
+
+          }
+
+
+          quickLines.textContent =
+            lineCount.toLocaleString();
+
+
+          quickChars.textContent =
+            chars.toLocaleString();
+
+
+          quickWords.textContent =
+            wordCount.toLocaleString();
+
+
+          updateLiveCodeLines(lines);
+
+        }
+
+
+        /* ======================================
+           LIVE CODE LINES
+        ======================================= */
+
+        function updateLiveCodeLines(lines) {
+
+          if (!lines.length) {
+
+            quickCodeLines.textContent =
+              "0";
+
+            return;
+
+          }
+
+
+          let count = 0;
+
+
+          lines.forEach((line) => {
+
+            if (line.trim() !== "") {
+              count++;
+            }
+
+          });
+
+
+          quickCodeLines.textContent =
+            count.toLocaleString();
+
+        }
+
+
+        /* ======================================
+           STATUS
+        ======================================= */
+
+        function setStatus(type, text) {
+
+          status.className =
+            `status ${type}`;
+
+          status.innerHTML = `
+            <span class="status-dot"></span>
+            ${text}
+          `;
+
+        }
+
+
+        /* ======================================
+           COMMENT DETECTION
+        ======================================= */
+
+        function isCommentLine(line) {
+
+          const trimmed =
+            line.trim();
+
+
+          if (!trimmed) {
+            return false;
+          }
+
+
+          if (
+            trimmed.startsWith("//") ||
+            trimmed.startsWith("#") ||
+            trimmed.startsWith("--") ||
+            trimmed.startsWith("<!--") ||
+            trimmed.startsWith("/*") ||
+            trimmed.startsWith("*")
+          ) {
+
+            return true;
+
+          }
+
+
+          return false;
+
+        }
+
+
+        /* ======================================
+           ANALYZE
+        ======================================= */
+
+        function analyze() {
+
+          const value =
+            codeInput.value;
+
+
+          if (!value.trim()) {
+
+            resetResults();
+
+            setStatus(
+              "warning",
+              "أدخل الكود أولاً"
+            );
+
+            codeInput.focus();
+
+            return;
+
+          }
+
+
+          const started =
+            performance.now();
+
+
+          try {
+
+            const normalized =
+              value
+                .replace(/\r\n/g, "\n")
+                .replace(/\r/g, "\n");
+
+
+            const lines =
+              normalized.split("\n");
+
+
+            const total =
+              lines.length;
+
+
+            let blank = 0;
+            let comments = 0;
+            let code = 0;
+
+
+            lines.forEach((line) => {
+
+              const trimmed =
+                line.trim();
+
+
+              if (!trimmed) {
+
+                blank++;
+
+              } else if (
+                isCommentLine(trimmed)
+              ) {
+
+                comments++;
+
+              } else {
+
+                code++;
+
+              }
+
+            });
+
+
+            const chars =
+              value.length;
+
+
+            const wordCount =
+              value.trim()
+                ? value.trim().split(/\s+/).length
+                : 0;
+
+
+            const bytes =
+              new Blob([value]).size;
+
+
+            const percentage =
+              total > 0
+                ? (comments / total) * 100
+                : 0;
+
+
+            totalLines.textContent =
+              total.toLocaleString();
+
+
+            codeLines.textContent =
+              code.toLocaleString();
+
+
+            blankLines.textContent =
+              blank.toLocaleString();
+
+
+            commentLines.textContent =
+              comments.toLocaleString();
+
+
+            characters.textContent =
+              chars.toLocaleString();
+
+
+            words.textContent =
+              wordCount.toLocaleString();
+
+
+            fileSize.textContent =
+              formatBytes(bytes);
+
+
+            commentPercent.textContent =
+              `${percentage.toFixed(1)}%`;
+
+
+            quickLines.textContent =
+              total.toLocaleString();
+
+
+            quickChars.textContent =
+              chars.toLocaleString();
+
+
+            quickWords.textContent =
+              wordCount.toLocaleString();
+
+
+            quickCodeLines.textContent =
+              code.toLocaleString();
+
+
+            const elapsed =
+              performance.now() - started;
+
+
+            setStatus(
+              "success",
+              `تم التحليل خلال ${elapsed.toFixed(1)} ms`
+            );
+
+          } catch {
+
+            setStatus(
+              "error",
+              "تعذر تحليل الكود"
+            );
+
+          }
+
+        }
+
+
+        /* ======================================
+           RESET
+        ======================================= */
+
+        function resetResults() {
+
+          totalLines.textContent =
+            "0";
+
+          codeLines.textContent =
+            "0";
+
+          blankLines.textContent =
+            "0";
+
+          commentLines.textContent =
+            "0";
+
+          characters.textContent =
+            "0";
+
+          words.textContent =
+            "0";
+
+          fileSize.textContent =
+            "0 B";
+
+          commentPercent.textContent =
+            "0%";
+
+
+          quickLines.textContent =
+            "0";
+
+          quickChars.textContent =
+            "0";
+
+          quickWords.textContent =
+            "0";
+
+          quickCodeLines.textContent =
+            "0";
+
+        }
+
+
+        /* ======================================
+           CLEAR
+        ======================================= */
+
+        function clearAll() {
+
+          codeInput.value =
+            "";
+
+
+          resetResults();
+
+          updateEditorStats();
+
+
+          setStatus(
+            "idle",
+            "جاهز"
+          );
+
+
+          codeInput.focus();
+
+        }
+
+
+        /* ======================================
+           EXAMPLE
+        ======================================= */
+
+        exampleBtn.addEventListener(
+          "click",
+          () => {
+
+            codeInput.value =
+              exampleCode;
+
+
+            updateEditorStats();
+
+            analyze();
+
+          }
+        );
+
+
+        /* ======================================
+           EVENTS
+        ======================================= */
+
+        codeInput.addEventListener(
+          "input",
+          () => {
+
+            updateEditorStats();
+
+            if (codeInput.value.trim()) {
+              analyze();
+            } else {
+              resetResults();
+
+              setStatus(
+                "idle",
+                "جاهز"
+              );
+            }
+
+          }
+        );
+
+
+        analyzeBtn.addEventListener(
+          "click",
+          analyze
+        );
+
+
+        clearBtn.addEventListener(
+          "click",
+          clearAll
+        );
+
+
+        /* ======================================
+           SCROLL LINE NUMBERS
+        ======================================= */
+
+        codeInput.addEventListener(
+          "scroll",
+          () => {
+
+            lineNumbers.scrollTop =
+              codeInput.scrollTop;
+
+          }
+        );
+
+
+        /* ======================================
+           TAB SUPPORT
+        ======================================= */
+
+        codeInput.addEventListener(
+          "keydown",
+          (event) => {
+
+            if (event.key === "Tab") {
+
+              event.preventDefault();
+
+
+              const start =
+                codeInput.selectionStart;
+
+              const end =
+                codeInput.selectionEnd;
+
+
+              codeInput.value =
+                codeInput.value.substring(
+                  0,
+                  start
+                ) +
+                "  " +
+                codeInput.value.substring(
+                  end
+                );
+
+
+              codeInput.selectionStart =
+                codeInput.selectionEnd =
+                  start + 2;
+
+
+              updateEditorStats();
+
+              analyze();
+
+            }
+
+
+            if (
+              event.key === "Enter" &&
+              (event.ctrlKey ||
+               event.metaKey)
+            ) {
+
+              event.preventDefault();
+
+              analyze();
+
+            }
+
+          }
+        );
+
+
+        /* ======================================
+           INITIAL
+        ======================================= */
+
+        updateEditorStats();
+
+        resetResults();
+
+      })();
+    </script>
+
+
+    <!-- ======================================
+         STYLE
+    ======================================= -->
+
+    <style>
+
+      :root {
+
+        --bg:
+          #f3f6fb;
+
+        --surface:
+          #ffffff;
+
+        --surface-2:
+          #f7f9fd;
+
+        --text:
+          #111827;
+
+        --muted:
+          #6b7280;
+
+        --border:
+          rgba(15,23,42,.09);
+
+        --primary:
+          #2563eb;
+
+        --primary-dark:
+          #1d4ed8;
+
+        --secondary:
+          #3b82f6;
+
+        --cyan:
+          #0891b2;
+
+        --blue:
+          #2563eb;
+
+        --purple:
+          #7c3aed;
+
+        --green:
+          #16a34a;
+
+        --orange:
+          #ea580c;
+
+        --red:
+          #dc2626;
+
+        --indigo:
+          #4f46e5;
+
+        --teal:
+          #0f766e;
+
+        --shadow:
+          0 25px 70px
+          rgba(15,23,42,.09);
+
+        --code-bg:
+          #080c17;
+
+        --code-bg-2:
+          #0d1322;
+
+        --code-text:
+          #e5e7eb;
+
+      }
+
+
+      html.dark-mode {
+
+        --bg:
+          #060a13;
+
+        --surface:
+          #0c111e;
+
+        --surface-2:
+          #111827;
+
+        --text:
+          #f8fafc;
+
+        --muted:
+          #94a3b8;
+
+        --border:
+          rgba(148,163,184,.12);
+
+        --primary:
+          #60a5fa;
+
+        --primary-dark:
+          #3b82f6;
+
+        --secondary:
+          #818cf8;
+
+        --shadow:
+          0 30px 80px
+          rgba(0,0,0,.4);
+
+      }
+
+
+      * {
+        box-sizing:
+          border-box;
+      }
+
+
+      body {
+
+        margin:
+          0;
+
+        background:
+          var(--bg);
+
+        color:
+          var(--text);
+
+        font-family:
+          "Cairo",
+          sans-serif;
+
+        transition:
+          background .25s ease,
+          color .25s ease;
+
+      }
+
+
+      button,
+      textarea {
+
+        font-family:
+          inherit;
+
+      }
+
+
+      .container {
+
+        width:
+          min(
+            1120px,
+            calc(100% - 32px)
+          );
+
+        margin-inline:
+          auto;
+
+      }
+
+
+      /* ======================================
+         HERO
+      ======================================= */
+
+      .hero {
+
+        position:
+          relative;
+
+        overflow:
+          hidden;
+
+        padding:
+          34px 0 45px;
+
+        text-align:
+          center;
+
+      }
+
+
+      .hero-glow {
+
+        position:
+          absolute;
+
+        width:
+          320px;
+
+        height:
+          320px;
+
+        border-radius:
+          50%;
+
+        filter:
+          blur(90px);
+
+        opacity:
+          .15;
+
+        pointer-events:
+          none;
+
+      }
+
+
+      .glow-one {
+
+        top:
+          -170px;
+
+        right:
+          8%;
+
+        background:
+          #2563eb;
+
+      }
+
+
+      .glow-two {
+
+        bottom:
+          -210px;
+
+        left:
+          8%;
+
+        background:
+          #06b6d4;
+
+      }
+
+
+      .breadcrumb {
+
+        display:
+          flex;
+
+        justify-content:
+          center;
+
+        align-items:
+          center;
+
+        flex-wrap:
+          wrap;
+
+        gap:
+          8px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          12px;
+
+        margin-bottom:
+          23px;
+
+      }
+
+
+      .breadcrumb a {
+
+        color:
+          var(--muted);
+
+        text-decoration:
+          none;
+
+      }
+
+
+      .breadcrumb a:hover {
+
+        color:
+          var(--primary);
+
+      }
+
+
+      .breadcrumb i {
+
+        font-size:
+          8px;
+
+        opacity:
+          .6;
+
+      }
+
+
+      .hero-badge {
+
+        display:
+          inline-flex;
+
+        align-items:
+          center;
+
+        gap:
+          7px;
+
+        padding:
+          7px 12px;
+
+        border:
+          1px solid
+          rgba(37,99,235,.18);
+
+        border-radius:
+          999px;
+
+        background:
+          rgba(37,99,235,.07);
+
+        color:
+          var(--primary);
+
+        font-size:
+          11px;
+
+        font-weight:
+          700;
+
+        margin-bottom:
+          15px;
+
+      }
+
+
+      .badge-dot {
+
+        width:
+          6px;
+
+        height:
+          6px;
+
+        border-radius:
+          50%;
+
+        background:
+          #2563eb;
+
+        box-shadow:
+          0 0 0 4px
+          rgba(37,99,235,.1);
+
+      }
+
+
+      .hero-icon {
+
+        position:
+          relative;
+
+        width:
+          72px;
+
+        height:
+          72px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        margin:
+          0 auto 15px;
+
+        border-radius:
+          20px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+          );
+
+        color:
+          white;
+
+        box-shadow:
+          0 15px 35px
+          rgba(37,99,235,.25);
+
+        font-size:
+          24px;
+
+      }
+
+
+      .count-mark {
+
+        position:
+          absolute;
+
+        right:
+          10px;
+
+        bottom:
+          9px;
+
+        width:
+          23px;
+
+        height:
+          23px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border:
+          2px solid
+          white;
+
+        border-radius:
+          7px;
+
+        background:
+          #1d4ed8;
+
+        font:
+          800 12px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .hero h1 {
+
+        margin:
+          0;
+
+        font-size:
+          clamp(
+            30px,
+            5vw,
+            46px
+          );
+
+        line-height:
+          1.2;
+
+        font-weight:
+          800;
+
+        letter-spacing:
+          -.8px;
+
+      }
+
+
+      .hero h1 span {
+
+        background:
+          linear-gradient(
+            90deg,
+            var(--primary),
+            var(--secondary)
+          );
+
+        -webkit-background-clip:
+          text;
+
+        background-clip:
+          text;
+
+        color:
+          transparent;
+
+      }
+
+
+      .hero p {
+
+        max-width:
+          720px;
+
+        margin:
+          14px auto 0;
+
+        color:
+          var(--muted);
+
+        font-size:
+          14px;
+
+        line-height:
+          2;
+
+      }
+
+
+      /* ======================================
+         CARD
+      ======================================= */
+
+      .counter-card {
+
+        overflow:
+          hidden;
+
+        background:
+          var(--surface);
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          24px;
+
+        box-shadow:
+          var(--shadow);
+
+      }
+
+
+      .topbar {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        gap:
+          15px;
+
+        padding:
+          17px 20px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+
+      }
+
+
+      .project-info {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          11px;
+
+      }
+
+
+      .project-logo {
+
+        width:
+          40px;
+
+        height:
+          40px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          11px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+          );
+
+        color:
+          white;
+
+        font-size:
+          14px;
+
+      }
+
+
+      .project-info strong {
+
+        display:
+          block;
+
+        font-size:
+          13px;
+
+      }
+
+
+      .project-info span {
+
+        display:
+          block;
+
+        color:
+          var(--muted);
+
+        font-size:
+          10px;
+
+      }
+
+
+      .topbar-status {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          7px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          10px;
+
+      }
+
+
+      .online-dot {
+
+        width:
+          7px;
+
+        height:
+          7px;
+
+        border-radius:
+          50%;
+
+        background:
+          #22c55e;
+
+        box-shadow:
+          0 0 0 4px
+          rgba(34,197,94,.08);
+
+      }
+
+
+      /* ======================================
+         ACTION BAR
+      ======================================= */
+
+      .actionbar {
+
+        display:
+          flex;
+
+        justify-content:
+          space-between;
+
+        align-items:
+          center;
+
+        gap:
+          10px;
+
+        padding:
+          13px 18px;
+
+        background:
+          var(--surface-2);
+
+        border-bottom:
+          1px solid
+          var(--border);
+
+      }
+
+
+      .action-group {
+
+        display:
+          flex;
+
+        gap:
+          8px;
+
+      }
+
+
+      .action {
+
+        display:
+          inline-flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          center;
+
+        gap:
+          7px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          10px;
+
+        padding:
+          9px 13px;
+
+        cursor:
+          pointer;
+
+        font-size:
+          11px;
+
+        font-weight:
+          700;
+
+        transition:
+          .2s ease;
+
+      }
+
+
+      .action:hover {
+
+        transform:
+          translateY(-1px);
+
+      }
+
+
+      .action.secondary {
+
+        background:
+          var(--surface);
+
+        color:
+          var(--text);
+
+      }
+
+
+      .action.secondary:hover {
+
+        color:
+          var(--primary);
+
+        border-color:
+          rgba(37,99,235,.25);
+
+      }
+
+
+      .action.primary {
+
+        border-color:
+          transparent;
+
+        background:
+          linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+          );
+
+        color:
+          white;
+
+        box-shadow:
+          0 8px 20px
+          rgba(37,99,235,.2);
+
+      }
+
+
+      .action.primary:hover {
+
+        box-shadow:
+          0 11px 25px
+          rgba(37,99,235,.3);
+
+      }
+
+
+      /* ======================================
+         WORKSPACE
+      ======================================= */
+
+      .workspace {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          minmax(0, 1.65fr)
+          minmax(280px, .75fr);
+
+        gap:
+          14px;
+
+        padding:
+          16px;
+
+      }
+
+
+      .editor-card {
+
+        min-width:
+          0;
+
+        overflow:
+          hidden;
+
+        border:
+          1px solid
+          rgba(148,163,184,.12);
+
+        border-radius:
+          16px;
+
+        background:
+          var(--code-bg);
+
+        color:
+          var(--code-text);
+
+      }
+
+
+      .editor-head {
+
+        height:
+          52px;
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        padding:
+          0 14px;
+
+        background:
+          var(--code-bg-2);
+
+        border-bottom:
+          1px solid
+          rgba(255,255,255,.06);
+
+      }
+
+
+      .editor-label {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          9px;
+
+      }
+
+
+      .file-icon {
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          8px;
+
+        background:
+          rgba(37,99,235,.13);
+
+        color:
+          #60a5fa;
+
+        font-size:
+          12px;
+
+      }
+
+
+      .editor-label strong {
+
+        display:
+          block;
+
+        font-size:
+          11px;
+
+      }
+
+
+      .editor-label small {
+
+        display:
+          block;
+
+        margin-top:
+          1px;
+
+        color:
+          #64748b;
+
+        font-size:
+          9px;
+
+      }
+
+
+      .editor-stats {
+
+        color:
+          #64748b;
+
+        font:
+          9px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .code-area {
+
+        display:
+          flex;
+
+        height:
+          430px;
+
+        direction:
+          ltr;
+
+        overflow:
+          hidden;
+
+      }
+
+
+      .line-numbers {
+
+        width:
+          45px;
+
+        flex:
+          0 0 45px;
+
+        padding:
+          15px 8px;
+
+        background:
+          rgba(0,0,0,.14);
+
+        border-right:
+          1px solid
+          rgba(255,255,255,.05);
+
+        color:
+          #475569;
+
+        text-align:
+          right;
+
+        white-space:
+          pre;
+
+        overflow:
+          hidden;
+
+        user-select:
+          none;
+
+        font:
+          12px/1.8
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      textarea {
+
+        width:
+          100%;
+
+        height:
+          100%;
+
+        resize:
+          none;
+
+        outline:
+          none;
+
+        border:
+          0;
+
+        padding:
+          15px;
+
+        background:
+          var(--code-bg);
+
+        color:
+          var(--code-text);
+
+        font:
+          12px/1.8
+          "JetBrains Mono",
+          monospace;
+
+        direction:
+          ltr;
+
+        text-align:
+          left;
+
+        tab-size:
+          2;
+
+      }
+
+
+      textarea::placeholder {
+
+        color:
+          #475569;
+
+      }
+
+
+      .editor-foot {
+
+        min-height:
+          38px;
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        padding:
+          0 13px;
+
+        border-top:
+          1px solid
+          rgba(255,255,255,.06);
+
+        color:
+          #64748b;
+
+        font-size:
+          9px;
+
+      }
+
+
+      .editor-foot span {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          5px;
+
+      }
+
+
+      /* ======================================
+         QUICK PANEL
+      ======================================= */
+
+      .quick-panel {
+
+        overflow:
+          hidden;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          16px;
+
+        background:
+          var(--surface-2);
+
+      }
+
+
+      .quick-head {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        padding:
+          16px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+
+      }
+
+
+      .quick-head strong {
+
+        display:
+          block;
+
+        font-size:
+          12px;
+
+      }
+
+
+      .quick-head span {
+
+        display:
+          block;
+
+        margin-top:
+          2px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          9px;
+
+      }
+
+
+      .quick-head > i {
+
+        color:
+          var(--primary);
+
+        font-size:
+          18px;
+
+      }
+
+
+      .quick-grid {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            2,
+            1fr
+          );
+
+        gap:
+          9px;
+
+        padding:
+          13px;
+
+      }
+
+
+      .quick-item {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          8px;
+
+        min-width:
+          0;
+
+        padding:
+          11px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          11px;
+
+        background:
+          var(--surface);
+
+      }
+
+
+      .quick-icon {
+
+        width:
+          32px;
+
+        height:
+          32px;
+
+        flex:
+          0 0 32px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          8px;
+
+        font-size:
+          11px;
+
+      }
+
+
+      .quick-icon.blue {
+
+        background:
+          rgba(37,99,235,.1);
+
+        color:
+          var(--blue);
+
+      }
+
+
+      .quick-icon.purple {
+
+        background:
+          rgba(124,58,237,.1);
+
+        color:
+          var(--purple);
+
+      }
+
+
+      .quick-icon.cyan {
+
+        background:
+          rgba(8,145,178,.1);
+
+        color:
+          var(--cyan);
+
+      }
+
+
+      .quick-icon.green {
+
+        background:
+          rgba(22,163,74,.1);
+
+        color:
+          var(--green);
+
+      }
+
+
+      .quick-item strong {
+
+        display:
+          block;
+
+        font:
+          700 12px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .quick-item span:last-child {
+
+        display:
+          block;
+
+        color:
+          var(--muted);
+
+        font-size:
+          8px;
+
+      }
+
+
+      .quick-note {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          7px;
+
+        margin:
+          2px 13px 13px;
+
+        padding:
+          10px;
+
+        border:
+          1px solid
+          rgba(37,99,235,.12);
+
+        border-radius:
+          10px;
+
+        background:
+          rgba(37,99,235,.05);
+
+        color:
+          var(--muted);
+
+        font-size:
+          8px;
+
+      }
+
+
+      .quick-note i {
+
+        color:
+          var(--primary);
+
+      }
+
+
+      /* ======================================
+         STATUS
+      ======================================= */
+
+      .status {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          6px;
+
+      }
+
+
+      .status-dot {
+
+        width:
+          6px;
+
+        height:
+          6px;
+
+        border-radius:
+          50%;
+
+        background:
+          #64748b;
+
+      }
+
+
+      .status.success {
+
+        color:
+          #4ade80;
+
+      }
+
+
+      .status.success .status-dot {
+
+        background:
+          #22c55e;
+
+      }
+
+
+      .status.warning {
+
+        color:
+          #fbbf24;
+
+      }
+
+
+      .status.warning .status-dot {
+
+        background:
+          #f59e0b;
+
+      }
+
+
+      .status.error {
+
+        color:
+          #f87171;
+
+      }
+
+
+      .status.error .status-dot {
+
+        background:
+          #ef4444;
+
+      }
+
+
+      /* ======================================
+         RESULT
+      ======================================= */
+
+      .result-section {
+
+        margin:
+          0 16px 14px;
+
+        overflow:
+          hidden;
+
+        border:
+          1px solid
+          rgba(37,99,235,.14);
+
+        border-radius:
+          15px;
+
+        background:
+          var(--surface-2);
+
+      }
+
+
+      .result-head {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        gap:
+          12px;
+
+        padding:
+          12px 14px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+
+      }
+
+
+      .result-title {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          9px;
+
+      }
+
+
+      .result-icon {
+
+        width:
+          32px;
+
+        height:
+          32px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          8px;
+
+        background:
+          rgba(37,99,235,.1);
+
+        color:
+          var(--primary);
+
+        font-size:
+          12px;
+
+      }
+
+
+      .result-title strong {
+
+        display:
+          block;
+
+        font-size:
+          11px;
+
+      }
+
+
+      .result-title span {
+
+        display:
+          block;
+
+        margin-top:
+          1px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          9px;
+
+      }
+
+
+      .result-badge {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          6px;
+
+        padding:
+          5px 8px;
+
+        border:
+          1px solid
+          rgba(37,99,235,.16);
+
+        border-radius:
+          999px;
+
+        color:
+          var(--primary);
+
+        font:
+          600 9px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .result-dot {
+
+        width:
+          5px;
+
+        height:
+          5px;
+
+        border-radius:
+          50%;
+
+        background:
+          var(--primary);
+
+      }
+
+
+      .statistics-grid {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            4,
+            1fr
+          );
+
+        gap:
+          10px;
+
+        padding:
+          14px;
+
+      }
+
+
+      .stat-card {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          10px;
+
+        min-width:
+          0;
+
+        padding:
+          13px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          13px;
+
+        background:
+          var(--surface);
+
+        transition:
+          transform .2s ease,
+          border-color .2s ease;
+
+      }
+
+
+      .stat-card:hover {
+
+        transform:
+          translateY(-2px);
+
+        border-color:
+          rgba(37,99,235,.2);
+
+      }
+
+
+      .stat-card-icon {
+
+        width:
+          38px;
+
+        height:
+          38px;
+
+        flex:
+          0 0 38px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          10px;
+
+        font-size:
+          12px;
+
+      }
+
+
+      .stat-card-icon.blue {
+
+        background:
+          rgba(37,99,235,.1);
+
+        color:
+          var(--blue);
+
+      }
+
+
+      .stat-card-icon.green {
+
+        background:
+          rgba(22,163,74,.1);
+
+        color:
+          var(--green);
+
+      }
+
+
+      .stat-card-icon.orange {
+
+        background:
+          rgba(234,88,12,.1);
+
+        color:
+          var(--orange);
+
+      }
+
+
+      .stat-card-icon.purple {
+
+        background:
+          rgba(124,58,237,.1);
+
+        color:
+          var(--purple);
+
+      }
+
+
+      .stat-card-icon.cyan {
+
+        background:
+          rgba(8,145,178,.1);
+
+        color:
+          var(--cyan);
+
+      }
+
+
+      .stat-card-icon.indigo {
+
+        background:
+          rgba(79,70,229,.1);
+
+        color:
+          var(--indigo);
+
+      }
+
+
+      .stat-card-icon.red {
+
+        background:
+          rgba(220,38,38,.1);
+
+        color:
+          var(--red);
+
+      }
+
+
+      .stat-card-icon.teal {
+
+        background:
+          rgba(15,118,110,.1);
+
+        color:
+          var(--teal);
+
+      }
+
+
+      .stat-content {
+
+        min-width:
+          0;
+
+      }
+
+
+      .stat-content > span {
+
+        display:
+          block;
+
+        overflow:
+          hidden;
+
+        color:
+          var(--muted);
+
+        font-size:
+          8px;
+
+        text-overflow:
+          ellipsis;
+
+        white-space:
+          nowrap;
+
+      }
+
+
+      .stat-content strong {
+
+        display:
+          block;
+
+        margin-top:
+          2px;
+
+        font:
+          700 14px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .stat-content small {
+
+        display:
+          block;
+
+        margin-top:
+          1px;
+
+        color:
+          var(--muted);
+
+        opacity:
+          .7;
+
+        font-size:
+          7px;
+
+      }
+
+
+      /* ======================================
+         TOOL STATS
+      ======================================= */
+
+      .tool-stats {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            4,
+            1fr
+          );
+
+        gap:
+          10px;
+
+        padding:
+          0 16px 16px;
+
+      }
+
+
+      .tool-stat {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        gap:
+          9px;
+
+        padding:
+          12px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          13px;
+
+        background:
+          var(--surface-2);
+
+      }
+
+
+      .tool-stat-icon {
+
+        width:
+          34px;
+
+        height:
+          34px;
+
+        flex:
+          0 0 34px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          9px;
+
+        background:
+          rgba(37,99,235,.09);
+
+        color:
+          var(--primary);
+
+        font-size:
+          11px;
+
+      }
+
+
+      .tool-stat strong {
+
+        display:
+          block;
+
+        font:
+          700 11px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .tool-stat span {
+
+        display:
+          block;
+
+        margin-top:
+          2px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          8px;
+
+      }
+
+
+      /* ======================================
+         INFORMATION
+      ======================================= */
+
+      .information {
+
+        margin-top:
+          55px;
+
+      }
+
+
+      .section-title {
+
+        max-width:
+          700px;
+
+        margin:
+          0 auto 25px;
+
+        text-align:
+          center;
+
+      }
+
+
+      .section-title > span {
+
+        color:
+          var(--primary);
+
+        font-size:
+          11px;
+
+        font-weight:
+          800;
+
+        letter-spacing:
+          .5px;
+
+      }
+
+
+      .section-title h2 {
+
+        margin:
+          5px 0 7px;
+
+        font-size:
+          clamp(
+            21px,
+            4vw,
+            28px
+          );
+
+      }
+
+
+      .section-title p {
+
+        margin:
+          0;
+
+        color:
+          var(--muted);
+
+        font-size:
+          12px;
+
+        line-height:
+          1.9;
+
+      }
+
+
+      .info-grid {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            3,
+            1fr
+          );
+
+        gap:
+          14px;
+
+      }
+
+
+      .info-card {
+
+        position:
+          relative;
+
+        overflow:
+          hidden;
+
+        padding:
+          24px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          18px;
+
+        background:
+          var(--surface);
+
+      }
+
+
+      .info-number {
+
+        position:
+          absolute;
+
+        top:
+          15px;
+
+        left:
+          18px;
+
+        color:
+          var(--muted);
+
+        opacity:
+          .25;
+
+        font:
+          700 28px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .info-card-icon {
+
+        width:
+          42px;
+
+        height:
+          42px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        margin-bottom:
+          13px;
+
+        border-radius:
+          11px;
+
+        background:
+          rgba(37,99,235,.1);
+
+        color:
+          var(--primary);
+
+      }
+
+
+      .info-card h3 {
+
+        margin:
+          0 0 7px;
+
+        font-size:
+          14px;
+
+      }
+
+
+      .info-card p {
+
+        margin:
+          0;
+
+        color:
+          var(--muted);
+
+        font-size:
+          11px;
+
+        line-height:
+          1.9;
+
+      }
+
+
+      /* ======================================
+         HOW
+      ======================================= */
+
+      .how-section {
+
+        margin-top:
+          55px;
+
+      }
+
+
+      .steps {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            3,
+            1fr
+          );
+
+        gap:
+          14px;
+
+      }
+
+
+      .step {
+
+        display:
+          flex;
+
+        align-items:
+          flex-start;
+
+        gap:
+          12px;
+
+        padding:
+          20px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          17px;
+
+        background:
+          var(--surface);
+
+      }
+
+
+      .step-icon {
+
+        width:
+          43px;
+
+        height:
+          43px;
+
+        flex:
+          0 0 43px;
+
+        display:
+          grid;
+
+        place-items:
+          center;
+
+        border-radius:
+          12px;
+
+        background:
+          rgba(37,99,235,.1);
+
+        color:
+          var(--primary);
+
+        font:
+          700 10px
+          "JetBrains Mono",
+          monospace;
+
+      }
+
+
+      .step h3 {
+
+        margin:
+          0 0 5px;
+
+        font-size:
+          13px;
+
+      }
+
+
+      .step p {
+
+        margin:
+          0;
+
+        color:
+          var(--muted);
+
+        font-size:
+          10px;
+
+        line-height:
+          1.8;
+
+      }
+
+
+      /* ======================================
+         FAQ
+      ======================================= */
+
+      .faq-section {
+
+        max-width:
+          850px;
+
+        margin:
+          55px auto 70px;
+
+      }
+
+
+      .faq-list details {
+
+        margin-bottom:
+          9px;
+
+        overflow:
+          hidden;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          14px;
+
+        background:
+          var(--surface);
+
+      }
+
+
+      .faq-list summary {
+
+        display:
+          flex;
+
+        align-items:
+          center;
+
+        justify-content:
+          space-between;
+
+        gap:
+          15px;
+
+        padding:
+          16px 18px;
+
+        cursor:
+          pointer;
+
+        list-style:
+          none;
+
+        font-size:
+          12px;
+
+        font-weight:
+          700;
+
+      }
+
+
+      .faq-list summary::-webkit-details-marker {
+
+        display:
+          none;
+
+      }
+
+
+      .faq-list summary i {
+
+        color:
+          var(--muted);
+
+        font-size:
+          10px;
+
+        transition:
+          transform .2s ease;
+
+      }
+
+
+      .faq-list details[open]
+      summary i {
+
+        transform:
+          rotate(180deg);
+
+      }
+
+
+      .faq-answer {
+
+        padding:
+          0 18px 17px;
+
+        color:
+          var(--muted);
+
+        font-size:
+          11px;
+
+        line-height:
+          1.9;
+
+      }
+
+
+      /* ======================================
+         RESPONSIVE
+      ======================================= */
+
+      @media (max-width: 950px) {
+
+        .workspace {
+
+          grid-template-columns:
+            1fr;
+
+        }
+
+
+        .statistics-grid {
+
+          grid-template-columns:
+            repeat(
+              2,
+              1fr
+            );
+
+        }
+
+      }
+
+
+      @media (max-width: 800px) {
+
+        .info-grid,
+        .steps {
+
+          grid-template-columns:
+            repeat(
+              2,
+              1fr
+            );
+
+        }
+
+
+        .tool-stats {
+
+          grid-template-columns:
+            repeat(
+              2,
+              1fr
+            );
+
+        }
+
+      }
+
+
+      @media (max-width: 700px) {
+
+        .actionbar {
+
+          flex-direction:
+            column;
+
+          align-items:
+            stretch;
+
+        }
+
+
+        .action-group {
+
+          width:
+            100%;
+
+        }
+
+
+        .action {
+
+          flex:
+            1;
+
+        }
+
+
+        .statistics-grid {
+
+          grid-template-columns:
+            repeat(
+              2,
+              1fr
+            );
+
+        }
+
+      }
+
+
+      @media (max-width: 600px) {
+
+        .container {
+
+          width:
+            calc(
+              100% - 20px
+            );
+
+        }
+
+
+        .hero {
+
+          padding:
+            25px 0 32px;
+
+        }
+
+
+        .hero-icon {
+
+          width:
+            60px;
+
+          height:
+            60px;
+
+          font-size:
+            20px;
+
+        }
+
+
+        .hero p {
+
+          font-size:
+            12px;
+
+        }
+
+
+        .topbar {
+
+          padding:
+            14px;
+
+        }
+
+
+        .topbar-status {
+
+          display:
+            none;
+
+        }
+
+
+        .actionbar {
+
+          padding:
+            10px;
+
+        }
+
+
+        .action {
+
+          padding:
+            9px 7px;
+
+          font-size:
+            10px;
+
+        }
+
+
+        .workspace {
+
+          padding:
+            10px;
+
+        }
+
+
+        .code-area {
+
+          height:
+            330px;
+
+        }
+
+
+        .result-section {
+
+          margin:
+            0 10px 10px;
+
+        }
+
+
+        .statistics-grid {
+
+          gap:
+            8px;
+
+          padding:
+            10px;
+
+        }
+
+
+        .stat-card {
+
+          padding:
+            10px;
+
+        }
+
+
+        .stat-card-icon {
+
+          width:
+            33px;
+
+          height:
+            33px;
+
+          flex-basis:
+            33px;
+
+        }
+
+
+        .stat-content strong {
+
+          font-size:
+            11px;
+
+        }
+
+
+        .tool-stats {
+
+          padding:
+            0 10px 10px;
+
+        }
+
+
+        .info-grid,
+        .steps {
+
+          grid-template-columns:
+            1fr;
+
+        }
+
+
+        .quick-grid {
+
+          padding:
+            10px;
+
+        }
+
+
+        .quick-note {
+
+          margin:
+            2px 10px 10px;
+
+        }
+
+
+        .faq-section {
+
+          margin-bottom:
+            45px;
+
+        }
+
+      }
+
+    </style>
+
+  </body>
+</html>
