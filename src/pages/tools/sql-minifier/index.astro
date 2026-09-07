@@ -1,0 +1,815 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "SQL Minifier - تصغير SQL أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة SQL Minifier مجانية لتصغير وضغط استعلامات SQL وإزالة المسافات والتعليقات غير الضرورية مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة SQL Minifier؟",
+    a: "SQL Minifier هي أداة تساعدك على تصغير استعلامات SQL بإزالة المسافات والأسطر والتعليقات غير الضرورية مع الحفاظ على بنية الاستعلام."
+  },
+  {
+    q: "هل يتم إرسال SQL إلى الخادم؟",
+    a: "لا. تتم عملية التصغير بالكامل داخل متصفحك، لذلك لا يتم إرسال الكود إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن تصغير استعلامات SQL كبيرة؟",
+    a: "نعم، يمكن للأداة التعامل مع استعلامات SQL كبيرة، لكن الأداء يعتمد على حجم النص وإمكانيات الجهاز والمتصفح."
+  },
+  {
+    q: "هل تقوم الأداة بتغيير منطق الاستعلام؟",
+    a: "الأداة مصممة لتقليل المسافات والتعليقات غير الضرورية فقط، ولا تعيد كتابة منطق SQL أو تغيّر أسماء الجداول والأعمدة."
+  }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero">
+        <div class="hero-bg hero-bg-1"></div>
+        <div class="hero-bg hero-bg-2"></div>
+
+        <div class="container hero-container">
+          <div class="breadcrumb">
+            <a href={`${base}/`}>الرئيسية</a>
+            <i class="fa-solid fa-chevron-left"></i>
+            <a href={`${base}/tools/`}>الأدوات</a>
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>SQL Minifier</span>
+          </div>
+
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i class="fa-solid fa-database"></i>
+              <span>Developer Tools</span>
+            </div>
+
+            <div class="hero-icon">
+              <div class="icon-glow"></div>
+              <i class="fa-solid fa-compress"></i>
+              <span class="mini-icon">
+                <i class="fa-solid fa-database"></i>
+              </span>
+            </div>
+
+            <h1>
+              SQL
+              <span>Minifier</span>
+            </h1>
+
+            <p>
+              تصغير وضغط استعلامات SQL وإزالة المسافات والتعليقات غير الضرورية
+              بسرعة وسهولة.
+            </p>
+
+            <div class="hero-features">
+              <span>
+                <i class="fa-solid fa-bolt"></i>
+                سريع
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                معالجة محلية
+              </span>
+
+              <span>
+                <i class="fa-solid fa-code"></i>
+                SQL
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TOOL ================= -->
+      <section class="tool-section">
+        <div class="container">
+          <div class="minifier-card">
+
+            <!-- Top Bar -->
+            <div class="tool-topbar">
+              <div class="tool-brand">
+                <div class="brand-icon">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+
+                <div>
+                  <strong>SQL Minifier</strong>
+                  <span>تصغير استعلامات SQL</span>
+                </div>
+              </div>
+
+              <div class="local-status">
+                <span class="status-dot"></span>
+                <span>Local Processing</span>
+              </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="actionbar">
+
+              <div class="action-group">
+                <button class="action-btn secondary" id="exampleBtn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  مثال
+                </button>
+
+                <button class="action-btn secondary" id="clearBtn">
+                  <i class="fa-solid fa-trash-can"></i>
+                  مسح
+                </button>
+              </div>
+
+              <div class="action-group">
+                <button class="action-btn secondary" id="copyBtn">
+                  <i class="fa-regular fa-copy"></i>
+                  نسخ
+                </button>
+
+                <button class="action-btn primary" id="minifyBtn">
+                  <i class="fa-solid fa-compress"></i>
+                  تصغير SQL
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Editors -->
+            <div class="editors-grid">
+
+              <!-- Input -->
+              <div class="editor-card">
+                <div class="editor-header">
+                  <div class="editor-title">
+                    <span class="editor-dot input-dot"></span>
+
+                    <div>
+                      <strong>SQL Input</strong>
+                      <small>الكود الأصلي</small>
+                    </div>
+                  </div>
+
+                  <span class="language-tag">SQL</span>
+                </div>
+
+                <div class="editor-body">
+                  <div class="line-numbers" id="inputLines">1</div>
+
+                  <textarea
+                    id="sqlInput"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder="اكتب أو ألصق كود SQL هنا..."
+                  ></textarea>
+                </div>
+
+                <div class="editor-footer">
+                  <span>
+                    <i class="fa-solid fa-code"></i>
+                    Input
+                  </span>
+
+                  <span id="inputStats">0 chars · 0 lines</span>
+                </div>
+              </div>
+
+              <!-- Output -->
+              <div class="editor-card output-card">
+                <div class="editor-header">
+                  <div class="editor-title">
+                    <span class="editor-dot output-dot"></span>
+
+                    <div>
+                      <strong>Minified SQL</strong>
+                      <small>الكود المصغر</small>
+                    </div>
+                  </div>
+
+                  <span class="language-tag output-tag">MINIFIED</span>
+                </div>
+
+                <div class="editor-body">
+                  <div class="line-numbers output-lines" id="outputLines">1</div>
+
+                  <textarea
+                    id="sqlOutput"
+                    spellcheck="false"
+                    readonly
+                    placeholder="ستظهر نتيجة التصغير هنا..."
+                  ></textarea>
+                </div>
+
+                <div class="editor-footer">
+                  <span>
+                    <i class="fa-solid fa-compress"></i>
+                    Output
+                  </span>
+
+                  <span id="outputStats">0 chars · 0 lines</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Result -->
+            <div class="result-panel" id="resultPanel">
+
+              <div class="result-header">
+                <div class="result-title">
+                  <div class="result-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                  </div>
+
+                  <div>
+                    <strong>Compression Result</strong>
+                    <span>نتيجة التصغير</span>
+                  </div>
+                </div>
+
+                <div class="compression-badge" id="compressionBadge">
+                  0% أصغر
+                </div>
+              </div>
+
+              <div class="result-content">
+
+                <div class="result-main">
+                  <div class="result-message" id="resultMessage">
+                    أدخل كود SQL ثم اضغط على "تصغير SQL".
+                  </div>
+
+                  <div class="progress-wrap">
+                    <div class="progress-label">
+                      <span>نسبة التصغير</span>
+                      <strong id="compressionPercent">0%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                      <div
+                        class="progress-value"
+                        id="progressValue"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="result-numbers">
+
+                  <div class="number-box">
+                    <span>الحجم الأصلي</span>
+                    <strong id="originalSize">0 B</strong>
+                  </div>
+
+                  <div class="number-box">
+                    <span>الحجم الجديد</span>
+                    <strong id="minifiedSize">0 B</strong>
+                  </div>
+
+                  <div class="number-box">
+                    <span>تم توفير</span>
+                    <strong id="savedSize">0 B</strong>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Tool Stats -->
+            <div class="tool-stats">
+
+              <div class="stat-card">
+                <div class="stat-icon blue">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                <div>
+                  <strong>SQL</strong>
+                  <span>Language</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon green">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                  <strong>Fast</strong>
+                  <span>Processing</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon purple">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                  <strong>Private</strong>
+                  <span>Local Only</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon orange">
+                  <i class="fa-solid fa-compress"></i>
+                </div>
+                <div>
+                  <strong id="savedPercentStat">0%</strong>
+                  <span>Saved</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= INFORMATION ================= -->
+      <section class="info-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>SQL MINIFIER</span>
+            <h2>تصغير SQL بطريقة بسيطة وفعالة</h2>
+            <p>
+              قلل حجم استعلامات SQL واجعلها أكثر compact بدون الحاجة إلى رفع
+              ملفاتك أو إرسال بياناتك إلى أي خادم.
+            </p>
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+              <div class="info-icon blue">
+                <i class="fa-solid fa-compress"></i>
+              </div>
+
+              <h3>تقليل الحجم</h3>
+
+              <p>
+                إزالة المسافات والأسطر والتعليقات غير الضرورية لتقليل حجم
+                استعلام SQL.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon green">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>معالجة سريعة</h3>
+
+              <p>
+                تتم العملية مباشرة داخل المتصفح بدون انتظار رفع البيانات إلى
+                خادم خارجي.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon purple">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <h3>خصوصية أفضل</h3>
+
+              <p>
+                استعلاماتك تبقى على جهازك، مما يجعل الأداة مناسبة للتعامل مع
+                SQL الخاص بمشاريعك.
+              </p>
+            </article>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= HOW TO ================= -->
+      <section class="how-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>HOW IT WORKS</span>
+            <h2>كيفية استخدام SQL Minifier</h2>
+            <p>ثلاث خطوات فقط لتصغير استعلام SQL.</p>
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">01</div>
+
+              <div class="step-icon">
+                <i class="fa-solid fa-paste"></i>
+              </div>
+
+              <h3>أدخل SQL</h3>
+
+              <p>
+                الصق استعلام SQL في منطقة الإدخال.
+              </p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">02</div>
+
+              <div class="step-icon">
+                <i class="fa-solid fa-compress"></i>
+              </div>
+
+              <h3>اضغط تصغير</h3>
+
+              <p>
+                اضغط على زر "تصغير SQL" لمعالجة الاستعلام.
+              </p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">03</div>
+
+              <div class="step-icon">
+                <i class="fa-regular fa-copy"></i>
+              </div>
+
+              <h3>انسخ النتيجة</h3>
+
+              <p>
+                انسخ SQL المصغر واستخدمه في مشروعك.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= FAQ ================= -->
+      <section class="faq-section">
+        <div class="container">
+
+          <div class="section-heading">
+            <span>FAQ</span>
+            <h2>الأسئلة الشائعة</h2>
+            <p>كل ما تحتاج معرفته عن أداة SQL Minifier.</p>
+          </div>
+
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details class="faq-item">
+                <summary>
+                  <span>{faq.q}</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                  <p>{faq.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      const sqlInput = document.getElementById("sqlInput");
+      const sqlOutput = document.getElementById("sqlOutput");
+
+      const inputLines = document.getElementById("inputLines");
+      const outputLines = document.getElementById("outputLines");
+
+      const inputStats = document.getElementById("inputStats");
+      const outputStats = document.getElementById("outputStats");
+
+      const minifyBtn = document.getElementById("minifyBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+
+      const resultMessage = document.getElementById("resultMessage");
+      const compressionPercent = document.getElementById("compressionPercent");
+      const compressionBadge = document.getElementById("compressionBadge");
+      const progressValue = document.getElementById("progressValue");
+
+      const originalSize = document.getElementById("originalSize");
+      const minifiedSize = document.getElementById("minifiedSize");
+      const savedSize = document.getElementById("savedSize");
+      const savedPercentStat = document.getElementById("savedPercentStat");
+
+      const exampleSQL = `-- Get active users
+SELECT
+    users.id,
+    users.name,
+    users.email,
+    users.created_at
+FROM
+    users
+WHERE
+    users.status = 'active'
+    AND users.email IS NOT NULL
+ORDER BY
+    users.created_at DESC;`;
+
+      function formatBytes(bytes) {
+        if (!bytes) return "0 B";
+
+        if (bytes < 1024) {
+          return bytes + " B";
+        }
+
+        if (bytes < 1024 * 1024) {
+          return (bytes / 1024).toFixed(2) + " KB";
+        }
+
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+      }
+
+      function countLines(text) {
+        if (!text) return 0;
+        return text.split(/\r?\n/).length;
+      }
+
+      function updateLineNumbers(textarea, container) {
+        const lines = countLines(textarea.value);
+
+        if (!lines) {
+          container.textContent = "0";
+          return;
+        }
+
+        const numbers = [];
+
+        for (let i = 1; i <= lines; i++) {
+          numbers.push(i);
+        }
+
+        container.textContent = numbers.join("\n");
+      }
+
+      function updateInputStats() {
+        const text = sqlInput.value;
+
+        inputStats.textContent =
+          text.length.toLocaleString() +
+          " chars · " +
+          countLines(text).toLocaleString() +
+          " lines";
+
+        updateLineNumbers(sqlInput, inputLines);
+      }
+
+      function updateOutputStats() {
+        const text = sqlOutput.value;
+
+        outputStats.textContent =
+          text.length.toLocaleString() +
+          " chars · " +
+          countLines(text).toLocaleString() +
+          " lines";
+
+        updateLineNumbers(sqlOutput, outputLines);
+      }
+
+      /*
+       * SQL Minifier
+       *
+       * The parser keeps quoted strings intact so that spaces
+       * inside strings are not accidentally removed.
+       */
+      function minifySQL(sql) {
+        if (!sql || !sql.trim()) {
+          return "";
+        }
+
+        let result = "";
+        let i = 0;
+
+        let quote = null;
+
+        while (i < sql.length) {
+          const char = sql[i];
+          const next = sql[i + 1];
+
+          /*
+           * Single quoted strings
+           */
+          if (quote === "'") {
+            result += char;
+
+            if (char === "'" && next === "'") {
+              result += next;
+              i += 2;
+              continue;
+            }
+
+            if (char === "\\") {
+              if (i + 1 < sql.length) {
+                result += sql[i + 1];
+                i += 2;
+                continue;
+              }
+            }
+
+            if (char === "'") {
+              quote = null;
+            }
+
+            i++;
+            continue;
+          }
+
+          /*
+           * Double quoted identifiers/strings
+           */
+          if (quote === '"') {
+            result += char;
+
+            if (char === '"' && next === '"') {
+              result += next;
+              i += 2;
+              continue;
+            }
+
+            if (char === "\\") {
+              if (i + 1 < sql.length) {
+                result += sql[i + 1];
+                i += 2;
+                continue;
+              }
+            }
+
+            if (char === '"') {
+              quote = null;
+            }
+
+            i++;
+            continue;
+          }
+
+          /*
+           * Backtick quoted identifiers
+           */
+          if (quote === "`") {
+            result += char;
+
+            if (char === "`" && next === "`") {
+              result += next;
+              i += 2;
+              continue;
+            }
+
+            if (char === "`") {
+              quote = null;
+            }
+
+            i++;
+            continue;
+          }
+
+          /*
+           * Start quoted value
+           */
+          if (char === "'" || char === '"' || char === "`") {
+            quote = char;
+            result += char;
+            i++;
+            continue;
+          }
+
+          /*
+           * Remove -- comments
+           */
+          if (char === "-" && next === "-") {
+            while (i < sql.length && sql[i] !== "\n") {
+              i++;
+            }
+
+            if (result && !/\s$/.test(result)) {
+              result += " ";
+            }
+
+            continue;
+          }
+
+          /*
+           * Remove # comments
+           */
+          if (char === "#") {
+            while (i < sql.length && sql[i] !== "\n") {
+              i++;
+            }
+
+            if (result && !/\s$/.test(result)) {
+              result += " ";
+            }
+
+            continue;
+          }
+
+          /*
+           * Remove /* ... *\/ comments
+           */
+          if (char === "/" && next === "*") {
+            i += 2;
+
+            while (
+              i < sql.length &&
+              !(sql[i] === "*" && sql[i + 1] === "/")
+            ) {
+              i++;
+            }
+
+            if (i < sql.length) {
+              i += 2;
+            }
+
+            if (result && !/\s$/.test(result)) {
+              result += " ";
+            }
+
+            continue;
+          }
+
+          /*
+           * Collapse all whitespace outside strings.
+           */
+          if (/\s/.test(char)) {
+            if (result && !/\s$/.test(result)) {
+              result += " ";
+            }
+
+            i++;
+            continue;
+          }
+
+          result += char;
+          i++;
+        }
+
+        /*
+         * Remove spaces around common SQL punctuation/operators
+         * while keeping spaces between SQL keywords and values.
+         */
+        result = result
+          .replace(/\s*,\s*/g, ",")
+          .replace(/\s*\s*/g, "(")
+          .replace(/\s*\s*/g, ")")
+          .replace(/\s*;\s*$/g, ";")
+          .replace(/\s*=\s*/g, "=")
+          .replace(/\s*<>\s*/g, "<>")
+          .replace(/\s*!=\s*/g, "!=")
+          .replace(/\s*<=\s*/g, "<=")
+          .replace(/\s*>=\s*/g, ">=")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        return result;
+      }
+
+      function setStatus(type, message) {
+        resultMessage.textContent = message;
+
+        resultMessage.classList.remove(
+          "success-message",
+          "warning-message",
+          "error-message"
+        );
+
+        if (type === "success
