@@ -1,0 +1,1698 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "XML Formatter - تنسيق XML أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة XML Formatter مجانية لتنسيق وترتيب XML وتجميله بسهولة مع إمكانية النسخ والمسح مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة XML Formatter؟",
+    a: "أداة XML Formatter تساعدك على تنسيق وترتيب ملفات XML بطريقة واضحة ومنظمة لتسهيل قراءتها وتحريرها."
+  },
+  {
+    q: "هل يتم إرسال XML إلى الخادم؟",
+    a: "لا. تتم عملية التنسيق مباشرة داخل المتصفح، ولا تحتاج إلى رفع ملف XML إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكنني استخدام XML كبير؟",
+    a: "نعم، يمكن التعامل مع معظم ملفات XML المعتادة مباشرة داخل المتصفح، حسب حجم الملف وإمكانيات الجهاز."
+  },
+  {
+    q: "ماذا يحدث إذا كان XML غير صالح؟",
+    a: "ستظهر رسالة خطأ توضح أن XML غير صالح، ولن يتم استبدال المحتوى الأصلي حتى تقوم بتصحيحه."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>XML Formatter</span>
+        </div>
+
+        <div class="hero-badge">
+          <i class="fa-solid fa-code"></i>
+          Developer Tools
+        </div>
+
+        <div class="hero-icon">
+          <div class="icon-box">
+            <i class="fa-solid fa-code"></i>
+            <span class="xml-mark">&lt;/&gt;</span>
+          </div>
+        </div>
+
+        <h1>XML Formatter</h1>
+
+        <p>
+          نسّق ونسّق ملفات XML بشكل احترافي واجعل الكود أكثر وضوحاً وسهولة في القراءة.
+        </p>
+
+        <div class="hero-tags">
+          <span>
+            <i class="fa-solid fa-bolt"></i>
+            سريع
+          </span>
+
+          <span>
+            <i class="fa-solid fa-lock"></i>
+            محلي 100%
+          </span>
+
+          <span>
+            <i class="fa-solid fa-copy"></i>
+            نسخ سريع
+          </span>
+        </div>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-section">
+
+        <div class="formatter-card">
+
+          <div class="card-topbar">
+            <div class="topbar-title">
+              <span class="status-dot"></span>
+              XML Formatter
+            </div>
+
+            <div class="topbar-type">
+              <i class="fa-solid fa-file-code"></i>
+              XML
+            </div>
+          </div>
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="action-btn secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="action-btn danger">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+
+            <button id="copyBtn" class="action-btn secondary">
+              <i class="fa-solid fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="formatBtn" class="action-btn primary">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              تنسيق XML
+            </button>
+
+          </div>
+
+          <!-- EDITORS -->
+          <div class="editors">
+
+            <!-- INPUT -->
+            <div class="editor-panel">
+
+              <div class="editor-header">
+                <div class="editor-title">
+                  <span class="file-icon">
+                    <i class="fa-solid fa-file-code"></i>
+                  </span>
+
+                  <div>
+                    <strong>XML Input</strong>
+                    <small>XML المصدر</small>
+                  </div>
+                </div>
+
+                <span class="language-badge">XML</span>
+              </div>
+
+              <div class="editor-wrap">
+
+                <div id="inputLines" class="line-numbers">1</div>
+
+                <textarea
+                  id="xmlInput"
+                  spellcheck="false"
+                  placeholder={`<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <item>
+    <name>Th.Tech</name>
+  </item>
+</root>`}
+                ></textarea>
+
+              </div>
+
+              <div class="editor-footer">
+                <span>
+                  <i class="fa-solid fa-keyboard"></i>
+                  Ctrl + Enter للتنسيق
+                </span>
+
+                <span id="inputStats">0 حرف</span>
+              </div>
+
+            </div>
+
+            <!-- OUTPUT -->
+            <div class="editor-panel output-panel">
+
+              <div class="editor-header">
+
+                <div class="editor-title">
+                  <span class="file-icon output-icon">
+                    <i class="fa-solid fa-code"></i>
+                  </span>
+
+                  <div>
+                    <strong>Formatted XML</strong>
+                    <small>XML المنسق</small>
+                  </div>
+                </div>
+
+                <span id="outputStatus" class="language-badge success">
+                  جاهز
+                </span>
+
+              </div>
+
+              <div class="editor-wrap output-wrap">
+
+                <div id="outputLines" class="line-numbers">1</div>
+
+                <textarea
+                  id="xmlOutput"
+                  readonly
+                  spellcheck="false"
+                  placeholder="سيظهر XML المنسق هنا..."
+                ></textarea>
+
+              </div>
+
+              <div class="editor-footer">
+                <span id="statusText">
+                  <i class="fa-solid fa-circle-check"></i>
+                  في انتظار XML
+                </span>
+
+                <span id="outputStats">0 حرف</span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RESULT -->
+          <div id="resultBox" class="result-box hidden">
+
+            <div class="result-icon">
+              <i id="resultIcon" class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="result-content">
+              <strong id="resultTitle">تم تنسيق XML بنجاح</strong>
+              <p id="resultMessage">
+                تم ترتيب XML وإضافة المسافات البادئة.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-file-code"></i>
+              </div>
+
+              <div>
+                <strong id="statLines">0</strong>
+                <span>سطر</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <div>
+                <strong id="statChars">0</strong>
+                <span>حرف</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+
+              <div>
+                <strong id="statElements">0</strong>
+                <span>عنصر</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <div>
+                <strong id="statTime">0 ms</strong>
+                <span>الوقت</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+
+        <div class="section-heading">
+          <span class="section-badge">
+            <i class="fa-solid fa-circle-info"></i>
+            معلومات
+          </span>
+
+          <h2>ما هي أداة XML Formatter؟</h2>
+
+          <p>
+            أداة مجانية لتنسيق ملفات XML وترتيبها بطريقة منظمة
+            تجعل قراءة الكود وفهم بنيته أسهل.
+          </p>
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-card">
+            <div class="info-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <h3>تنسيق تلقائي</h3>
+
+            <p>
+              قم بتحويل XML المضغوط أو غير المنظم إلى بنية واضحة
+              باستخدام مسافات بادئة مناسبة.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="info-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>خصوصية كاملة</h3>
+
+            <p>
+              تتم معالجة XML داخل متصفحك مباشرة دون الحاجة إلى
+              إرسال البيانات إلى خادم خارجي.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="info-icon">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+
+            <h3>سريع وخفيف</h3>
+
+            <p>
+              لا تحتاج إلى تثبيت أي برنامج. افتح الأداة وأدخل XML
+              واحصل على النتيجة فوراً.
+            </p>
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+
+        <div class="section-heading">
+          <span class="section-badge">
+            <i class="fa-solid fa-list-ol"></i>
+            طريقة الاستخدام
+          </span>
+
+          <h2>كيف تستخدم XML Formatter؟</h2>
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>أدخل XML</h3>
+              <p>
+                الصق كود XML الذي تريد ترتيبه في صندوق الإدخال.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>اضغط تنسيق</h3>
+              <p>
+                اضغط على زر «تنسيق XML» أو استخدم Ctrl + Enter.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>انسخ النتيجة</h3>
+              <p>
+                بعد التنسيق يمكنك نسخ XML الناتج مباشرة.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="section-heading">
+          <span class="section-badge">
+            <i class="fa-solid fa-circle-question"></i>
+            FAQ
+          </span>
+
+          <h2>الأسئلة الشائعة</h2>
+        </div>
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>
+                <span>{faq.q}</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <div class="faq-answer">
+                {faq.a}
+              </div>
+            </details>
+          ))}
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const input = document.getElementById("xmlInput");
+        const output = document.getElementById("xmlOutput");
+
+        const formatBtn = document.getElementById("formatBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const exampleBtn = document.getElementById("exampleBtn");
+
+        const inputLines = document.getElementById("inputLines");
+        const outputLines = document.getElementById("outputLines");
+
+        const inputStats = document.getElementById("inputStats");
+        const outputStats = document.getElementById("outputStats");
+
+        const statusText = document.getElementById("statusText");
+        const outputStatus = document.getElementById("outputStatus");
+
+        const resultBox = document.getElementById("resultBox");
+        const resultIcon = document.getElementById("resultIcon");
+        const resultTitle = document.getElementById("resultTitle");
+        const resultMessage = document.getElementById("resultMessage");
+
+        const statLines = document.getElementById("statLines");
+        const statChars = document.getElementById("statChars");
+        const statElements = document.getElementById("statElements");
+        const statTime = document.getElementById("statTime");
+
+        const exampleXML = `<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+<book id="1">
+<title>Learn JavaScript</title>
+<author>Th.Tech</author>
+<category>Programming</category>
+<price currency="USD">29.99</price>
+</book>
+<book id="2">
+<title>Modern Web Development</title>
+<author>Th.Tech</author>
+<category>Web</category>
+<price currency="USD">39.99</price>
+</book>
+</catalog>`;
+
+        function escapeText(value) {
+          return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function escapeAttribute(value) {
+          return value
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function formatAttributes(element) {
+          let result = "";
+
+          for (const attr of element.attributes) {
+            result += ` ${attr.name}="${escapeAttribute(attr.value)}"`;
+          }
+
+          return result;
+        }
+
+        function hasElementChildren(element) {
+          return Array.from(element.childNodes).some(
+            (node) => node.nodeType === Node.ELEMENT_NODE
+          );
+        }
+
+        function serializeNode(node, level = 0) {
+          const indent = "  ".repeat(level);
+
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node;
+            const name = element.tagName;
+            const attrs = formatAttributes(element);
+            const children = Array.from(element.childNodes);
+
+            const meaningfulChildren = children.filter((child) => {
+              if (child.nodeType === Node.TEXT_NODE) {
+                return child.nodeValue.trim() !== "";
+              }
+
+              return true;
+            });
+
+            if (meaningfulChildren.length === 0) {
+              return `${indent}<${name}${attrs}/>`;
+            }
+
+            const elementChildren = hasElementChildren(element);
+
+            if (!elementChildren) {
+              let content = "";
+
+              for (const child of meaningfulChildren) {
+                if (child.nodeType === Node.TEXT_NODE) {
+                  content += escapeText(child.nodeValue);
+                } else if (child.nodeType === Node.CDATA_SECTION_NODE) {
+                  content += `<![CDATA[${child.nodeValue}]]>`;
+                } else if (child.nodeType === Node.COMMENT_NODE) {
+                  content += `<!--${child.nodeValue}-->`;
+                }
+              }
+
+              return `${indent}<${name}${attrs}>${content}</${name}>`;
+            }
+
+            const childOutput = meaningfulChildren
+              .map((child) => serializeNode(child, level + 1))
+              .join("\n");
+
+            return `${indent}<${name}${attrs}>\n${childOutput}\n${indent}</${name}>`;
+          }
+
+          if (node.nodeType === Node.COMMENT_NODE) {
+            return `${indent}<!--${node.nodeValue}-->`;
+          }
+
+          if (node.nodeType === Node.CDATA_SECTION_NODE) {
+            return `${indent}<![CDATA[${node.nodeValue}]]>`;
+          }
+
+          if (node.nodeType === Node.PROCESSING_INSTRUCTION_NODE) {
+            return `${indent}<?${node.target}${node.data ? " " + node.data : ""}?>`;
+          }
+
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.nodeValue.trim();
+
+            if (!text) return "";
+
+            return `${indent}${escapeText(text)}`;
+          }
+
+          return "";
+        }
+
+        function updateInputStats() {
+          const value = input.value || "";
+
+          const lines = value
+            ? value.split(/\r?\n/).length
+            : 1;
+
+          inputStats.textContent = `${value.length.toLocaleString()} حرف`;
+
+          inputLines.textContent = Array.from(
+            { length: lines },
+            (_, i) => i + 1
+          ).join("\n");
+        }
+
+        function updateOutputStats() {
+          const value = output.value || "";
+
+          const lines = value
+            ? value.split(/\r?\n/).length
+            : 1;
+
+          outputStats.textContent = `${value.length.toLocaleString()} حرف`;
+
+          outputLines.textContent = Array.from(
+            { length: lines },
+            (_, i) => i + 1
+          ).join("\n");
+        }
+
+        function showResult(success, title, message) {
+          resultBox.classList.remove("hidden", "error-result");
+
+          if (success) {
+            resultIcon.className = "fa-solid fa-check";
+            resultTitle.textContent = title;
+            resultMessage.textContent = message;
+          } else {
+            resultBox.classList.add("error-result");
+            resultIcon.className = "fa-solid fa-triangle-exclamation";
+            resultTitle.textContent = title;
+            resultMessage.textContent = message;
+          }
+        }
+
+        function formatXML() {
+          const source = input.value.trim();
+
+          if (!source) {
+            output.value = "";
+
+            outputStatus.textContent = "فارغ";
+            outputStatus.classList.remove("success");
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> أدخل XML أولاً';
+
+            resultBox.classList.remove("hidden");
+            resultBox.classList.add("error-result");
+
+            resultIcon.className =
+              "fa-solid fa-triangle-exclamation";
+
+            resultTitle.textContent = "لا يوجد XML";
+            resultMessage.textContent =
+              "أدخل كود XML في صندوق الإدخال ثم حاول مرة أخرى.";
+
+            updateOutputStats();
+
+            return;
+          }
+
+          const start = performance.now();
+
+          try {
+            const parser = new DOMParser();
+            const documentXML = parser.parseFromString(
+              source,
+              "application/xml"
+            );
+
+            const parserError =
+              documentXML.querySelector("parsererror");
+
+            if (parserError) {
+              throw new Error("XML غير صالح");
+            }
+
+            const declarationMatch = source.match(
+              /^\s*(<\?xml[\s\S]*?\?>)/
+            );
+
+            const parts = [];
+
+            if (declarationMatch) {
+              parts.push(declarationMatch[1]);
+            }
+
+            for (const node of Array.from(documentXML.childNodes)) {
+              if (
+                node.nodeType === Node.ELEMENT_NODE ||
+                node.nodeType === Node.COMMENT_NODE
+              ) {
+                const formatted = serializeNode(node, 0);
+
+                if (formatted) {
+                  parts.push(formatted);
+                }
+              }
+            }
+
+            const formattedXML = parts.join("\n");
+
+            output.value = formattedXML;
+
+            const elapsed = performance.now() - start;
+
+            const elements =
+              documentXML.querySelectorAll("*").length;
+
+            const lines = formattedXML
+              ? formattedXML.split(/\r?\n/).length
+              : 0;
+
+            statLines.textContent = lines.toLocaleString();
+            statChars.textContent =
+              formattedXML.length.toLocaleString();
+
+            statElements.textContent =
+              elements.toLocaleString();
+
+            statTime.textContent =
+              `${elapsed.toFixed(1)} ms`;
+
+            outputStatus.textContent = "منسق";
+            outputStatus.classList.add("success");
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم التنسيق بنجاح';
+
+            showResult(
+              true,
+              "تم تنسيق XML بنجاح",
+              `تم ترتيب ${elements.toLocaleString()} عنصر في ${elapsed.toFixed(1)} ms.`
+            );
+
+            updateOutputStats();
+          } catch (error) {
+            output.value = "";
+
+            outputStatus.textContent = "خطأ";
+            outputStatus.classList.remove("success");
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-xmark"></i> XML غير صالح';
+
+            showResult(
+              false,
+              "تعذر تنسيق XML",
+              "تأكد من صحة بنية XML وإغلاق جميع العناصر والخصائص بشكل صحيح."
+            );
+
+            statLines.textContent = "0";
+            statChars.textContent = "0";
+            statElements.textContent = "0";
+            statTime.textContent = "0 ms";
+
+            updateOutputStats();
+          }
+        }
+
+        function clearAll() {
+          input.value = "";
+          output.value = "";
+
+          outputStatus.textContent = "جاهز";
+          outputStatus.classList.remove("success");
+
+          statusText.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i> في انتظار XML';
+
+          resultBox.classList.add("hidden");
+
+          statLines.textContent = "0";
+          statChars.textContent = "0";
+          statElements.textContent = "0";
+          statTime.textContent = "0 ms";
+
+          updateInputStats();
+          updateOutputStats();
+
+          input.focus();
+        }
+
+        async function copyOutput() {
+          const value = output.value;
+
+          if (!value) {
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> لا توجد نتيجة لنسخها';
+
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(value);
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم نسخ XML';
+
+            copyBtn.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
+
+            setTimeout(() => {
+              copyBtn.innerHTML =
+                '<i class="fa-solid fa-copy"></i> نسخ';
+            }, 1500);
+          } catch {
+            output.select();
+            document.execCommand("copy");
+          }
+        }
+
+        exampleBtn.addEventListener("click", () => {
+          input.value = exampleXML;
+
+          updateInputStats();
+          formatXML();
+        });
+
+        formatBtn.addEventListener("click", formatXML);
+
+        clearBtn.addEventListener("click", clearAll);
+
+        copyBtn.addEventListener("click", copyOutput);
+
+        input.addEventListener("input", updateInputStats);
+
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Tab") {
+            event.preventDefault();
+
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+
+            input.value =
+              input.value.substring(0, start) +
+              "  " +
+              input.value.substring(end);
+
+            input.selectionStart = input.selectionEnd = start + 2;
+
+            updateInputStats();
+          }
+
+          if (event.ctrlKey && event.key === "Enter") {
+            event.preventDefault();
+            formatXML();
+          }
+        });
+
+        output.addEventListener("scroll", () => {
+          outputLines.scrollTop = output.scrollTop;
+        });
+
+        input.addEventListener("scroll", () => {
+          inputLines.scrollTop = input.scrollTop;
+        });
+
+        updateInputStats();
+        updateOutputStats();
+      })();
+    </script>
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        scroll-behavior: smooth;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family: "Cairo", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      :global(html) {
+        --bg: #f5f8ff;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #172033;
+        --muted: #718096;
+        --border: rgba(30, 64, 175, 0.12);
+        --primary: #f97316;
+        --primary-dark: #ea580c;
+        --secondary: #fb923c;
+        --shadow: 0 25px 70px rgba(15, 23, 42, 0.09);
+      }
+
+      :global(html.dark-mode) {
+        --bg: #090807;
+        --surface: #12100f;
+        --surface-2: #181412;
+        --text: #f8fafc;
+        --muted: #a8a29e;
+        --border: rgba(251, 146, 60, 0.14);
+        --primary: #fb923c;
+        --primary-dark: #f97316;
+        --secondary: #fdba74;
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
+      }
+
+      .page {
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      /* HERO */
+
+      .hero {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 38px 20px 34px;
+        text-align: center;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.65;
+      }
+
+      .hero-badge,
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(249, 115, 22, 0.18);
+        background: rgba(249, 115, 22, 0.08);
+        color: var(--primary);
+        padding: 7px 13px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .hero-icon {
+        margin: 22px auto 12px;
+      }
+
+      .icon-box {
+        position: relative;
+        width: 84px;
+        height: 84px;
+        margin: auto;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          145deg,
+          rgba(249, 115, 22, 0.14),
+          rgba(251, 146, 60, 0.05)
+        );
+        color: var(--primary);
+        box-shadow:
+          inset 0 0 0 1px rgba(249, 115, 22, 0.12),
+          0 15px 40px rgba(249, 115, 22, 0.09);
+      }
+
+      .icon-box > i {
+        font-size: 37px;
+      }
+
+      .xml-mark {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--secondary);
+      }
+
+      .hero h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        max-width: 700px;
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.9;
+      }
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 11px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .hero-tags i {
+        color: var(--primary);
+      }
+
+      /* TOOL */
+
+      .tool-section {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 18px 50px;
+      }
+
+      .formatter-card {
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .card-topbar {
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 20px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .topbar-title,
+      .topbar-type {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .topbar-type {
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+      }
+
+      .status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+      }
+
+      .actionbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .action-btn {
+        min-height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        font-family: "Cairo", sans-serif;
+        font-size: 12px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .action-btn.primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: #fff;
+        border-color: transparent;
+        margin-right: auto;
+      }
+
+      .action-btn.secondary {
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .action-btn.secondary:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .action-btn.danger {
+        background: rgba(239, 68, 68, 0.06);
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.13);
+      }
+
+      /* EDITORS */
+
+      .editors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .editor-panel {
+        min-width: 0;
+        background: var(--surface);
+      }
+
+      .editor-header {
+        min-height: 63px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .editor-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .editor-title > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+
+      .editor-title strong {
+        font-size: 12px;
+      }
+
+      .editor-title small {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .file-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        color: var(--primary);
+        background: rgba(249, 115, 22, 0.1);
+      }
+
+      .output-icon {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+      }
+
+      .language-badge {
+        padding: 4px 8px;
+        border-radius: 7px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        background: rgba(249, 115, 22, 0.09);
+        color: var(--primary);
+      }
+
+      .language-badge.success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+      }
+
+      .editor-wrap {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        min-height: 420px;
+        background: #0d1117;
+        direction: ltr;
+      }
+
+      .line-numbers {
+        padding: 18px 10px 18px 5px;
+        overflow: hidden;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        color: #64748b;
+        background: #090c11;
+        font: 12px/1.75 "JetBrains Mono", monospace;
+        text-align: right;
+        white-space: pre;
+        user-select: none;
+      }
+
+      textarea {
+        width: 100%;
+        height: 420px;
+        resize: none;
+        border: 0;
+        outline: 0;
+        padding: 18px;
+        background: #0d1117;
+        color: #e6edf3;
+        font: 13px/1.75 "JetBrains Mono", monospace;
+        direction: ltr;
+        text-align: left;
+        tab-size: 2;
+      }
+
+      textarea::placeholder {
+        color: #64748b;
+        opacity: 0.8;
+      }
+
+      .editor-footer {
+        min-height: 39px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        background: var(--surface-2);
+        border-top: 1px solid var(--border);
+        font-size: 10px;
+      }
+
+      .editor-footer span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .editor-footer i {
+        color: var(--primary);
+      }
+
+      /* RESULT */
+
+      .result-box {
+        margin: 18px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        border-radius: 13px;
+        background: rgba(34, 197, 94, 0.07);
+        border: 1px solid rgba(34, 197, 94, 0.15);
+      }
+
+      .result-box.hidden {
+        display: none;
+      }
+
+      .result-box.error-result {
+        background: rgba(239, 68, 68, 0.07);
+        border-color: rgba(239, 68, 68, 0.15);
+      }
+
+      .result-icon {
+        flex: 0 0 38px;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+      }
+
+      .error-result .result-icon {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+      }
+
+      .result-content strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 12px;
+      }
+
+      .result-content p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      /* STATS */
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 0 18px 18px;
+      }
+
+      .stat-card {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 12px;
+        border-radius: 13px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        color: var(--primary);
+        background: rgba(249, 115, 22, 0.1);
+      }
+
+      .stat-card div:last-child {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stat-card strong {
+        font: 700 16px "JetBrains Mono", monospace;
+      }
+
+      .stat-card span {
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      /* SECTIONS */
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .section-heading h2 {
+        margin: 12px 0 7px;
+        font-size: clamp(23px, 4vw, 31px);
+        font-weight: 800;
+      }
+
+      .section-heading > p {
+        max-width: 650px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 24px;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.04);
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .info-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(249, 115, 22, 0.28);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        color: var(--primary);
+        background: rgba(249, 115, 22, 0.1);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* STEPS */
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 20px;
+        border-radius: 17px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .step-number {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        font: 700 14px "JetBrains Mono", monospace;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      /* FAQ */
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        overflow: hidden;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .faq-item summary {
+        padding: 17px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--primary);
+        font-size: 11px;
+        transition: transform 0.2s ease;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        padding: 0 18px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 850px) {
+        .editors {
+          grid-template-columns: 1fr;
+        }
+
+        .editor-wrap {
+          min-height: 330px;
+        }
+
+        textarea {
+          height: 330px;
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .hero {
+          padding: 25px 14px 28px;
+        }
+
+        .tool-section {
+          padding: 0 10px 35px;
+        }
+
+        .formatter-card {
+          border-radius: 18px;
+        }
+
+        .card-topbar {
+          padding: 0 13px;
+        }
+
+        .actionbar {
+          padding: 11px;
+        }
+
+        .action-btn {
+          flex: 1 1 calc(50% - 9px);
+        }
+
+        .action-btn.primary {
+          order: -1;
+          flex-basis: 100%;
+          margin-right: 0;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          padding: 0 11px 11px;
+        }
+
+        .result-box {
+          margin: 12px;
+        }
+
+        .editor-header {
+          padding: 9px 11px;
+        }
+
+        .editor-wrap {
+          grid-template-columns: 38px 1fr;
+          min-height: 300px;
+        }
+
+        textarea {
+          height: 300px;
+          padding: 15px 12px;
+          font-size: 12px;
+        }
+
+        .line-numbers {
+          padding-right: 7px;
+          font-size: 11px;
+        }
+
+        .info-section,
+        .how-section,
+        .faq-section {
+          padding: 32px 14px;
+        }
+
+        .info-card {
+          padding: 20px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .hero p {
+          font-size: 13px;
+        }
+      }
+
+      @media (max-width: 390px) {
+        .action-btn {
+          font-size: 11px;
+          padding: 0 9px;
+        }
+
+        .topbar-title {
+          font-size: 11px;
+        }
+
+        .topbar-type {
+          font-size: 9px;
+        }
+      }
+    </style>
+  </body>
+</html>
