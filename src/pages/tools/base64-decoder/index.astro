@@ -1,0 +1,1866 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Base64 Decoder - فك ترميز Base64 أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة Base64 Decoder مجانية لفك ترميز Base64 إلى نص أصلي بسرعة، مع دعم كامل للعربية وUnicode مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو Base64 Decoder؟",
+    a: "Base64 Decoder هي أداة لتحويل بيانات Base64 إلى النص الأصلي بطريقة سريعة ومباشرة من المتصفح."
+  },
+  {
+    q: "هل يدعم فك ترميز النصوص العربية؟",
+    a: "نعم. تستخدم الأداة UTF-8 لفك ترميز البيانات، لذلك يمكنها التعامل مع النصوص العربية واللغات المختلفة."
+  },
+  {
+    q: "هل يتم إرسال بيانات Base64 إلى الخادم؟",
+    a: "لا. تتم عملية فك الترميز محلياً داخل المتصفح ولا يتم إرسال البيانات إلى خادم خارجي."
+  },
+  {
+    q: "ماذا يحدث إذا كان Base64 غير صالح؟",
+    a: "ستظهر رسالة خطأ توضح أن البيانات غير صالحة أو لا يمكن فك ترميزها."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+
+      <!-- HERO -->
+      <section class="hero">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <span>Base64 Decoder</span>
+        </div>
+
+        <div class="hero-badge">
+          <i class="fa-solid fa-code"></i>
+          Developer Tools
+        </div>
+
+        <div class="hero-icon">
+          <div class="icon-box">
+            <i class="fa-solid fa-lock-open"></i>
+
+            <span class="base64-mark">64</span>
+          </div>
+        </div>
+
+        <h1>Base64 Decoder</h1>
+
+        <p>
+          فك ترميز Base64 وتحويله إلى النص الأصلي بسرعة مع دعم كامل
+          للغة العربية وUnicode مباشرة من متصفحك.
+        </p>
+
+        <div class="hero-tags">
+
+          <span>
+            <i class="fa-solid fa-bolt"></i>
+            سريع
+          </span>
+
+          <span>
+            <i class="fa-solid fa-shield-halved"></i>
+            محلي 100%
+          </span>
+
+          <span>
+            <i class="fa-solid fa-language"></i>
+            Unicode
+          </span>
+
+        </div>
+
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-section">
+
+        <div class="decoder-card">
+
+          <div class="card-topbar">
+
+            <div class="topbar-title">
+              <span class="status-dot"></span>
+              Base64 Decoder
+            </div>
+
+            <div class="topbar-type">
+              <i class="fa-solid fa-lock-open"></i>
+              BASE64
+            </div>
+
+          </div>
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="action-btn secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="action-btn danger">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+
+            <button id="copyBtn" class="action-btn secondary">
+              <i class="fa-solid fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="decodeBtn" class="action-btn primary">
+              <i class="fa-solid fa-unlock"></i>
+              فك ترميز Base64
+            </button>
+
+          </div>
+
+          <!-- EDITORS -->
+          <div class="editors">
+
+            <!-- INPUT -->
+            <div class="editor-panel">
+
+              <div class="editor-header">
+
+                <div class="editor-title">
+
+                  <span class="file-icon">
+                    <i class="fa-solid fa-lock"></i>
+                  </span>
+
+                  <div>
+                    <strong>Base64 Input</strong>
+                    <small>بيانات Base64</small>
+                  </div>
+
+                </div>
+
+                <span class="language-badge">
+                  BASE64
+                </span>
+
+              </div>
+
+              <div class="editor-wrap">
+
+                <div id="inputLines" class="line-numbers">1</div>
+
+                <textarea
+                  id="base64Input"
+                  spellcheck="false"
+                  placeholder="ألصق نص Base64 هنا..."
+                ></textarea>
+
+              </div>
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-solid fa-keyboard"></i>
+                  Ctrl + Enter لفك الترميز
+                </span>
+
+                <span id="inputStats">
+                  0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- OUTPUT -->
+            <div class="editor-panel output-panel">
+
+              <div class="editor-header">
+
+                <div class="editor-title">
+
+                  <span class="file-icon output-icon">
+                    <i class="fa-solid fa-font"></i>
+                  </span>
+
+                  <div>
+                    <strong>Decoded Text</strong>
+                    <small>النص الأصلي</small>
+                  </div>
+
+                </div>
+
+                <span id="outputStatus" class="language-badge success">
+                  جاهز
+                </span>
+
+              </div>
+
+              <div class="editor-wrap">
+
+                <div id="outputLines" class="line-numbers">1</div>
+
+                <textarea
+                  id="decodedOutput"
+                  readonly
+                  spellcheck="false"
+                  placeholder="سيظهر النص الأصلي هنا..."
+                ></textarea>
+
+              </div>
+
+              <div class="editor-footer">
+
+                <span id="statusText">
+                  <i class="fa-solid fa-circle-check"></i>
+                  في انتظار Base64
+                </span>
+
+                <span id="outputStats">
+                  0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RESULT -->
+          <div id="resultBox" class="result-box hidden">
+
+            <div id="resultIcon" class="result-icon">
+              <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                تم فك الترميز بنجاح
+              </strong>
+
+              <p id="resultMessage">
+                تم تحويل Base64 إلى النص الأصلي.
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-code"></i>
+              </div>
+
+              <div>
+                <strong id="statInput">0</strong>
+                <span>حروف Base64</span>
+              </div>
+
+            </div>
+
+            <div class="stat-card">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <div>
+                <strong id="statOutput">0</strong>
+                <span>حروف الناتج</span>
+              </div>
+
+            </div>
+
+            <div class="stat-card">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-file-lines"></i>
+              </div>
+
+              <div>
+                <strong id="statBytes">0</strong>
+                <span>Bytes</span>
+              </div>
+
+            </div>
+
+            <div class="stat-card">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <div>
+                <strong id="statTime">0 ms</strong>
+                <span>الوقت</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+
+        <div class="section-heading">
+
+          <span class="section-badge">
+            <i class="fa-solid fa-circle-info"></i>
+            معلومات
+          </span>
+
+          <h2>ما هو Base64 Decoder؟</h2>
+
+          <p>
+            Base64 Decoder يقوم بتحويل بيانات Base64 إلى البيانات الأصلية
+            باستخدام UTF-8 مع الحفاظ على النصوص والرموز المختلفة.
+          </p>
+
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-language"></i>
+            </div>
+
+            <h3>دعم Unicode</h3>
+
+            <p>
+              يدعم العربية والفرنسية والإنجليزية والرموز واللغات
+              المختلفة بشكل صحيح.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>خصوصية كاملة</h3>
+
+            <p>
+              جميع العمليات تتم داخل متصفحك دون إرسال بيانات Base64
+              إلى خادم خارجي.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+
+            <h3>نتيجة فورية</h3>
+
+            <p>
+              احصل على النص الأصلي فوراً دون تثبيت برامج أو استخدام
+              خدمات خارجية.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+
+        <div class="section-heading">
+
+          <span class="section-badge">
+            <i class="fa-solid fa-list-ol"></i>
+            طريقة الاستخدام
+          </span>
+
+          <h2>كيف تستخدم Base64 Decoder؟</h2>
+
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>أدخل Base64</h3>
+
+              <p>
+                ألصق نص Base64 الذي تريد فك ترميزه داخل الصندوق.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>فك الترميز</h3>
+
+              <p>
+                اضغط على «فك ترميز Base64» أو استخدم Ctrl + Enter.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>انسخ النتيجة</h3>
+
+              <p>
+                اضغط على زر النسخ للحصول على النص الأصلي.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="section-heading">
+
+          <span class="section-badge">
+            <i class="fa-solid fa-circle-question"></i>
+            FAQ
+          </span>
+
+          <h2>الأسئلة الشائعة</h2>
+
+        </div>
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+
+              <summary>
+                <span>{faq.q}</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <div class="faq-answer">
+                {faq.a}
+              </div>
+
+            </details>
+          ))}
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+
+        const input =
+          document.getElementById("base64Input");
+
+        const output =
+          document.getElementById("decodedOutput");
+
+        const decodeBtn =
+          document.getElementById("decodeBtn");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const copyBtn =
+          document.getElementById("copyBtn");
+
+        const exampleBtn =
+          document.getElementById("exampleBtn");
+
+        const inputLines =
+          document.getElementById("inputLines");
+
+        const outputLines =
+          document.getElementById("outputLines");
+
+        const inputStats =
+          document.getElementById("inputStats");
+
+        const outputStats =
+          document.getElementById("outputStats");
+
+        const statusText =
+          document.getElementById("statusText");
+
+        const outputStatus =
+          document.getElementById("outputStatus");
+
+        const resultBox =
+          document.getElementById("resultBox");
+
+        const resultIcon =
+          document.getElementById("resultIcon");
+
+        const resultTitle =
+          document.getElementById("resultTitle");
+
+        const resultMessage =
+          document.getElementById("resultMessage");
+
+        const statInput =
+          document.getElementById("statInput");
+
+        const statOutput =
+          document.getElementById("statOutput");
+
+        const statBytes =
+          document.getElementById("statBytes");
+
+        const statTime =
+          document.getElementById("statTime");
+
+        const exampleBase64 =
+          "SGVsbG8gZnJvbSBUaC5UZWNoIQoK2YXYsdit2KfZhSDYp9mE2YTYqSDYp9mE2KfYqSDYq9mE2YTYqQ==";
+
+        function updateInput() {
+
+          const value =
+            input.value || "";
+
+          const lines =
+            value
+              ? value.split(/\r?\n/).length
+              : 1;
+
+          inputLines.textContent =
+            Array.from(
+              { length: lines },
+              (_, i) => i + 1
+            ).join("\n");
+
+          inputStats.textContent =
+            `${value.length.toLocaleString()} حرف`;
+
+          statInput.textContent =
+            value.length.toLocaleString();
+        }
+
+        function updateOutput() {
+
+          const value =
+            output.value || "";
+
+          const lines =
+            value
+              ? value.split(/\r?\n/).length
+              : 1;
+
+          outputLines.textContent =
+            Array.from(
+              { length: lines },
+              (_, i) => i + 1
+            ).join("\n");
+
+          outputStats.textContent =
+            `${value.length.toLocaleString()} حرف`;
+
+          statOutput.textContent =
+            value.length.toLocaleString();
+        }
+
+        function showSuccess(
+          title,
+          message
+        ) {
+
+          resultBox.classList.remove(
+            "hidden",
+            "error-result"
+          );
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-check"></i>';
+
+          resultTitle.textContent =
+            title;
+
+          resultMessage.textContent =
+            message;
+        }
+
+        function showError(
+          title,
+          message
+        ) {
+
+          resultBox.classList.remove(
+            "hidden"
+          );
+
+          resultBox.classList.add(
+            "error-result"
+          );
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-triangle-exclamation"></i>';
+
+          resultTitle.textContent =
+            title;
+
+          resultMessage.textContent =
+            message;
+        }
+
+        function decodeUTF8(value) {
+
+          const clean =
+            value
+              .replace(/\s/g, "");
+
+          if (!clean) {
+            throw new Error(
+              "empty"
+            );
+          }
+
+          if (
+            clean.length % 4 !== 0
+          ) {
+            throw new Error(
+              "length"
+            );
+          }
+
+          if (
+            !/^[A-Za-z0-9+/]*={0,2}$/.test(
+              clean
+            )
+          ) {
+            throw new Error(
+              "characters"
+            );
+          }
+
+          const binary =
+            atob(clean);
+
+          const bytes =
+            Uint8Array.from(
+              binary,
+              char => char.charCodeAt(0)
+            );
+
+          const decoder =
+            new TextDecoder(
+              "utf-8",
+              {
+                fatal: true
+              }
+            );
+
+          return {
+            text: decoder.decode(bytes),
+            bytes: bytes.length
+          };
+        }
+
+        function decodeBase64() {
+
+          const value =
+            input.value.trim();
+
+          if (!value) {
+
+            output.value = "";
+
+            outputStatus.textContent =
+              "فارغ";
+
+            outputStatus.classList.remove(
+              "success"
+            );
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> أدخل Base64 أولاً';
+
+            showError(
+              "لا توجد بيانات",
+              "ألصق نص Base64 في صندوق الإدخال ثم حاول مرة أخرى."
+            );
+
+            statInput.textContent =
+              "0";
+
+            statOutput.textContent =
+              "0";
+
+            statBytes.textContent =
+              "0";
+
+            statTime.textContent =
+              "0 ms";
+
+            updateOutput();
+
+            return;
+          }
+
+          const start =
+            performance.now();
+
+          try {
+
+            const result =
+              decodeUTF8(value);
+
+            const elapsed =
+              performance.now() - start;
+
+            output.value =
+              result.text;
+
+            outputStatus.textContent =
+              "Decoded";
+
+            outputStatus.classList.add(
+              "success"
+            );
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم فك الترميز بنجاح';
+
+            statInput.textContent =
+              value
+                .replace(/\s/g, "")
+                .length
+                .toLocaleString();
+
+            statOutput.textContent =
+              result.text.length
+                .toLocaleString();
+
+            statBytes.textContent =
+              result.bytes
+                .toLocaleString();
+
+            statTime.textContent =
+              `${elapsed.toFixed(1)} ms`;
+
+            showSuccess(
+              "تم فك الترميز بنجاح",
+              `تم تحويل ${result.bytes.toLocaleString()} Bytes من Base64 إلى النص الأصلي خلال ${elapsed.toFixed(1)} ms.`
+            );
+
+            updateInput();
+            updateOutput();
+
+          } catch (error) {
+
+            output.value = "";
+
+            outputStatus.textContent =
+              "Invalid";
+
+            outputStatus.classList.remove(
+              "success"
+            );
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-xmark"></i> Base64 غير صالح';
+
+            statOutput.textContent =
+              "0";
+
+            statBytes.textContent =
+              "0";
+
+            statTime.textContent =
+              "0 ms";
+
+            let message =
+              "تأكد من أن البيانات المدخلة هي Base64 صحيحة.";
+
+            if (
+              error.message === "length"
+            ) {
+
+              message =
+                "طول نص Base64 غير صحيح. يجب أن يكون قابلاً للقسمة على 4.";
+
+            } else if (
+              error.message === "characters"
+            ) {
+
+              message =
+                "توجد أحرف غير صالحة داخل بيانات Base64.";
+
+            } else if (
+              error.message === "empty"
+            ) {
+
+              message =
+                "لم يتم إدخال أي بيانات.";
+
+            }
+
+            showError(
+              "تعذر فك الترميز",
+              message
+            );
+
+            updateOutput();
+          }
+        }
+
+        function clearAll() {
+
+          input.value = "";
+          output.value = "";
+
+          outputStatus.textContent =
+            "جاهز";
+
+          outputStatus.classList.remove(
+            "success"
+          );
+
+          statusText.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i> في انتظار Base64';
+
+          resultBox.classList.add(
+            "hidden"
+          );
+
+          resultBox.classList.remove(
+            "error-result"
+          );
+
+          statInput.textContent =
+            "0";
+
+          statOutput.textContent =
+            "0";
+
+          statBytes.textContent =
+            "0";
+
+          statTime.textContent =
+            "0 ms";
+
+          updateInput();
+          updateOutput();
+
+          input.focus();
+        }
+
+        async function copyOutput() {
+
+          const value =
+            output.value;
+
+          if (!value) {
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> لا توجد نتيجة لنسخها';
+
+            return;
+          }
+
+          try {
+
+            await navigator.clipboard.writeText(
+              value
+            );
+
+            copyBtn.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
+
+            statusText.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم نسخ النص';
+
+            setTimeout(() => {
+
+              copyBtn.innerHTML =
+                '<i class="fa-solid fa-copy"></i> نسخ';
+
+            }, 1500);
+
+          } catch {
+
+            output.select();
+
+            document.execCommand(
+              "copy"
+            );
+          }
+        }
+
+        exampleBtn.addEventListener(
+          "click",
+          () => {
+
+            input.value =
+              exampleBase64;
+
+            updateInput();
+            decodeBase64();
+
+          }
+        );
+
+        decodeBtn.addEventListener(
+          "click",
+          decodeBase64
+        );
+
+        clearBtn.addEventListener(
+          "click",
+          clearAll
+        );
+
+        copyBtn.addEventListener(
+          "click",
+          copyOutput
+        );
+
+        input.addEventListener(
+          "input",
+          updateInput
+        );
+
+        input.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key === "Tab"
+            ) {
+
+              event.preventDefault();
+
+              const start =
+                input.selectionStart;
+
+              const end =
+                input.selectionEnd;
+
+              input.value =
+                input.value.substring(
+                  0,
+                  start
+                ) +
+                "  " +
+                input.value.substring(
+                  end
+                );
+
+              input.selectionStart =
+                input.selectionEnd =
+                  start + 2;
+
+              updateInput();
+            }
+
+            if (
+              event.ctrlKey &&
+              event.key === "Enter"
+            ) {
+
+              event.preventDefault();
+
+              decodeBase64();
+            }
+          }
+        );
+
+        input.addEventListener(
+          "scroll",
+          () => {
+
+            inputLines.scrollTop =
+              input.scrollTop;
+
+          }
+        );
+
+        output.addEventListener(
+          "scroll",
+          () => {
+
+            outputLines.scrollTop =
+              output.scrollTop;
+
+          }
+        );
+
+        updateInput();
+        updateOutput();
+
+      })();
+    </script>
+
+    <style>
+
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        --bg: #f5f8ff;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #172033;
+        --muted: #718096;
+        --border: rgba(37, 99, 235, 0.12);
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #60a5fa;
+        --shadow: 0 25px 70px rgba(15, 23, 42, 0.09);
+      }
+
+      :global(html.dark-mode) {
+        --bg: #070a12;
+        --surface: #0d111c;
+        --surface-2: #121827;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: rgba(96, 165, 250, 0.14);
+        --primary: #60a5fa;
+        --primary-dark: #3b82f6;
+        --secondary: #93c5fd;
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
+      }
+
+      :global(body) {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .page {
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      /* HERO */
+
+      .hero {
+        max-width: 1100px;
+        margin: auto;
+        padding: 38px 20px 34px;
+        text-align: center;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-bottom: 24px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+      }
+
+      .hero-badge,
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.15);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .hero-icon {
+        margin: 22px auto 12px;
+      }
+
+      .icon-box {
+        position: relative;
+        width: 84px;
+        height: 84px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        color: var(--primary);
+        background: linear-gradient(
+          145deg,
+          rgba(37, 99, 235, 0.14),
+          rgba(96, 165, 250, 0.05)
+        );
+        box-shadow:
+          inset 0 0 0 1px rgba(37, 99, 235, 0.12),
+          0 15px 40px rgba(37, 99, 235, 0.09);
+      }
+
+      .icon-box > i {
+        font-size: 38px;
+      }
+
+      .base64-mark {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        color: var(--secondary);
+        font: 700 9px "JetBrains Mono", monospace;
+      }
+
+      .hero h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.2;
+        font-weight: 800;
+      }
+
+      .hero p {
+        max-width: 700px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.9;
+      }
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 11px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .hero-tags i {
+        color: var(--primary);
+      }
+
+      /* TOOL */
+
+      .tool-section {
+        max-width: 1180px;
+        margin: auto;
+        padding: 0 18px 50px;
+      }
+
+      .decoder-card {
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .card-topbar {
+        min-height: 54px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .topbar-title,
+      .topbar-type {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .topbar-type {
+        color: var(--muted);
+        font: 600 11px "JetBrains Mono", monospace;
+      }
+
+      .status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow:
+          0 0 0 4px rgba(34, 197, 94, 0.1);
+      }
+
+      /* ACTIONBAR */
+
+      .actionbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .action-btn {
+        min-height: 40px;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: "Cairo", sans-serif;
+        font-size: 12px;
+        font-weight: 800;
+        transition: 0.2s ease;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .action-btn.primary {
+        margin-right: auto;
+        border-color: transparent;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: #fff;
+      }
+
+      .action-btn.secondary {
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .action-btn.secondary:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .action-btn.danger {
+        background: rgba(239, 68, 68, 0.06);
+        border-color: rgba(239, 68, 68, 0.13);
+        color: #ef4444;
+      }
+
+      /* EDITORS */
+
+      .editors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .editor-panel {
+        min-width: 0;
+        background: var(--surface);
+      }
+
+      .editor-header {
+        min-height: 63px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .editor-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .editor-title > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+
+      .editor-title strong {
+        font-size: 12px;
+      }
+
+      .editor-title small {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .file-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .output-icon {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+      }
+
+      .language-badge {
+        padding: 4px 8px;
+        border-radius: 7px;
+        background: rgba(37, 99, 235, 0.09);
+        color: var(--primary);
+        font: 700 9px "JetBrains Mono", monospace;
+      }
+
+      .language-badge.success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+      }
+
+      .editor-wrap {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        min-height: 420px;
+        background: #0d1117;
+        direction: ltr;
+      }
+
+      .line-numbers {
+        padding: 18px 10px 18px 5px;
+        overflow: hidden;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        background: #090c11;
+        color: #64748b;
+        text-align: right;
+        white-space: pre;
+        user-select: none;
+        font: 12px/1.75 "JetBrains Mono", monospace;
+      }
+
+      textarea {
+        width: 100%;
+        height: 420px;
+        padding: 18px;
+        resize: none;
+        outline: none;
+        border: 0;
+        background: #0d1117;
+        color: #e6edf3;
+        direction: ltr;
+        text-align: left;
+        font: 13px/1.75 "JetBrains Mono", monospace;
+        tab-size: 2;
+      }
+
+      textarea::placeholder {
+        color: #64748b;
+        opacity: 0.9;
+      }
+
+      .editor-footer {
+        min-height: 39px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        background: var(--surface-2);
+        border-top: 1px solid var(--border);
+        font-size: 10px;
+      }
+
+      .editor-footer span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .editor-footer i {
+        color: var(--primary);
+      }
+
+      /* RESULT */
+
+      .result-box {
+        margin: 18px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        border-radius: 13px;
+        background: rgba(34, 197, 94, 0.07);
+        border: 1px solid rgba(34, 197, 94, 0.15);
+      }
+
+      .result-box.hidden {
+        display: none;
+      }
+
+      .result-box.error-result {
+        background: rgba(239, 68, 68, 0.07);
+        border-color: rgba(239, 68, 68, 0.15);
+      }
+
+      .result-icon {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+      }
+
+      .error-result .result-icon {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+      }
+
+      .result-content strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 12px;
+      }
+
+      .result-content p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      /* STATS */
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 0 18px 18px;
+      }
+
+      .stat-card {
+        min-height: 76px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        border-radius: 13px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .stat-card div:last-child {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stat-card strong {
+        font: 700 16px "JetBrains Mono", monospace;
+      }
+
+      .stat-card span {
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      /* SECTIONS */
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+      }
+
+      .section-heading {
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .section-heading h2 {
+        margin: 12px 0 7px;
+        font-size: clamp(23px, 4vw, 31px);
+        font-weight: 800;
+      }
+
+      .section-heading > p {
+        max-width: 650px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 24px;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .info-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(37, 99, 235, 0.28);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* STEPS */
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        border-radius: 17px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .step-number {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        font: 700 14px "JetBrains Mono", monospace;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      /* FAQ */
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        overflow: hidden;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .faq-item summary {
+        padding: 17px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--primary);
+        font-size: 11px;
+        transition: transform 0.2s ease;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        padding: 0 18px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 850px) {
+
+        .editors {
+          grid-template-columns: 1fr;
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+      }
+
+      @media (max-width: 650px) {
+
+        .hero {
+          padding: 25px 14px 28px;
+        }
+
+        .tool-section {
+          padding: 0 10px 35px;
+        }
+
+        .decoder-card {
+          border-radius: 18px;
+        }
+
+        .card-topbar {
+          padding: 0 13px;
+        }
+
+        .actionbar {
+          padding: 11px;
+        }
+
+        .action-btn {
+          flex: 1 1 calc(50% - 9px);
+        }
+
+        .action-btn.primary {
+          order: -1;
+          flex-basis: 100%;
+          margin-right: 0;
+        }
+
+        .editor-wrap {
+          grid-template-columns: 38px 1fr;
+          min-height: 300px;
+        }
+
+        textarea {
+          height: 300px;
+          padding: 15px 12px;
+          font-size: 12px;
+        }
+
+        .line-numbers {
+          padding-right: 7px;
+          font-size: 11px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          padding: 0 11px 11px;
+        }
+
+        .result-box {
+          margin: 12px;
+        }
+
+        .info-section,
+        .how-section,
+        .faq-section {
+          padding: 32px 14px;
+        }
+
+        .info-card {
+          padding: 20px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .hero p {
+          font-size: 13px;
+        }
+
+      }
+
+      @media (max-width: 390px) {
+
+        .action-btn {
+          padding: 0 9px;
+          font-size: 11px;
+        }
+
+        .topbar-title {
+          font-size: 11px;
+        }
+
+        .topbar-type {
+          font-size: 9px;
+        }
+
+      }
+
+    </style>
+
+  </body>
+</html>
