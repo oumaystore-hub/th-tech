@@ -1,0 +1,3808 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "SQL Validator - التحقق من SQL أونلاين مجاناً | Th.Tech";
+const description =
+  "أداة SQL Validator مجانية للتحقق من صحة استعلامات SQL واكتشاف الأخطاء الشائعة مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة SQL Validator؟",
+    a: "SQL Validator هي أداة تساعدك على فحص استعلامات SQL واكتشاف الأخطاء النحوية والمشكلات الشائعة قبل استخدامها في قاعدة البيانات."
+  },
+  {
+    q: "هل يتم تنفيذ الاستعلام على قاعدة بيانات حقيقية؟",
+    a: "لا. الأداة تقوم بتحليل نص SQL محلياً داخل المتصفح ولا تنفذ الاستعلام على قاعدة بيانات حقيقية."
+  },
+  {
+    q: "ما الأخطاء التي تستطيع الأداة اكتشافها؟",
+    a: "يمكنها اكتشاف العديد من الأخطاء الشائعة مثل الأقواس غير المتطابقة، علامات الاقتباس غير المغلقة، SELECT بدون FROM، وبعض أخطاء WHERE وJOIN وINSERT وUPDATE."
+  },
+  {
+    q: "هل يمكنني استخدام SQL كبير؟",
+    a: "نعم، ويمكن للأداة تحليل استعلامات SQL كبيرة نسبياً، لكن سرعة التحليل تعتمد على حجم النص وإمكانيات المتصفح."
+  }
+];
+
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#2563eb" />
+
+  <link rel="icon" href={`${base}/favicon.svg`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <!-- Theme system -->
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <span>SQL Validator</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+
+            <div class="icon-glow"></div>
+
+            <i class="fa-solid fa-shield-check"></i>
+
+            <span class="mini-icon">
+              <i class="fa-solid fa-database"></i>
+            </span>
+
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+            <h1>
+              SQL Validator
+              <span>مدقق SQL</span>
+            </h1>
+
+            <p>
+              تحقق من استعلامات SQL واكتشف الأخطاء والمشكلات الشائعة
+              قبل تنفيذها على قاعدة البيانات.
+            </p>
+
+            <div class="hero-features">
+
+              <span>
+                <i class="fa-solid fa-shield-halved"></i>
+                تحقق سريع
+              </span>
+
+              <span>
+                <i class="fa-solid fa-bolt"></i>
+                فوري
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                يعمل محلياً
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+
+      <div class="container">
+
+        <div class="validator-card">
+
+          <!-- TOP BAR -->
+          <div class="card-topbar">
+
+            <div class="topbar-title">
+
+              <div class="database-icon">
+                <i class="fa-solid fa-shield-check"></i>
+              </div>
+
+              <div>
+                <strong>SQL Validator</strong>
+                <small>فحص وتحليل استعلام SQL</small>
+              </div>
+
+            </div>
+
+            <div class="status">
+
+              <span
+                id="statusDot"
+                class="status-dot"
+              ></span>
+
+              <span id="statusText">
+                جاهز للتحقق
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <div class="action-group">
+
+              <button
+                id="exampleBtn"
+                class="btn btn-example"
+              >
+                <i class="fa-solid fa-flask"></i>
+                مثال
+              </button>
+
+              <button
+                id="clearBtn"
+                class="btn btn-clear"
+              >
+                <i class="fa-solid fa-eraser"></i>
+                مسح
+              </button>
+
+            </div>
+
+            <div class="action-group">
+
+              <button
+                id="copyBtn"
+                class="btn btn-copy"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+
+              <button
+                id="validateBtn"
+                class="btn btn-validate"
+              >
+                <i class="fa-solid fa-circle-check"></i>
+                تحقق من SQL
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- EDITOR -->
+          <div class="workspace">
+
+            <div class="editor-panel">
+
+              <div class="panel-header">
+
+                <div class="panel-title">
+
+                  <span class="panel-dot"></span>
+
+                  <div>
+                    <strong>SQL Input</strong>
+                    <small>أدخل استعلام SQL</small>
+                  </div>
+
+                </div>
+
+                <span class="language-badge">
+                  SQL
+                </span>
+
+              </div>
+
+              <div class="editor">
+
+                <div
+                  id="lineNumbers"
+                  class="line-numbers"
+                >1</div>
+
+                <textarea
+                  id="sqlInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="SELECT * FROM users WHERE status = 'active';"
+                ></textarea>
+
+              </div>
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-solid fa-code"></i>
+                  SQL
+                </span>
+
+                <span id="inputStats">
+                  0 سطر · 0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- RESULT -->
+            <div class="result-panel">
+
+              <div class="result-header">
+
+                <div class="result-title">
+
+                  <div
+                    id="resultIcon"
+                    class="result-icon neutral"
+                  >
+                    <i class="fa-solid fa-circle-question"></i>
+                  </div>
+
+                  <div>
+                    <strong id="resultTitle">
+                      Validation Result
+                    </strong>
+
+                    <small id="resultSubtitle">
+                      نتيجة التحقق
+                    </small>
+                  </div>
+
+                </div>
+
+                <span
+                  id="resultBadge"
+                  class="result-badge neutral"
+                >
+                  غير مفحوص
+                </span>
+
+              </div>
+
+
+              <div
+                id="resultContent"
+                class="result-content"
+              >
+
+                <div class="empty-result">
+
+                  <div class="empty-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                  </div>
+
+                  <h3>
+                    جاهز لفحص SQL
+                  </h3>
+
+                  <p>
+                    أدخل استعلام SQL ثم اضغط
+                    «تحقق من SQL» لبدء التحليل.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+          <div class="summary">
+
+            <div class="summary-title">
+              <i class="fa-solid fa-chart-simple"></i>
+              SQL Analysis
+            </div>
+
+            <div class="summary-grid">
+
+              <div class="summary-item">
+
+                <div class="summary-icon blue">
+                  <i class="fa-solid fa-code"></i>
+                </div>
+
+                <div>
+                  <strong id="statementType">
+                    —
+                  </strong>
+
+                  <span>
+                    نوع الاستعلام
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="summary-item">
+
+                <div class="summary-icon purple">
+                  <i class="fa-solid fa-align-left"></i>
+                </div>
+
+                <div>
+                  <strong id="lineCount">
+                    0
+                  </strong>
+
+                  <span>
+                    الأسطر
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="summary-item">
+
+                <div class="summary-icon orange">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+                <div>
+                  <strong id="issueCount">
+                    0
+                  </strong>
+
+                  <span>
+                    المشاكل
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div class="summary-item">
+
+                <div class="summary-icon green">
+                  <i class="fa-solid fa-shield-check"></i>
+                </div>
+
+                <div>
+                  <strong id="validState">
+                    —
+                  </strong>
+
+                  <span>
+                    الحالة
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>SQL VALIDATOR</span>
+
+          <h2>
+            تحقق من SQL قبل التنفيذ
+          </h2>
+
+          <p>
+            اكتشف الأخطاء الشائعة واحصل على نتيجة واضحة مباشرة.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon blue-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <h3>
+              كشف الأخطاء
+            </h3>
+
+            <p>
+              يساعدك الفاحص على اكتشاف الأخطاء النحوية
+              والمشكلات الشائعة في الاستعلام.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon orange-icon">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <h3>
+              تنبيهات مفيدة
+            </h3>
+
+            <p>
+              يعرض تنبيهات حول بعض الممارسات التي قد تسبب
+              مشاكل عند تنفيذ SQL.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon green-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h3>
+              خصوصية أفضل
+            </h3>
+
+            <p>
+              يتم تحليل النص داخل المتصفح ولا يتم إرسال SQL
+              إلى خادم خارجي.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>طريقة الاستخدام</span>
+
+          <h2>
+            كيف تستخدم SQL Validator؟
+          </h2>
+
+          <p>
+            تحقق من استعلام SQL في ثلاث خطوات بسيطة.
+          </p>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-keyboard"></i>
+            </div>
+
+            <h3>
+              أدخل SQL
+            </h3>
+
+            <p>
+              اكتب أو الصق استعلام SQL داخل المحرر.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+
+            <h3>
+              تحقق
+            </h3>
+
+            <p>
+              اضغط على زر «تحقق من SQL» لتحليل الاستعلام.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <h3>
+              أصلح المشاكل
+            </h3>
+
+            <p>
+              راجع الأخطاء والتنبيهات وعدّل الاستعلام عند الحاجة.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+          <p>
+            معلومات مهمة حول SQL Validator.
+          </p>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+</body>
+</html>
+
+
+<script is:inline>
+  (() => {
+
+    const input =
+      document.getElementById("sqlInput");
+
+    const validateBtn =
+      document.getElementById("validateBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const exampleBtn =
+      document.getElementById("exampleBtn");
+
+    const copyBtn =
+      document.getElementById("copyBtn");
+
+    const lineNumbers =
+      document.getElementById("lineNumbers");
+
+    const inputStats =
+      document.getElementById("inputStats");
+
+    const statusText =
+      document.getElementById("statusText");
+
+    const statusDot =
+      document.getElementById("statusDot");
+
+    const resultIcon =
+      document.getElementById("resultIcon");
+
+    const resultTitle =
+      document.getElementById("resultTitle");
+
+    const resultSubtitle =
+      document.getElementById("resultSubtitle");
+
+    const resultBadge =
+      document.getElementById("resultBadge");
+
+    const resultContent =
+      document.getElementById("resultContent");
+
+    const statementType =
+      document.getElementById("statementType");
+
+    const lineCount =
+      document.getElementById("lineCount");
+
+    const issueCount =
+      document.getElementById("issueCount");
+
+    const validState =
+      document.getElementById("validState");
+
+
+    function updateLines() {
+
+      const value = input.value;
+
+      const lines =
+        Math.max(
+          1,
+          value.split("\n").length
+        );
+
+      lineNumbers.textContent =
+        Array.from(
+          { length: lines },
+          (_, index) => index + 1
+        ).join("\n");
+
+      inputStats.textContent =
+        `${lines} سطر · ${value.length} حرف`;
+
+      lineCount.textContent =
+        value.trim()
+          ? lines
+          : 0;
+    }
+
+
+    function setStatus(
+      text,
+      type = "neutral"
+    ) {
+
+      statusText.textContent = text;
+
+      statusDot.className =
+        "status-dot";
+
+      if (type === "success") {
+        statusDot.classList.add(
+          "success"
+        );
+      }
+
+      if (type === "error") {
+        statusDot.classList.add(
+          "error"
+        );
+      }
+
+      if (type === "warning") {
+        statusDot.classList.add(
+          "warning"
+        );
+      }
+
+      if (type === "processing") {
+        statusDot.classList.add(
+          "processing"
+        );
+      }
+    }
+
+
+    function detectType(sql) {
+
+      const cleaned =
+        sql
+          .trim()
+          .replace(/^--.*$/gm, "")
+          .trim();
+
+      const match =
+        cleaned.match(
+          /^(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|TRUNCATE|WITH|MERGE|REPLACE)\b/i
+        );
+
+      if (!match) {
+        return "UNKNOWN";
+      }
+
+      return match[1].toUpperCase();
+    }
+
+
+    function checkBalanced(
+      text,
+      open,
+      close
+    ) {
+
+      let count = 0;
+
+      let quote = null;
+
+      for (
+        let i = 0;
+        i < text.length;
+        i++
+      ) {
+
+        const char = text[i];
+
+        if (
+          quote &&
+          char === quote
+        ) {
+
+          if (
+            text[i + 1] === quote
+          ) {
+            i++;
+            continue;
+          }
+
+          quote = null;
+          continue;
+        }
+
+        if (
+          !quote &&
+          (
+            char === "'" ||
+            char === '"' ||
+            char === "`"
+          )
+        ) {
+          quote = char;
+          continue;
+        }
+
+        if (!quote) {
+
+          if (char === open) {
+            count++;
+          }
+
+          if (char === close) {
+            count--;
+
+            if (count < 0) {
+              return false;
+            }
+          }
+        }
+      }
+
+      return count === 0;
+    }
+
+
+    function checkQuotes(sql) {
+
+      let quote = null;
+
+      for (
+        let i = 0;
+        i < sql.length;
+        i++
+      ) {
+
+        const char = sql[i];
+
+        if (
+          quote &&
+          char === quote
+        ) {
+
+          if (
+            sql[i + 1] === quote
+          ) {
+            i++;
+            continue;
+          }
+
+          quote = null;
+          continue;
+        }
+
+        if (
+          !quote &&
+          (
+            char === "'" ||
+            char === '"' ||
+            char === "`"
+          )
+        ) {
+          quote = char;
+        }
+      }
+
+      return quote === null;
+    }
+
+
+    function analyzeSQL(sql) {
+
+      const issues = [];
+      const warnings = [];
+
+      const trimmed =
+        sql.trim();
+
+      if (!trimmed) {
+
+        issues.push({
+          title: "الاستعلام فارغ",
+          detail:
+            "أدخل استعلام SQL حتى يمكن التحقق منه."
+        });
+
+        return {
+          valid: false,
+          issues,
+          warnings,
+          type: "—"
+        };
+      }
+
+
+      const type =
+        detectType(sql);
+
+
+      if (type === "UNKNOWN") {
+
+        issues.push({
+          title: "نوع SQL غير معروف",
+          detail:
+            "يجب أن يبدأ الاستعلام بأمر SQL معروف مثل SELECT أو INSERT أو UPDATE أو DELETE."
+        });
+
+      }
+
+
+      if (
+        !checkBalanced(
+          sql,
+          "(",
+          ")"
+        )
+      ) {
+
+        issues.push({
+          title: "أقواس غير متطابقة",
+          detail:
+            "تحقق من عدد الأقواس المفتوحة والمغلقة في الاستعلام."
+        });
+
+      }
+
+
+      if (!checkQuotes(sql)) {
+
+        issues.push({
+          title: "علامة اقتباس غير مغلقة",
+          detail:
+            "يوجد نص يبدأ بعلامة اقتباس ولم يتم إغلاقه بشكل صحيح."
+        });
+
+      }
+
+
+      const upper =
+        sql
+          .replace(
+            /'(?:''|[^'])*'/g,
+            "STRING"
+          )
+          .replace(
+            /"(?:[""]|[^"])*"/g,
+            "IDENTIFIER"
+          )
+          .toUpperCase();
+
+
+      if (type === "SELECT") {
+
+        if (!/\bFROM\b/.test(upper)) {
+
+          issues.push({
+            title: "SELECT بدون FROM",
+            detail:
+              "استعلام SELECT يحتاج عادةً إلى FROM عندما يتم جلب بيانات من جدول."
+          });
+
+        }
+
+
+        if (
+          /\bWHERE\b/.test(upper) &&
+          !/\bFROM\b/.test(upper)
+        ) {
+
+          issues.push({
+            title: "WHERE في موضع غير صحيح",
+            detail:
+              "يجب استخدام WHERE بعد مصدر البيانات."
+          });
+
+        }
+
+
+        if (
+          /\bORDER\s*$/.test(upper)
+        ) {
+
+          issues.push({
+            title: "ORDER BY غير مكتمل",
+            detail:
+              "يجب تحديد العمود بعد ORDER BY."
+          });
+
+        }
+
+
+        if (
+          /\bGROUP\s*$/.test(upper)
+        ) {
+
+          issues.push({
+            title: "GROUP BY غير مكتمل",
+            detail:
+              "يجب تحديد العمود بعد GROUP BY."
+          });
+
+        }
+
+
+        if (
+          /\bJOIN\b/.test(upper) &&
+          !/\bON\b/.test(upper)
+        ) {
+
+          warnings.push({
+            title: "JOIN بدون ON",
+            detail:
+              "تحقق من أن JOIN يحتوي على شرط ON مناسب."
+          });
+
+        }
+
+      }
+
+
+      if (type === "UPDATE") {
+
+        if (!/\bSET\b/.test(upper)) {
+
+          issues.push({
+            title: "UPDATE بدون SET",
+            detail:
+              "يجب أن يحتوي UPDATE على عبارة SET."
+          });
+
+        }
+
+      }
+
+
+      if (type === "INSERT") {
+
+        if (!/\bINTO\b/.test(upper)) {
+
+          issues.push({
+            title: "INSERT بدون INTO",
+            detail:
+              "يجب تحديد الجدول باستخدام INTO."
+          });
+
+        }
+
+        if (
+          !/\bVALUES\b/.test(upper) &&
+          !/\bSELECT\b/.test(upper)
+        ) {
+
+          warnings.push({
+            title: "INSERT بدون VALUES أو SELECT",
+            detail:
+              "تحقق من طريقة إدخال البيانات."
+          });
+
+        }
+
+      }
+
+
+      if (type === "DELETE") {
+
+        if (!/\bFROM\b/.test(upper)) {
+
+          issues.push({
+            title: "DELETE بدون FROM",
+            detail:
+              "يجب تحديد الجدول باستخدام FROM."
+          });
+
+        }
+
+        if (
+          !/\bWHERE\b/.test(upper)
+        ) {
+
+          warnings.push({
+            title: "DELETE بدون WHERE",
+            detail:
+              "قد يؤدي DELETE بدون WHERE إلى حذف جميع الصفوف."
+          });
+
+        }
+
+      }
+
+
+      if (type === "UPDATE") {
+
+        if (
+          !/\bWHERE\b/.test(upper)
+        ) {
+
+          warnings.push({
+            title: "UPDATE بدون WHERE",
+            detail:
+              "قد يؤدي UPDATE بدون WHERE إلى تعديل جميع الصفوف."
+          });
+
+        }
+
+      }
+
+
+      if (
+        /\bSELECT\s+FROM\b/i.test(sql)
+      ) {
+
+        issues.push({
+          title: "SELECT بدون أعمدة",
+          detail:
+            "حدد الأعمدة المطلوبة أو استخدم SELECT *."
+        });
+
+      }
+
+
+      if (
+        /\bWHERE\s*(ORDER|GROUP|LIMIT|;|$)/i.test(sql)
+      ) {
+
+        issues.push({
+          title: "WHERE بدون شرط",
+          detail:
+            "عبارة WHERE تحتاج إلى شرط صالح."
+        });
+
+      }
+
+
+      if (
+        /,\s*(FROM|WHERE|GROUP|ORDER|LIMIT)\b/i.test(sql)
+      ) {
+
+        issues.push({
+          title: "فاصلة زائدة",
+          detail:
+            "قد توجد فاصلة زائدة قبل عبارة SQL التالية."
+        });
+
+      }
+
+
+      if (
+        /\bSELECT\s+\*/i.test(sql)
+      ) {
+
+        warnings.push({
+          title: "استخدام SELECT *",
+          detail:
+            "يفضل تحديد الأعمدة المطلوبة في الاستعلامات الإنتاجية عند الإمكان."
+        });
+
+      }
+
+
+      return {
+        valid:
+          issues.length === 0,
+
+        issues,
+        warnings,
+        type
+      };
+    }
+
+
+    function renderResult(
+      analysis
+    ) {
+
+      const {
+        valid,
+        issues,
+        warnings,
+        type
+      } = analysis;
+
+
+      issueCount.textContent =
+        issues.length + warnings.length;
+
+      statementType.textContent =
+        type;
+
+      validState.textContent =
+        valid
+          ? "صالح"
+          : "يحتاج إصلاح";
+
+
+      if (valid) {
+
+        setStatus(
+          warnings.length
+            ? "صالح مع تنبيهات"
+            : "SQL صالح",
+          warnings.length
+            ? "warning"
+            : "success"
+        );
+
+        resultIcon.className =
+          "result-icon success";
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-check"></i>`;
+
+        resultTitle.textContent =
+          warnings.length
+            ? "SQL صالح مع تنبيهات"
+            : "SQL صالح";
+
+        resultSubtitle.textContent =
+          warnings.length
+            ? "لم يتم العثور على أخطاء أساسية، ولكن توجد بعض التنبيهات."
+            : "لم يتم العثور على أخطاء أساسية في الاستعلام.";
+
+        resultBadge.className =
+          warnings.length
+            ? "result-badge warning"
+            : "result-badge success";
+
+        resultBadge.textContent =
+          warnings.length
+            ? `${warnings.length} تنبيه`
+            : "Valid";
+
+      } else {
+
+        setStatus(
+          `${issues.length} مشكلة`,
+          "error"
+        );
+
+        resultIcon.className =
+          "result-icon error";
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-xmark"></i>`;
+
+        resultTitle.textContent =
+          "SQL يحتاج إلى إصلاح";
+
+        resultSubtitle.textContent =
+          "تم العثور على مشكلات في الاستعلام.";
+
+        resultBadge.className =
+          "result-badge error";
+
+        resultBadge.textContent =
+          `${issues.length} خطأ`;
+      }
+
+
+      let html = "";
+
+
+      if (issues.length) {
+
+        html += `
+          <div class="messages-section">
+            <div class="messages-heading error-heading">
+              <i class="fa-solid fa-circle-xmark"></i>
+              الأخطاء
+            </div>
+
+            <div class="messages-list">
+        `;
+
+        issues.forEach((item) => {
+
+          html += `
+            <div class="message error-message">
+              <div class="message-icon">
+                <i class="fa-solid fa-xmark"></i>
+              </div>
+
+              <div>
+                <strong>${item.title}</strong>
+                <p>${item.detail}</p>
+              </div>
+            </div>
+          `;
+
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+
+      }
+
+
+      if (warnings.length) {
+
+        html += `
+          <div class="messages-section">
+            <div class="messages-heading warning-heading">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              التنبيهات
+            </div>
+
+            <div class="messages-list">
+        `;
+
+        warnings.forEach((item) => {
+
+          html += `
+            <div class="message warning-message">
+              <div class="message-icon">
+                <i class="fa-solid fa-exclamation"></i>
+              </div>
+
+              <div>
+                <strong>${item.title}</strong>
+                <p>${item.detail}</p>
+              </div>
+            </div>
+          `;
+
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+
+      }
+
+
+      if (
+        !issues.length &&
+        !warnings.length
+      ) {
+
+        html = `
+          <div class="success-result">
+
+            <div class="success-large-icon">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+
+            <h3>
+              الاستعلام يبدو صالحاً
+            </h3>
+
+            <p>
+              لم يتم اكتشاف أخطاء أو تنبيهات في الفحص الأساسي.
+            </p>
+
+            <div class="success-note">
+              <i class="fa-solid fa-circle-info"></i>
+              التحقق يتم بناءً على تحليل نص SQL وليس تنفيذ الاستعلام.
+            </div>
+
+          </div>
+        `;
+
+      }
+
+
+      resultContent.innerHTML =
+        html;
+    }
+
+
+    function validate() {
+
+      setStatus(
+        "جارٍ التحقق...",
+        "processing"
+      );
+
+      const sql =
+        input.value;
+
+      setTimeout(() => {
+
+        const analysis =
+          analyzeSQL(sql);
+
+        renderResult(
+          analysis
+        );
+
+        updateLines();
+
+      }, 100);
+
+    }
+
+
+    function loadExample() {
+
+      input.value =
+`SELECT
+    u.id,
+    u.name,
+    u.email,
+    COUNT(o.id) AS orders_count
+FROM users u
+LEFT JOIN orders o
+    ON o.user_id = u.id
+WHERE u.status = 'active'
+GROUP BY u.id, u.name, u.email
+ORDER BY u.created_at DESC
+LIMIT 50;`;
+
+      updateLines();
+
+      validate();
+
+      input.focus();
+    }
+
+
+    function clearAll() {
+
+      input.value = "";
+
+      updateLines();
+
+      resultIcon.className =
+        "result-icon neutral";
+
+      resultIcon.innerHTML =
+        `<i class="fa-solid fa-circle-question"></i>`;
+
+      resultTitle.textContent =
+        "Validation Result";
+
+      resultSubtitle.textContent =
+        "نتيجة التحقق";
+
+      resultBadge.className =
+        "result-badge neutral";
+
+      resultBadge.textContent =
+        "غير مفحوص";
+
+      resultContent.innerHTML = `
+        <div class="empty-result">
+
+          <div class="empty-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <h3>
+            جاهز لفحص SQL
+          </h3>
+
+          <p>
+            أدخل استعلام SQL ثم اضغط
+            «تحقق من SQL» لبدء التحليل.
+          </p>
+
+        </div>
+      `;
+
+      statementType.textContent =
+        "—";
+
+      lineCount.textContent =
+        "0";
+
+      issueCount.textContent =
+        "0";
+
+      validState.textContent =
+        "—";
+
+      setStatus(
+        "جاهز للتحقق",
+        "neutral"
+      );
+
+    }
+
+
+    async function copySQL() {
+
+      if (!input.value.trim()) {
+
+        setStatus(
+          "لا يوجد SQL للنسخ",
+          "warning"
+        );
+
+        return;
+      }
+
+      try {
+
+        await navigator.clipboard.writeText(
+          input.value
+        );
+
+        const old =
+          copyBtn.innerHTML;
+
+        copyBtn.innerHTML =
+          `<i class="fa-solid fa-check"></i> تم النسخ`;
+
+        setStatus(
+          "تم نسخ SQL",
+          "success"
+        );
+
+        setTimeout(() => {
+
+          copyBtn.innerHTML =
+            old;
+
+          setStatus(
+            "جاهز للتحقق",
+            "neutral"
+          );
+
+        }, 1500);
+
+      } catch {
+
+        input.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        setStatus(
+          "تم النسخ",
+          "success"
+        );
+      }
+
+    }
+
+
+    input.addEventListener(
+      "input",
+      updateLines
+    );
+
+
+    input.addEventListener(
+      "scroll",
+      () => {
+        lineNumbers.scrollTop =
+          input.scrollTop;
+      }
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.ctrlKey &&
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          validate();
+        }
+
+
+        if (event.key === "Tab") {
+
+          event.preventDefault();
+
+          const start =
+            input.selectionStart;
+
+          const end =
+            input.selectionEnd;
+
+          input.value =
+            input.value.substring(
+              0,
+              start
+            ) +
+            "  " +
+            input.value.substring(
+              end
+            );
+
+          input.selectionStart =
+            input.selectionEnd =
+              start + 2;
+
+          updateLines();
+        }
+
+      }
+    );
+
+
+    validateBtn.addEventListener(
+      "click",
+      validate
+    );
+
+    clearBtn.addEventListener(
+      "click",
+      clearAll
+    );
+
+    exampleBtn.addEventListener(
+      "click",
+      loadExample
+    );
+
+    copyBtn.addEventListener(
+      "click",
+      copySQL
+    );
+
+
+    updateLines();
+
+  })();
+</script>
+
+
+<style>
+
+  :root {
+
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #3b82f6;
+    --blue: #2563eb;
+    --cyan: #0891b2;
+    --purple: #7c3aed;
+    --green: #16a34a;
+    --orange: #ea580c;
+    --red: #dc2626;
+
+    --bg: #f5f8fc;
+    --card: #ffffff;
+    --soft: #f3f6fb;
+
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e2e8f0;
+
+    --input: #ffffff;
+
+    --shadow:
+      0 24px 70px
+      rgba(30, 64, 175, 0.08);
+  }
+
+
+  /* نفس نظام الوضع الليلي في SQL Formatter */
+
+  html.dark-mode {
+
+    --bg: #070b14;
+    --card: #0d1421;
+    --soft: #111b2b;
+
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.14);
+
+    --input: #101827;
+
+    --primary: #60a5fa;
+    --primary-dark: #3b82f6;
+    --secondary: #93c5fd;
+    --blue: #60a5fa;
+
+    --shadow:
+      0 30px 80px
+      rgba(0, 0, 0, 0.45);
+  }
+
+
+  * {
+    box-sizing: border-box;
+  }
+
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+
+  body {
+
+    margin: 0;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+      "Cairo",
+      sans-serif;
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+
+  .container {
+
+    width:
+      min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+    margin: 0 auto;
+  }
+
+
+  /* HERO */
+
+  .hero {
+
+    padding:
+      42px 0
+      55px;
+
+    background:
+      radial-gradient(
+        circle at 85% 20%,
+        rgba(37, 99, 235, 0.12),
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        var(--card),
+        var(--bg)
+      );
+
+    border-bottom:
+      1px solid var(--border);
+
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+
+  .breadcrumb {
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 36px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+  }
+
+
+  .breadcrumb a {
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-weight: 700;
+  }
+
+
+  .breadcrumb i {
+    font-size: 9px;
+    opacity: 0.7;
+  }
+
+
+  .hero-content {
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+  }
+
+
+  .hero-icon {
+
+    position: relative;
+
+    width: 112px;
+    height: 112px;
+
+    flex: 0 0 112px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 30px;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+
+    color: white;
+
+    font-size: 42px;
+
+    box-shadow:
+      0 18px 45px
+      rgba(37, 99, 235, 0.28);
+  }
+
+
+  .hero-icon .icon-glow {
+
+    position: absolute;
+
+    inset: -12px;
+
+    border-radius: 38px;
+
+    background:
+      rgba(37, 99, 235, 0.14);
+
+    filter: blur(18px);
+
+    z-index: -1;
+  }
+
+
+  .hero-icon > i {
+    position: relative;
+    z-index: 2;
+  }
+
+
+  .mini-icon {
+
+    position: absolute;
+
+    right: -8px;
+    bottom: -8px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--card);
+    color: var(--primary);
+
+    border:
+      1px solid var(--border);
+
+    font-size: 14px;
+
+    box-shadow:
+      0 8px 20px
+      rgba(0, 0, 0, 0.12);
+  }
+
+
+  .hero-text {
+    max-width: 780px;
+  }
+
+
+  .badge {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color: var(--primary);
+
+    border:
+      1px solid
+      rgba(37, 99, 235, 0.18);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    margin-bottom: 12px;
+  }
+
+
+  .hero-text h1 {
+
+    margin: 0;
+
+    font-size:
+      clamp(
+        29px,
+        5vw,
+        46px
+      );
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+  }
+
+
+  .hero-text h1 span {
+
+    display: inline-block;
+
+    margin-right: 10px;
+
+    color: var(--primary);
+
+    font-size: 0.55em;
+
+    font-weight: 700;
+  }
+
+
+  .hero-text p {
+
+    max-width: 750px;
+
+    margin:
+      15px 0
+      20px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+  }
+
+
+  .hero-features {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+  }
+
+
+  .hero-features span {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 10px;
+
+    background: var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+
+  .hero-features i {
+    color: var(--primary);
+  }
+
+
+  /* TOOL */
+
+  .tool-section {
+
+    padding:
+      50px 0
+      70px;
+  }
+
+
+  .validator-card {
+
+    overflow: hidden;
+
+    background: var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 24px;
+
+    box-shadow: var(--shadow);
+
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+
+  .card-topbar {
+
+    min-height: 76px;
+
+    padding:
+      16px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .topbar-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+  }
+
+
+  .database-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color: var(--primary);
+  }
+
+
+  .topbar-title strong,
+  .topbar-title small {
+    display: block;
+  }
+
+
+  .topbar-title strong {
+    font-size: 15px;
+  }
+
+
+  .topbar-title small {
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+  }
+
+
+  .status {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+  }
+
+
+  .status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #94a3b8;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(148, 163, 184, 0.12);
+  }
+
+
+  .status-dot.success {
+
+    background: #22c55e;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(34, 197, 94, 0.12);
+  }
+
+
+  .status-dot.error {
+
+    background: #ef4444;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(239, 68, 68, 0.12);
+  }
+
+
+  .status-dot.warning {
+
+    background: #f59e0b;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(245, 158, 11, 0.12);
+  }
+
+
+  .status-dot.processing {
+
+    background: var(--primary);
+
+    box-shadow:
+      0 0 0 4px
+      rgba(37, 99, 235, 0.12);
+
+    animation:
+      pulse 1s infinite;
+  }
+
+
+  @keyframes pulse {
+
+    50% {
+      opacity: 0.45;
+    }
+
+  }
+
+
+  /* ACTION BAR */
+
+  .actionbar {
+
+    padding:
+      14px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    background: var(--soft);
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .action-group {
+
+    display: flex;
+
+    gap: 8px;
+  }
+
+
+  .btn {
+
+    min-height: 40px;
+
+    padding:
+      8px 14px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease;
+  }
+
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+
+  .btn-example {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color: var(--blue);
+  }
+
+
+  .btn-clear {
+
+    background:
+      rgba(220, 38, 38, 0.08);
+
+    color: var(--red);
+  }
+
+
+  .btn-copy {
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color: var(--purple);
+  }
+
+
+  .btn-validate {
+
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+      );
+
+    box-shadow:
+      0 8px 22px
+      rgba(37, 99, 235, 0.22);
+  }
+
+
+  /* WORKSPACE */
+
+  .workspace {
+
+    padding: 22px;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    gap: 16px;
+  }
+
+
+  .editor-panel,
+  .result-panel {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 17px;
+
+    background: var(--card);
+  }
+
+
+  .panel-header,
+  .result-header {
+
+    min-height: 62px;
+
+    padding:
+      11px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .panel-title,
+  .result-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+  }
+
+
+  .panel-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #3b82f6;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(59, 130, 246, 0.12);
+  }
+
+
+  .panel-title strong,
+  .panel-title small,
+  .result-title strong,
+  .result-title small {
+
+    display: block;
+  }
+
+
+  .panel-title strong,
+  .result-title strong {
+    font-size: 13px;
+  }
+
+
+  .panel-title small,
+  .result-title small {
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .language-badge {
+
+    padding:
+      5px 9px;
+
+    border-radius: 7px;
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color: var(--primary);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+
+  .editor {
+
+    height: 380px;
+
+    display: grid;
+
+    grid-template-columns:
+      52px minmax(0, 1fr);
+
+    direction: ltr;
+
+    background:
+      #0f172a;
+  }
+
+
+  .line-numbers {
+
+    overflow: hidden;
+
+    padding:
+      18px 12px;
+
+    background:
+      #111827;
+
+    color:
+      #64748b;
+
+    border-right:
+      1px solid
+      rgba(148, 163, 184, 0.1);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    text-align: right;
+
+    white-space: pre;
+  }
+
+
+  .editor textarea {
+
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    padding:
+      18px;
+
+    border: 0;
+    outline: 0;
+
+    background:
+      #0f172a;
+
+    color:
+      #dbeafe;
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    direction: ltr;
+    text-align: left;
+
+    tab-size: 2;
+  }
+
+
+  .editor textarea::placeholder {
+    color: #64748b;
+  }
+
+
+  .editor-footer {
+
+    min-height: 43px;
+
+    padding:
+      8px 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--soft);
+
+    border-top:
+      1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .editor-footer span:first-child {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--primary);
+
+    font-weight: 700;
+  }
+
+
+  /* RESULT */
+
+  .result-icon {
+
+    width: 39px;
+    height: 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 15px;
+  }
+
+
+  .result-icon.neutral {
+
+    background:
+      rgba(100, 116, 139, 0.1);
+
+    color:
+      #64748b;
+  }
+
+
+  .result-icon.success {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .result-icon.error {
+
+    background:
+      rgba(220, 38, 38, 0.1);
+
+    color:
+      var(--red);
+  }
+
+
+  .result-badge {
+
+    padding:
+      5px 9px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+  }
+
+
+  .result-badge.neutral {
+
+    background:
+      rgba(100, 116, 139, 0.1);
+
+    color:
+      var(--muted);
+  }
+
+
+  .result-badge.success {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .result-badge.error {
+
+    background:
+      rgba(220, 38, 38, 0.1);
+
+    color:
+      var(--red);
+  }
+
+
+  .result-badge.warning {
+
+    background:
+      rgba(245, 158, 11, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .result-content {
+
+    min-height: 380px;
+
+    max-height: 380px;
+
+    overflow-y: auto;
+
+    padding: 20px;
+  }
+
+
+  .empty-result,
+  .success-result {
+
+    min-height: 330px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+  }
+
+
+  .empty-icon,
+  .success-large-icon {
+
+    width: 68px;
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    margin-bottom: 16px;
+
+    background:
+      rgba(37, 99, 235, 0.09);
+
+    color:
+      var(--primary);
+
+    font-size: 25px;
+  }
+
+
+  .success-large-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .empty-result h3,
+  .success-result h3 {
+
+    margin:
+      0 0 7px;
+
+    font-size: 16px;
+  }
+
+
+  .empty-result p,
+  .success-result p {
+
+    max-width: 390px;
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+  }
+
+
+  .success-note {
+
+    margin-top: 18px;
+
+    padding:
+      9px 12px;
+
+    border-radius: 9px;
+
+    background:
+      rgba(37, 99, 235, 0.07);
+
+    color: var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .success-note i {
+    color: var(--primary);
+  }
+
+
+  /* MESSAGES */
+
+  .messages-section {
+    display: grid;
+
+    gap: 9px;
+  }
+
+
+  .messages-section
+    + .messages-section {
+
+    margin-top: 18px;
+  }
+
+
+  .messages-heading {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 2px;
+
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+
+  .error-heading {
+    color: var(--red);
+  }
+
+
+  .warning-heading {
+    color: var(--orange);
+  }
+
+
+  .messages-list {
+
+    display: grid;
+
+    gap: 8px;
+  }
+
+
+  .message {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding:
+      11px;
+
+    border-radius: 11px;
+
+    border: 1px solid transparent;
+  }
+
+
+  .error-message {
+
+    background:
+      rgba(220, 38, 38, 0.06);
+
+    border-color:
+      rgba(220, 38, 38, 0.12);
+  }
+
+
+  .warning-message {
+
+    background:
+      rgba(234, 88, 12, 0.06);
+
+    border-color:
+      rgba(234, 88, 12, 0.12);
+  }
+
+
+  .message-icon {
+
+    width: 28px;
+    height: 28px;
+
+    flex: 0 0 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+  }
+
+
+  .error-message .message-icon {
+
+    background:
+      rgba(220, 38, 38, 0.12);
+
+    color:
+      var(--red);
+  }
+
+
+  .warning-message .message-icon {
+
+    background:
+      rgba(234, 88, 12, 0.12);
+
+    color:
+      var(--orange);
+  }
+
+
+  .message strong {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: 11px;
+  }
+
+
+  .message p {
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.7;
+  }
+
+
+  /* SUMMARY */
+
+  .summary {
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .summary-title {
+
+    padding:
+      12px 18px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+
+  .summary-title i {
+    color: var(--primary);
+  }
+
+
+  .summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+  }
+
+
+  .summary-item {
+
+    min-height: 77px;
+
+    padding:
+      13px 17px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-top:
+      1px solid var(--border);
+
+    border-left:
+      1px solid var(--border);
+  }
+
+
+  .summary-item:last-child {
+    border-left: 0;
+  }
+
+
+  .summary-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .summary-icon.blue {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .summary-icon.purple {
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--purple);
+  }
+
+
+  .summary-icon.orange {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .summary-icon.green {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .summary-item strong,
+  .summary-item span {
+
+    display: block;
+  }
+
+
+  .summary-item strong {
+    font-size: 13px;
+  }
+
+
+  .summary-item span {
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  /* SECTIONS */
+
+  .info-section,
+  .faq-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--card);
+
+    border-top:
+      1px solid var(--border);
+
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+
+  .how-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--bg);
+  }
+
+
+  .section-heading {
+
+    max-width: 700px;
+
+    margin:
+      0 auto
+      38px;
+
+    text-align: center;
+  }
+
+
+  .section-heading > span {
+
+    color:
+      var(--primary);
+
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+
+  .section-heading h2 {
+
+    margin:
+      7px 0
+      10px;
+
+    font-size:
+      clamp(
+        24px,
+        4vw,
+        34px
+      );
+
+    line-height: 1.3;
+  }
+
+
+  .section-heading p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+
+  .info-grid {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 18px;
+  }
+
+
+  .info-card {
+
+    padding: 24px;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  .info-card:hover {
+
+    transform:
+      translateY(-4px);
+
+    border-color:
+      rgba(37, 99, 235, 0.3);
+  }
+
+
+  .info-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    margin-bottom: 17px;
+
+    font-size: 18px;
+  }
+
+
+  .blue-icon {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .orange-icon {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .green-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .info-card h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 17px;
+  }
+
+
+  .info-card p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* STEPS */
+
+  .steps {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 20px;
+  }
+
+
+  .step {
+
+    position: relative;
+
+    padding: 26px;
+
+    background:
+      var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+      0 10px 30px
+      rgba(15, 23, 42, 0.04);
+  }
+
+
+  .step-number {
+
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+
+  .step-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin:
+      5px auto
+      17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(37, 99, 235, 0.12),
+        rgba(96, 165, 250, 0.06)
+      );
+
+    color:
+      var(--primary);
+
+    font-size: 21px;
+  }
+
+
+  .step h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 16px;
+  }
+
+
+  .step p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+  }
+
+
+  /* FAQ */
+
+  .faq-list {
+
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    gap: 10px;
+  }
+
+
+  .faq-item {
+
+    overflow: hidden;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 14px;
+  }
+
+
+  .faq-item summary {
+
+    cursor: pointer;
+
+    list-style: none;
+
+    padding:
+      17px 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+
+  .faq-item summary i {
+
+    color:
+      var(--primary);
+
+    transition:
+      transform 0.2s ease;
+  }
+
+
+  .faq-item[open]
+    summary i {
+
+    transform:
+      rotate(180deg);
+  }
+
+
+  .faq-item p {
+
+    margin: 0;
+
+    padding:
+      0 19px
+      18px;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* DARK MODE DETAILS */
+
+  html.dark-mode .hero {
+
+    background:
+      radial-gradient(
+        circle at 85% 20%,
+        rgba(96, 165, 250, 0.1),
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        var(--card),
+        var(--bg)
+      );
+  }
+
+
+  html.dark-mode .step {
+
+    box-shadow:
+      0 20px 50px
+      rgba(0, 0, 0, 0.22);
+  }
+
+
+  html.dark-mode input::placeholder,
+  html.dark-mode textarea::placeholder {
+    color: #64748b;
+  }
+
+
+  /* RESPONSIVE */
+
+  @media (max-width: 900px) {
+
+    .hero-content {
+      align-items: flex-start;
+    }
+
+
+    .workspace {
+
+      grid-template-columns: 1fr;
+    }
+
+
+    .info-grid,
+    .steps {
+
+      grid-template-columns: 1fr;
+    }
+
+
+    .summary-grid {
+
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+
+
+    .summary-item:nth-child(2) {
+      border-left: 0;
+    }
+
+  }
+
+
+  @media (max-width: 720px) {
+
+    .hero {
+
+      padding:
+        30px 0
+        40px;
+    }
+
+
+    .breadcrumb {
+
+      margin-bottom: 25px;
+    }
+
+
+    .hero-content {
+
+      flex-direction: column;
+
+      gap: 20px;
+    }
+
+
+    .hero-icon {
+
+      width: 86px;
+      height: 86px;
+
+      flex-basis: 86px;
+
+      border-radius: 23px;
+
+      font-size: 31px;
+    }
+
+
+    .mini-icon {
+
+      width: 31px;
+      height: 31px;
+
+      font-size: 11px;
+    }
+
+
+    .hero-text h1 span {
+
+      display: block;
+
+      margin:
+        6px 0 0;
+
+      font-size: 0.54em;
+    }
+
+
+    .hero-text p {
+      font-size: 13px;
+    }
+
+
+    .tool-section {
+
+      padding:
+        30px 0
+        50px;
+    }
+
+
+    .card-topbar {
+
+      align-items:
+        flex-start;
+    }
+
+
+    .actionbar {
+
+      flex-direction: column;
+
+      align-items:
+        stretch;
+    }
+
+
+    .action-group {
+
+      width: 100%;
+    }
+
+
+    .action-group .btn {
+
+      flex: 1;
+    }
+
+
+    .workspace {
+
+      padding: 12px;
+    }
+
+
+    .editor {
+
+      height: 310px;
+    }
+
+
+    .result-content {
+
+      min-height: 300px;
+
+      max-height:
+        none;
+    }
+
+
+    .summary-grid {
+
+      grid-template-columns:
+        1fr 1fr;
+    }
+
+
+    .summary-item {
+
+      min-height: 70px;
+
+      padding: 12px;
+    }
+
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        55px 0;
+    }
+
+  }
+
+
+  @media (max-width: 460px) {
+
+    .container {
+
+      width:
+        min(
+          calc(100% - 22px),
+          1180px
+        );
+    }
+
+
+    .hero-features span {
+
+      font-size: 10px;
+    }
+
+
+    .card-topbar {
+
+      padding: 13px;
+    }
+
+
+    .status {
+
+      font-size: 10px;
+    }
+
+
+    .actionbar {
+
+      padding: 11px;
+    }
+
+
+    .btn {
+
+      padding:
+        8px 9px;
+
+      font-size: 10px;
+    }
+
+
+    .editor {
+
+      grid-template-columns:
+        42px 1fr;
+
+      height: 280px;
+    }
+
+
+    .line-numbers {
+
+      padding:
+        18px 8px;
+
+      font-size: 10px;
+    }
+
+
+    .editor textarea {
+
+      padding:
+        18px 12px;
+
+      font-size: 11px;
+    }
+
+
+    .summary-item {
+
+      gap: 7px;
+    }
+
+
+    .summary-icon {
+
+      width: 34px;
+      height: 34px;
+
+      flex-basis: 34px;
+
+      font-size: 11px;
+    }
+
+
+    .summary-item strong {
+      font-size: 11px;
+    }
+
+
+    .summary-item span {
+      font-size: 9px;
+    }
+
+
+    .section-heading h2 {
+      font-size: 24px;
+    }
+
+  }
+
+</style>
