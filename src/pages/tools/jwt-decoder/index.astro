@@ -1,0 +1,3323 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "JWT Decoder - قراءة وتحليل JWT أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة JWT Decoder مجانية لقراءة وتحليل Header وPayload الخاصة بـ JSON Web Token مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو JWT؟",
+    a: "JWT أو JSON Web Token هو تنسيق شائع لنقل المعلومات بين الأطراف، ويتكون عادةً من ثلاثة أجزاء: Header وPayload وSignature."
+  },
+  {
+    q: "هل تقوم الأداة بالتحقق من توقيع JWT؟",
+    a: "لا. هذه الأداة تقوم بقراءة وفك ترميز Header وPayload فقط، ولا تعتبر التوكن صالحاً أو موثوقاً لمجرد إمكانية فك ترميزه."
+  },
+  {
+    q: "هل يتم إرسال JWT إلى الخادم؟",
+    a: "لا. تتم عملية فك الترميز داخل المتصفح باستخدام JavaScript، ولا يتم إرسال التوكن إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن قراءة Payload بدون معرفة Secret Key؟",
+    a: "نعم. Header وPayload في JWT عادةً Base64URL encoded وليسا مشفرين. يمكن قراءتهما دون Secret Key، بينما التحقق من Signature يحتاج إلى المفتاح والخوارزمية المناسبة."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>JWT Decoder</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-cube"></i>
+            <span>JWT</span>
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+            <h1>JWT Decoder</h1>
+
+            <p>
+              اقرأ وحلّل JSON Web Token واستخراج
+              Header وPayload وSignature بسهولة.
+            </p>
+
+            <div class="tags">
+              <span>JWT</span>
+              <span>Base64URL</span>
+              <span>JSON</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="decoder-card">
+
+          <!-- TOP BAR -->
+          <div class="card-topbar">
+
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="tool-name">
+              <i class="fa-solid fa-cube"></i>
+              JWT Decoder
+            </div>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+
+          </div>
+
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
+
+            <button id="copyBtn" class="btn btn-secondary">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="decodeBtn" class="btn btn-primary">
+              <i class="fa-solid fa-unlock-keyhole"></i>
+              تحليل JWT
+            </button>
+
+          </div>
+
+
+          <!-- INPUT -->
+          <div class="input-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-key"></i>
+                JWT Token
+              </div>
+
+              <span id="inputCount">0 حرف</span>
+
+            </div>
+
+            <textarea
+              id="jwtInput"
+              spellcheck="false"
+              placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aHRlY2giLCJuYW1lIjoiVGguVGVjaCJ9.signature"
+            ></textarea>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
+
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز للتحليل
+              </strong>
+
+              <p id="resultMessage">
+                أدخل JWT ثم اضغط على تحليل JWT.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- PARTS -->
+          <div class="parts-grid">
+
+            <!-- HEADER -->
+            <div class="jwt-panel">
+
+              <div class="panel-header">
+                <div class="panel-title">
+                  <div class="panel-icon">
+                    <i class="fa-solid fa-code"></i>
+                  </div>
+
+                  <div>
+                    <strong>Header</strong>
+                    <span>بيانات الرأس</span>
+                  </div>
+                </div>
+
+                <span class="part-badge">PART 1</span>
+              </div>
+
+              <pre id="headerOutput" class="code-output">—</pre>
+
+              <button class="copy-part" data-copy="header">
+                <i class="fa-regular fa-copy"></i>
+                نسخ Header
+              </button>
+
+            </div>
+
+
+            <!-- PAYLOAD -->
+            <div class="jwt-panel">
+
+              <div class="panel-header">
+                <div class="panel-title">
+                  <div class="panel-icon payload-icon">
+                    <i class="fa-solid fa-database"></i>
+                  </div>
+
+                  <div>
+                    <strong>Payload</strong>
+                    <span>بيانات التوكن</span>
+                  </div>
+                </div>
+
+                <span class="part-badge">PART 2</span>
+              </div>
+
+              <pre id="payloadOutput" class="code-output">—</pre>
+
+              <button class="copy-part" data-copy="payload">
+                <i class="fa-regular fa-copy"></i>
+                نسخ Payload
+              </button>
+
+            </div>
+
+
+            <!-- SIGNATURE -->
+            <div class="jwt-panel signature-panel">
+
+              <div class="panel-header">
+                <div class="panel-title">
+                  <div class="panel-icon signature-icon">
+                    <i class="fa-solid fa-fingerprint"></i>
+                  </div>
+
+                  <div>
+                    <strong>Signature</strong>
+                    <span>التوقيع</span>
+                  </div>
+                </div>
+
+                <span class="part-badge">PART 3</span>
+              </div>
+
+              <pre id="signatureOutput" class="code-output signature-output">—</pre>
+
+              <div class="signature-note">
+                <i class="fa-solid fa-circle-info"></i>
+                التوقيع معروض فقط ولا يتم التحقق منه.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- CLAIMS -->
+          <div class="claims-panel" id="claimsPanel">
+
+            <div class="panel-title">
+              <i class="fa-solid fa-list-check"></i>
+              JWT Claims
+            </div>
+
+            <div id="claimsList" class="claims-list">
+
+              <div class="empty-claims">
+                لا توجد Claims لعرضها.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-text-width"></i>
+              </div>
+
+              <div>
+                <span>طول JWT</span>
+                <strong id="statLength">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+
+              <div>
+                <span>الأجزاء</span>
+                <strong id="statParts">0 / 3</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-code"></i>
+              </div>
+
+              <div>
+                <span>Algorithm</span>
+                <strong id="statAlgorithm">—</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>JWT DECODER</span>
+
+          <h2>
+            ما هو JWT Decoder؟
+          </h2>
+
+          <p>
+            أداة للمطورين تساعد على قراءة مكونات JSON Web Token
+            وفهم البيانات الموجودة بداخله.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <h3>
+              Header
+            </h3>
+
+            <p>
+              يحتوي عادةً على نوع التوكن والخوارزمية
+              المستخدمة لإنشاء التوقيع.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-database"></i>
+            </div>
+
+            <h3>
+              Payload
+            </h3>
+
+            <p>
+              يحتوي على Claims مثل subject وissuer
+              ووقت الانتهاء وغيرها من البيانات.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-fingerprint"></i>
+            </div>
+
+            <h3>
+              Signature
+            </h3>
+
+            <p>
+              الجزء الثالث من JWT ويستخدم للتحقق من
+              سلامة التوكن عند توفر المفتاح المناسب.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام JWT Decoder
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+              <h3>
+                الصق JWT
+              </h3>
+
+              <p>
+                ضع JSON Web Token داخل مربع الإدخال.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+              <h3>
+                ابدأ التحليل
+              </h3>
+
+              <p>
+                اضغط على تحليل JWT لفك Header وPayload.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+              <h3>
+                راجع البيانات
+              </h3>
+
+              <p>
+                استعرض Claims وAlgorithm وSignature.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details>
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <Footer />
+
+
+  <!-- JAVASCRIPT -->
+  <script is:inline>
+    (() => {
+
+      const input =
+        document.getElementById("jwtInput");
+
+      const decodeBtn =
+        document.getElementById("decodeBtn");
+
+      const exampleBtn =
+        document.getElementById("exampleBtn");
+
+      const clearBtn =
+        document.getElementById("clearBtn");
+
+      const copyBtn =
+        document.getElementById("copyBtn");
+
+
+      const inputCount =
+        document.getElementById("inputCount");
+
+      const resultBox =
+        document.getElementById("resultBox");
+
+      const resultIcon =
+        document.getElementById("resultIcon");
+
+      const resultTitle =
+        document.getElementById("resultTitle");
+
+      const resultMessage =
+        document.getElementById("resultMessage");
+
+
+      const headerOutput =
+        document.getElementById("headerOutput");
+
+      const payloadOutput =
+        document.getElementById("payloadOutput");
+
+      const signatureOutput =
+        document.getElementById("signatureOutput");
+
+
+      const claimsPanel =
+        document.getElementById("claimsPanel");
+
+      const claimsList =
+        document.getElementById("claimsList");
+
+
+      const statLength =
+        document.getElementById("statLength");
+
+      const statParts =
+        document.getElementById("statParts");
+
+      const statAlgorithm =
+        document.getElementById("statAlgorithm");
+
+      const statStatus =
+        document.getElementById("statStatus");
+
+
+      let decodedHeader = "";
+      let decodedPayload = "";
+      let decodedSignature = "";
+
+
+      function updateCount() {
+
+        const length =
+          input.value.length;
+
+        inputCount.textContent =
+          `${length.toLocaleString()} حرف`;
+
+        statLength.textContent =
+          length.toLocaleString();
+      }
+
+
+      function showReady() {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-question"></i>';
+
+        resultTitle.textContent =
+          "جاهز للتحليل";
+
+        resultMessage.textContent =
+          "أدخل JWT ثم اضغط على تحليل JWT.";
+
+        statStatus.textContent =
+          "جاهز";
+      }
+
+
+      function showSuccess(message) {
+
+        resultBox.classList.remove(
+          "error"
+        );
+
+        resultBox.classList.add(
+          "success"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i>';
+
+        resultTitle.textContent =
+          "تم تحليل JWT بنجاح";
+
+        resultMessage.textContent =
+          message;
+
+        statStatus.textContent =
+          "تم التحليل";
+      }
+
+
+      function showError(message) {
+
+        resultBox.classList.remove(
+          "success"
+        );
+
+        resultBox.classList.add(
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-xmark"></i>';
+
+        resultTitle.textContent =
+          "تعذر تحليل JWT";
+
+        resultMessage.textContent =
+          message;
+
+        statStatus.textContent =
+          "خطأ";
+      }
+
+
+      function resetOutput() {
+
+        headerOutput.textContent =
+          "—";
+
+        payloadOutput.textContent =
+          "—";
+
+        signatureOutput.textContent =
+          "—";
+
+        decodedHeader = "";
+        decodedPayload = "";
+        decodedSignature = "";
+
+        statParts.textContent =
+          "0 / 3";
+
+        statAlgorithm.textContent =
+          "—";
+
+        claimsList.innerHTML =
+          '<div class="empty-claims">لا توجد Claims لعرضها.</div>';
+
+        claimsPanel.classList.remove(
+          "visible"
+        );
+      }
+
+
+      function base64UrlDecode(value) {
+
+        let str =
+          value
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
+
+
+        while (
+          str.length % 4 !== 0
+        ) {
+
+          str += "=";
+        }
+
+
+        const binary =
+          atob(str);
+
+
+        const bytes =
+          new Uint8Array(
+            binary.length
+          );
+
+
+        for (
+          let i = 0;
+          i < binary.length;
+          i++
+        ) {
+
+          bytes[i] =
+            binary.charCodeAt(i);
+
+        }
+
+
+        try {
+
+          return new TextDecoder(
+            "utf-8",
+            { fatal: true }
+          ).decode(bytes);
+
+        } catch {
+
+          return new TextDecoder(
+            "utf-8"
+          ).decode(bytes);
+
+        }
+      }
+
+
+      function prettyJSON(text) {
+
+        try {
+
+          const parsed =
+            JSON.parse(text);
+
+          return JSON.stringify(
+            parsed,
+            null,
+            2
+          );
+
+        } catch {
+
+          return text;
+        }
+      }
+
+
+      function createClaims(payload) {
+
+        claimsList.innerHTML = "";
+
+        const keys =
+          Object.keys(payload);
+
+
+        if (!keys.length) {
+
+          claimsList.innerHTML =
+            '<div class="empty-claims">لا توجد Claims داخل Payload.</div>';
+
+          claimsPanel.classList.add(
+            "visible"
+          );
+
+          return;
+        }
+
+
+        keys.forEach(
+          (key) => {
+
+            const row =
+              document.createElement("div");
+
+            row.className =
+              "claim-row";
+
+
+            const name =
+              document.createElement("div");
+
+            name.className =
+              "claim-name";
+
+            name.textContent =
+              key;
+
+
+            const value =
+              document.createElement("div");
+
+            value.className =
+              "claim-value";
+
+
+            const raw =
+              payload[key];
+
+
+            if (
+              raw !== null &&
+              typeof raw === "object"
+            ) {
+
+              value.textContent =
+                JSON.stringify(raw);
+
+            } else {
+
+              value.textContent =
+                String(raw);
+
+            }
+
+
+            row.appendChild(
+              name
+            );
+
+            row.appendChild(
+              value
+            );
+
+
+            claimsList.appendChild(
+              row
+            );
+
+          }
+        );
+
+
+        claimsPanel.classList.add(
+          "visible"
+        );
+      }
+
+
+      function decodeJWT() {
+
+        const token =
+          input.value
+            .trim();
+
+
+        updateCount();
+
+
+        if (!token) {
+
+          showError(
+            "أدخل JWT أولاً."
+          );
+
+          return;
+        }
+
+
+        resetOutput();
+
+
+        const parts =
+          token.split(".");
+
+
+        if (parts.length !== 3) {
+
+          statParts.textContent =
+            `${parts.length} / 3`;
+
+          showError(
+            "JWT يجب أن يتكون عادةً من ثلاثة أجزاء مفصولة بنقاط."
+          );
+
+          return;
+        }
+
+
+        try {
+
+          const headerText =
+            base64UrlDecode(
+              parts[0]
+            );
+
+
+          const payloadText =
+            base64UrlDecode(
+              parts[1]
+            );
+
+
+          const header =
+            JSON.parse(
+              headerText
+            );
+
+
+          const payload =
+            JSON.parse(
+              payloadText
+            );
+
+
+          decodedHeader =
+            JSON.stringify(
+              header,
+              null,
+              2
+            );
+
+
+          decodedPayload =
+            JSON.stringify(
+              payload,
+              null,
+              2
+            );
+
+
+          decodedSignature =
+            parts[2];
+
+
+          headerOutput.textContent =
+            decodedHeader;
+
+
+          payloadOutput.textContent =
+            decodedPayload;
+
+
+          signatureOutput.textContent =
+            decodedSignature;
+
+
+          statParts.textContent =
+            "3 / 3";
+
+
+          statAlgorithm.textContent =
+            header.alg ||
+            "—";
+
+
+          createClaims(
+            payload
+          );
+
+
+          const type =
+            header.typ
+              ? ` — ${header.typ}`
+              : "";
+
+
+          showSuccess(
+            `تم فك Header وPayload بنجاح${type}. ملاحظة: لم يتم التحقق من التوقيع.`
+          );
+
+        } catch (error) {
+
+          resetOutput();
+
+          statParts.textContent =
+            "3 / 3";
+
+          showError(
+            "JWT غير صالح أو أن Header / Payload لا يحتويان على JSON صحيح."
+          );
+        }
+      }
+
+
+      function loadExample() {
+
+        input.value =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aHRlY2giLCJuYW1lIjoiVGguVGVjaCIsInJvbGUiOiJkZXZlbG9wZXIiLCJpYXQiOjE3MjAwMDAwMDB9.dGVjaC1zaWduYXR1cmU";
+
+        updateCount();
+
+        decodeJWT();
+      }
+
+
+      function clearAll() {
+
+        input.value = "";
+
+        updateCount();
+
+        resetOutput();
+
+        showReady();
+
+        input.focus();
+      }
+
+
+      async function copyAll() {
+
+        const value =
+          input.value.trim();
+
+
+        if (!value) {
+
+          showError(
+            "لا يوجد JWT لنسخه."
+          );
+
+          return;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            value
+          );
+
+
+          const original =
+            copyBtn.innerHTML;
+
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+
+          setTimeout(() => {
+
+            copyBtn.innerHTML =
+              original;
+
+          }, 1500);
+
+        } catch {
+
+          input.select();
+
+          document.execCommand(
+            "copy"
+          );
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+
+          setTimeout(() => {
+
+            copyBtn.innerHTML =
+              '<i class="fa-regular fa-copy"></i> نسخ';
+
+          }, 1500);
+        }
+      }
+
+
+      async function copyPart(type) {
+
+        let value = "";
+
+
+        if (type === "header") {
+          value = decodedHeader;
+        }
+
+
+        if (type === "payload") {
+          value = decodedPayload;
+        }
+
+
+        if (!value) {
+
+          return;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            value
+          );
+
+        } catch {
+
+          const temp =
+            document.createElement(
+              "textarea"
+            );
+
+          temp.value =
+            value;
+
+          document.body.appendChild(
+            temp
+          );
+
+          temp.select();
+
+          document.execCommand(
+            "copy"
+          );
+
+          temp.remove();
+        }
+
+      }
+
+
+      input.addEventListener(
+        "input",
+        updateCount
+      );
+
+
+      input.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.ctrlKey &&
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            decodeJWT();
+          }
+
+
+          if (
+            event.key === "Tab"
+          ) {
+
+            event.preventDefault();
+
+            const start =
+              input.selectionStart;
+
+            const end =
+              input.selectionEnd;
+
+
+            input.value =
+              input.value.substring(
+                0,
+                start
+              ) +
+              "  " +
+              input.value.substring(
+                end
+              );
+
+
+            input.selectionStart =
+              input.selectionEnd =
+                start + 2;
+
+            updateCount();
+          }
+
+        }
+      );
+
+
+      document
+        .querySelectorAll(".copy-part")
+        .forEach(
+          (button) => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                copyPart(
+                  button.dataset.copy
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      decodeBtn.addEventListener(
+        "click",
+        decodeJWT
+      );
+
+
+      exampleBtn.addEventListener(
+        "click",
+        loadExample
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      copyBtn.addEventListener(
+        "click",
+        copyAll
+      );
+
+
+      updateCount();
+
+      resetOutput();
+
+    })();
+  </script>
+
+
+  <style>
+
+    :root {
+
+      --bg: #f7fafc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+
+      --text: #172033;
+      --muted: #718096;
+
+      --border:
+        rgba(15, 23, 42, 0.09);
+
+      --primary: #7c3aed;
+      --primary-dark: #6d28d9;
+      --secondary: #a855f7;
+
+      --success: #16a34a;
+      --danger: #dc2626;
+
+      --shadow:
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
+    }
+
+
+    html.dark-mode {
+
+      --bg: #08070d;
+      --surface: #100d18;
+      --surface-2: #161221;
+
+      --text: #f8fafc;
+      --muted: #94a3b8;
+
+      --border:
+        rgba(148, 163, 184, 0.13);
+
+      --primary: #a78bfa;
+      --primary-dark: #8b5cf6;
+      --secondary: #c4b5fd;
+
+      --shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+    }
+
+
+    .container {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        auto;
+    }
+
+
+    /* HERO */
+
+    .hero {
+
+      padding:
+        38px 0 55px;
+
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(124, 58, 237, 0.13),
+          transparent 35%
+        ),
+        var(--bg);
+    }
+
+
+    .breadcrumb {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      flex-wrap:
+        wrap;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      margin-bottom:
+        38px;
+    }
+
+
+    .breadcrumb a {
+
+      color:
+        var(--muted);
+
+      text-decoration:
+        none;
+    }
+
+
+    .breadcrumb i {
+
+      font-size:
+        9px;
+    }
+
+
+    .hero-content {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        28px;
+    }
+
+
+    .hero-icon {
+
+      width:
+        112px;
+
+      height:
+        112px;
+
+      flex:
+        0 0 112px;
+
+      border-radius:
+        30px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex-direction:
+        column;
+
+      gap:
+        4px;
+
+      background:
+        rgba(124, 58, 237, 0.12);
+
+      color:
+        var(--primary);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .hero-icon i {
+
+      font-size:
+        40px;
+    }
+
+
+    .hero-icon span {
+
+      font:
+        700 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        7px 13px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(124, 58, 237, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    h1 {
+
+      margin:
+        12px 0 8px;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          52px
+        );
+
+      line-height:
+        1.1;
+    }
+
+
+    .hero-text p {
+
+      margin:
+        0;
+
+      max-width:
+        700px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        16px;
+
+      line-height:
+        1.9;
+    }
+
+
+    .tags {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        17px;
+    }
+
+
+    .tags span {
+
+      padding:
+        5px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface);
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+
+      padding-bottom:
+        70px;
+    }
+
+
+    .decoder-card {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    .card-topbar {
+
+      min-height:
+        55px;
+
+      padding:
+        0 20px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .window-dots {
+
+      display:
+        flex;
+
+      gap:
+        6px;
+    }
+
+
+    .window-dots span {
+
+      width:
+        9px;
+
+      height:
+        9px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--border);
+    }
+
+
+    .tool-name {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+
+      font:
+        600 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .tool-name i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .secure {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      color:
+        var(--success);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    /* ACTIONBAR */
+
+    .actionbar {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+
+      padding:
+        15px 18px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .btn {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        10px 15px;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .btn i {
+
+      margin-left:
+        6px;
+    }
+
+
+    .btn-secondary {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .btn-primary {
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .btn-primary:hover {
+
+      background:
+        var(--primary-dark);
+    }
+
+
+    /* INPUT */
+
+    .input-section {
+
+      margin:
+        20px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .editor-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        11px 14px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .editor-header div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+    }
+
+
+    .editor-header i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .editor-header span {
+
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #jwtInput {
+
+      width:
+        100%;
+
+      min-height:
+        125px;
+
+      display:
+        block;
+
+      resize:
+        vertical;
+
+      padding:
+        18px;
+
+      border:
+        0;
+
+      outline:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        var(--text);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        13px/1.9
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #jwtInput::placeholder {
+
+      color:
+        var(--muted);
+
+      opacity:
+        0.65;
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      margin:
+        0 20px 15px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .result-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        rgba(124, 58, 237, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        17px;
+    }
+
+
+    .result-box strong {
+
+      display:
+        block;
+
+      font-size:
+        13px;
+    }
+
+
+    .result-box p {
+
+      margin:
+        3px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .result-box.success {
+
+      border-color:
+        rgba(22, 163, 74, 0.25);
+    }
+
+
+    .result-box.success .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .result-box.error {
+
+      border-color:
+        rgba(220, 38, 38, 0.25);
+    }
+
+
+    .result-box.error .result-icon {
+
+      color:
+        var(--danger);
+
+      background:
+        rgba(220, 38, 38, 0.10);
+    }
+
+
+    /* JWT PARTS */
+
+    .parts-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap:
+        15px;
+
+      margin:
+        0 20px 15px;
+    }
+
+
+    .jwt-panel {
+
+      min-width:
+        0;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .signature-panel {
+
+      grid-column:
+        1 / -1;
+    }
+
+
+    .panel-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      padding:
+        13px 15px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .panel-title {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+    }
+
+
+    .panel-icon {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .payload-icon {
+
+      color:
+        #0891b2;
+
+      background:
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .signature-icon {
+
+      color:
+        #16a34a;
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .panel-title strong {
+
+      display:
+        block;
+
+      font:
+        600 12px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .panel-title span {
+
+      display:
+        block;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+    }
+
+
+    .part-badge {
+
+      padding:
+        4px 7px;
+
+      border-radius:
+        6px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface);
+
+      font:
+        500 8px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .code-output {
+
+      min-height:
+        135px;
+
+      max-height:
+        300px;
+
+      overflow:
+        auto;
+
+      margin:
+        0;
+
+      padding:
+        17px;
+
+      white-space:
+        pre-wrap;
+
+      word-break:
+        break-word;
+
+      color:
+        var(--text);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        12px/1.8
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .signature-output {
+
+      min-height:
+        90px;
+
+      color:
+        var(--primary);
+    }
+
+
+    .copy-part {
+
+      margin:
+        0 14px 14px;
+
+      padding:
+        8px 11px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      font:
+        10px
+        "Cairo",
+        sans-serif;
+
+      cursor:
+        pointer;
+    }
+
+
+    .copy-part:hover {
+
+      color:
+        var(--primary);
+    }
+
+
+    .copy-part i {
+
+      margin-left:
+        5px;
+    }
+
+
+    .signature-note {
+
+      padding:
+        0 15px 15px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+    }
+
+
+    .signature-note i {
+
+      color:
+        var(--primary);
+
+      margin-left:
+        5px;
+    }
+
+
+    /* CLAIMS */
+
+    .claims-panel {
+
+      display:
+        none;
+
+      margin:
+        0 20px 15px;
+
+      padding:
+        18px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .claims-panel.visible {
+
+      display:
+        block;
+    }
+
+
+    .claims-list {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        7px;
+    }
+
+
+    .claim-row {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        180px 1fr;
+
+      gap:
+        8px;
+    }
+
+
+    .claim-name,
+    .claim-value {
+
+      min-width:
+        0;
+
+      padding:
+        10px 12px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        9px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .claim-name {
+
+      color:
+        var(--primary);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        600 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .claim-value {
+
+      overflow:
+        hidden;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .empty-claims {
+
+      padding:
+        18px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+      padding:
+        0 20px 20px;
+    }
+
+
+    .stat {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        11px;
+
+      min-width:
+        0;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .stat-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      flex:
+        0 0 36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .stat span {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+    }
+
+
+    .stat strong {
+
+      display:
+        block;
+
+      max-width:
+        150px;
+
+      overflow:
+        hidden;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font:
+        600 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        70px 0;
+    }
+
+
+    .info-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .section-heading {
+
+      max-width:
+        700px;
+
+      margin:
+        0 auto 35px;
+
+      text-align:
+        center;
+    }
+
+
+    .section-heading > span {
+
+      color:
+        var(--primary);
+
+      font:
+        700 11px
+        "JetBrains Mono",
+        monospace;
+
+      letter-spacing:
+        1px;
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        8px 0;
+
+      font-size:
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
+    }
+
+
+    .section-heading p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.9;
+
+      font-size:
+        14px;
+    }
+
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .info-card {
+
+      padding:
+        25px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        17px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .info-icon {
+
+      width:
+        48px;
+
+      height:
+        48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-bottom:
+        17px;
+
+      border-radius:
+        13px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size:
+        16px;
+    }
+
+
+    .info-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap:
+        15px;
+
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        16px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .step-number {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      font-weight:
+        800;
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 5px;
+
+      font-size:
+        14px;
+    }
+
+
+    .step p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+
+      max-width:
+        850px;
+
+      margin:
+        auto;
+    }
+
+
+    details {
+
+      margin-bottom:
+        10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface);
+
+      overflow:
+        hidden;
+    }
+
+
+    summary {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        17px 19px;
+
+      cursor:
+        pointer;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      list-style:
+        none;
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--primary);
+
+      transition:
+        transform 0.2s;
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(180deg);
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 19px 18px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+      .parts-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .signature-panel {
+
+        grid-column:
+          auto;
+      }
+
+
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          1fr;
+      }
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+
+        width:
+          min(
+            100% - 22px,
+            1180px
+          );
+      }
+
+
+      .hero {
+
+        padding-top:
+          25px;
+      }
+
+
+      .hero-content {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
+
+      .hero-icon {
+
+        width:
+          88px;
+
+        height:
+          88px;
+
+        flex-basis:
+          88px;
+
+        border-radius:
+          23px;
+      }
+
+
+      .hero-icon i {
+
+        font-size:
+          31px;
+      }
+
+
+      .card-topbar {
+
+        padding:
+          0 13px;
+      }
+
+
+      .actionbar {
+
+        padding:
+          12px;
+      }
+
+
+      .btn {
+
+        flex:
+          1 1
+          calc(50% - 8px);
+
+        padding:
+          9px 8px;
+      }
+
+
+      .input-section {
+
+        margin:
+          12px;
+      }
+
+
+      #jwtInput {
+
+        min-height:
+          135px;
+
+        padding:
+          14px;
+
+        font-size:
+          11px;
+      }
+
+
+      .result-box {
+
+        margin:
+          0 12px 12px;
+      }
+
+
+      .parts-grid {
+
+        margin:
+          0 12px 12px;
+
+        gap:
+          10px;
+      }
+
+
+      .jwt-panel {
+
+        border-radius:
+          13px;
+      }
+
+
+      .panel-header {
+
+        padding:
+          11px;
+      }
+
+
+      .code-output {
+
+        min-height:
+          125px;
+
+        padding:
+          13px;
+
+        font-size:
+          10px;
+      }
+
+
+      .claims-panel {
+
+        margin:
+          0 12px 12px;
+
+        padding:
+          13px;
+      }
+
+
+      .claim-row {
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          5px;
+      }
+
+
+      .stats-grid {
+
+        padding:
+          0 12px 12px;
+
+        gap:
+          8px;
+      }
+
+
+      .stat {
+
+        padding:
+          11px 9px;
+      }
+
+
+      .stat-icon {
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        flex-basis:
+          31px;
+      }
+
+
+      .stat span {
+
+        font-size:
+          8px;
+      }
+
+
+      .stat strong {
+
+        max-width:
+          100px;
+
+        font-size:
+          9px;
+      }
+
+
+      .info-section,
+      .how-section,
+      .faq-section {
+
+        padding:
+          50px 0;
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
