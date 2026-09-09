@@ -1,0 +1,3413 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "YAML Formatter - تنسيق YAML أونلاين مجاناً | Th.Tech";
+const description =
+  "أداة YAML Formatter مجانية لتنسيق وترتيب YAML والتحقق من بنيته ونسخه مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة YAML Formatter؟",
+    a: "YAML Formatter هي أداة مجانية تساعدك على تنسيق وترتيب ملفات YAML بطريقة واضحة وسهلة القراءة مباشرة من المتصفح."
+  },
+  {
+    q: "هل يتم إرسال YAML إلى الخادم؟",
+    a: "لا. تتم عملية التنسيق داخل المتصفح، لذلك لا تحتاج إلى إرسال بيانات YAML إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكنني استخدام الأداة مع ملفات YAML كبيرة؟",
+    a: "نعم، ويمكن استخدامها مع ملفات YAML كبيرة نسبياً، لكن الأداء يعتمد على حجم البيانات وإمكانيات المتصفح."
+  },
+  {
+    q: "هل تقوم الأداة بالتحقق من صحة YAML؟",
+    a: "نعم، تحتوي الأداة على فحص أساسي للبنية والمسافات والاقتباسات والقيم الشائعة، لكنها ليست بديلاً عن محلل YAML متخصص لكل لهجات YAML."
+  }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#7c3aed" />
+
+  <link rel="icon" href={`${base}/favicon.svg`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <span>YAML Formatter</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+
+            <div class="icon-glow"></div>
+
+            <i class="fa-solid fa-file-code"></i>
+
+            <span class="mini-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </span>
+
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+            <h1>
+              YAML Formatter
+              <span>منسق YAML</span>
+            </h1>
+
+            <p>
+              نسّق ملفات YAML ورتبها وحسّن قابليتها للقراءة
+              مع فحص أساسي للبنية مباشرة من المتصفح.
+            </p>
+
+            <div class="hero-features">
+
+              <span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                تنسيق سريع
+              </span>
+
+              <span>
+                <i class="fa-solid fa-bolt"></i>
+                فوري
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                يعمل محلياً
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+
+      <div class="container">
+
+        <div class="formatter-card">
+
+          <!-- TOPBAR -->
+          <div class="card-topbar">
+
+            <div class="topbar-title">
+
+              <div class="yaml-icon">
+                <i class="fa-solid fa-file-code"></i>
+              </div>
+
+              <div>
+                <strong>YAML Formatter</strong>
+                <small>تنسيق وترتيب YAML</small>
+              </div>
+
+            </div>
+
+            <div class="status">
+
+              <span
+                id="statusDot"
+                class="status-dot"
+              ></span>
+
+              <span id="statusText">
+                جاهز
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONBAR -->
+          <div class="actionbar">
+
+            <div class="action-group">
+
+              <button
+                id="exampleBtn"
+                class="btn btn-example"
+              >
+                <i class="fa-solid fa-flask"></i>
+                مثال
+              </button>
+
+              <button
+                id="clearBtn"
+                class="btn btn-clear"
+              >
+                <i class="fa-solid fa-eraser"></i>
+                مسح
+              </button>
+
+            </div>
+
+            <div class="action-group">
+
+              <button
+                id="copyBtn"
+                class="btn btn-copy"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+
+              <button
+                id="formatBtn"
+                class="btn btn-format"
+              >
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                تنسيق YAML
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- WORKSPACE -->
+          <div class="workspace">
+
+            <!-- INPUT -->
+            <div class="editor-panel">
+
+              <div class="panel-header">
+
+                <div class="panel-title">
+
+                  <span class="panel-dot"></span>
+
+                  <div>
+                    <strong>YAML Input</strong>
+                    <small>أدخل YAML</small>
+                  </div>
+
+                </div>
+
+                <span class="language-badge">
+                  YAML
+                </span>
+
+              </div>
+
+
+              <div class="editor">
+
+                <div
+                  id="lineNumbers"
+                  class="line-numbers"
+                >1</div>
+
+                <textarea
+                  id="yamlInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="name: Th.Tech&#10;version: 1.0.0&#10;tools:&#10;  - JSON Formatter&#10;  - YAML Formatter"
+                ></textarea>
+
+              </div>
+
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-solid fa-code"></i>
+                  YAML
+                </span>
+
+                <span id="inputStats">
+                  0 سطر · 0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- OUTPUT -->
+            <div class="editor-panel output-panel">
+
+              <div class="panel-header">
+
+                <div class="panel-title">
+
+                  <span class="panel-dot output-dot"></span>
+
+                  <div>
+                    <strong>Formatted YAML</strong>
+                    <small>النتيجة المنسقة</small>
+                  </div>
+
+                </div>
+
+                <span
+                  id="outputBadge"
+                  class="language-badge"
+                >
+                  READY
+                </span>
+
+              </div>
+
+
+              <div class="editor">
+
+                <div
+                  id="outputLines"
+                  class="line-numbers"
+                >1</div>
+
+                <textarea
+                  id="yamlOutput"
+                  spellcheck="false"
+                  readonly
+                  placeholder="ستظهر YAML المنسقة هنا..."
+                ></textarea>
+
+              </div>
+
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-solid fa-check-double"></i>
+                  Output
+                </span>
+
+                <span id="outputStats">
+                  0 سطر · 0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-bar">
+
+            <div
+              id="resultBox"
+              class="result-box neutral"
+            >
+
+              <div
+                id="resultIcon"
+                class="result-icon"
+              >
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+
+              <div>
+
+                <strong id="resultTitle">
+                  جاهز للتنسيق
+                </strong>
+
+                <p id="resultMessage">
+                  أدخل YAML ثم اضغط على «تنسيق YAML».
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats">
+
+            <div class="stat">
+
+              <div class="stat-icon purple">
+                <i class="fa-solid fa-align-left"></i>
+              </div>
+
+              <div>
+                <strong id="statLines">0</strong>
+                <span>الأسطر</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <div>
+                <strong id="statChars">0</strong>
+                <span>الأحرف</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon orange">
+                <i class="fa-solid fa-list"></i>
+              </div>
+
+              <div>
+                <strong id="statKeys">0</strong>
+                <span>المفاتيح</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon green">
+                <i class="fa-solid fa-shield-check"></i>
+              </div>
+
+              <div>
+                <strong id="statStatus">—</strong>
+                <span>الحالة</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>YAML FORMATTER</span>
+
+          <h2>
+            YAML أوضح وأسهل للقراءة
+          </h2>
+
+          <p>
+            نظّم ملفات YAML الخاصة بك بسرعة دون الحاجة إلى تثبيت برنامج.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon purple-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <h3>
+              تنسيق تلقائي
+            </h3>
+
+            <p>
+              إعادة تنظيم المسافات والمسافات البادئة
+              لجعل YAML أكثر وضوحاً.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon blue-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <h3>
+              مناسب للمطورين
+            </h3>
+
+            <p>
+              محرر بسيط ومريح للعمل مع ملفات الإعدادات
+              وملفات YAML البرمجية.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon green-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h3>
+              خصوصية البيانات
+            </h3>
+
+            <p>
+              تتم المعالجة داخل المتصفح ولا يتم رفع محتوى
+              YAML إلى خادم خارجي.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>طريقة الاستخدام</span>
+
+          <h2>
+            كيف تستخدم YAML Formatter؟
+          </h2>
+
+          <p>
+            ثلاث خطوات بسيطة للحصول على YAML منسقة.
+          </p>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-paste"></i>
+            </div>
+
+            <h3>
+              أدخل YAML
+            </h3>
+
+            <p>
+              الصق أو اكتب محتوى YAML داخل محرر الإدخال.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <h3>
+              نسّق
+            </h3>
+
+            <p>
+              اضغط على زر تنسيق YAML لمعالجة المحتوى.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-copy"></i>
+            </div>
+
+            <h3>
+              انسخ النتيجة
+            </h3>
+
+            <p>
+              انسخ YAML المنسقة واستخدمها في مشروعك.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+          <p>
+            كل ما تحتاج معرفته عن YAML Formatter.
+          </p>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+</body>
+</html>
+
+
+<script is:inline>
+  (() => {
+
+    const input =
+      document.getElementById("yamlInput");
+
+    const output =
+      document.getElementById("yamlOutput");
+
+    const formatBtn =
+      document.getElementById("formatBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const exampleBtn =
+      document.getElementById("exampleBtn");
+
+    const copyBtn =
+      document.getElementById("copyBtn");
+
+    const lineNumbers =
+      document.getElementById("lineNumbers");
+
+    const outputLines =
+      document.getElementById("outputLines");
+
+    const inputStats =
+      document.getElementById("inputStats");
+
+    const outputStats =
+      document.getElementById("outputStats");
+
+    const statusText =
+      document.getElementById("statusText");
+
+    const statusDot =
+      document.getElementById("statusDot");
+
+    const outputBadge =
+      document.getElementById("outputBadge");
+
+    const resultBox =
+      document.getElementById("resultBox");
+
+    const resultIcon =
+      document.getElementById("resultIcon");
+
+    const resultTitle =
+      document.getElementById("resultTitle");
+
+    const resultMessage =
+      document.getElementById("resultMessage");
+
+    const statLines =
+      document.getElementById("statLines");
+
+    const statChars =
+      document.getElementById("statChars");
+
+    const statKeys =
+      document.getElementById("statKeys");
+
+    const statStatus =
+      document.getElementById("statStatus");
+
+
+    function updateLineNumbers(
+      textarea,
+      numbers
+    ) {
+
+      const count =
+        Math.max(
+          1,
+          textarea.value.split("\n").length
+        );
+
+      numbers.textContent =
+        Array.from(
+          { length: count },
+          (_, index) => index + 1
+        ).join("\n");
+
+      return count;
+    }
+
+
+    function updateStats() {
+
+      const value =
+        input.value;
+
+      const lines =
+        updateLineNumbers(
+          input,
+          lineNumbers
+        );
+
+      inputStats.textContent =
+        `${lines} سطر · ${value.length} حرف`;
+
+      statLines.textContent =
+        value.trim()
+          ? lines
+          : 0;
+
+      statChars.textContent =
+        value.length;
+
+    }
+
+
+    function updateOutputStats() {
+
+      const value =
+        output.value;
+
+      const lines =
+        updateLineNumbers(
+          output,
+          outputLines
+        );
+
+      outputStats.textContent =
+        `${value.trim() ? lines : 0} سطر · ${value.length} حرف`;
+
+    }
+
+
+    function setStatus(
+      text,
+      type
+    ) {
+
+      statusText.textContent =
+        text;
+
+      statusDot.className =
+        "status-dot";
+
+      if (type) {
+        statusDot.classList.add(type);
+      }
+
+    }
+
+
+    function setResult(
+      type,
+      title,
+      message
+    ) {
+
+      resultBox.className =
+        `result-box ${type}`;
+
+      if (type === "success") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-check"></i>`;
+
+      } else if (type === "error") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-xmark"></i>`;
+
+      } else if (type === "warning") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-triangle-exclamation"></i>`;
+
+      } else {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-info"></i>`;
+      }
+
+      resultTitle.textContent =
+        title;
+
+      resultMessage.textContent =
+        message;
+
+    }
+
+
+    function stripComments(
+      line
+    ) {
+
+      let quote = null;
+
+      for (
+        let i = 0;
+        i < line.length;
+        i++
+      ) {
+
+        const char =
+          line[i];
+
+        if (
+          quote &&
+          char === quote
+        ) {
+
+          if (
+            line[i - 1] !== "\\"
+          ) {
+            quote = null;
+          }
+
+          continue;
+        }
+
+        if (
+          !quote &&
+          (
+            char === "'" ||
+            char === '"'
+          )
+        ) {
+
+          quote = char;
+          continue;
+        }
+
+        if (
+          !quote &&
+          char === "#"
+        ) {
+
+          if (
+            i === 0 ||
+            /\s/.test(line[i - 1])
+          ) {
+
+            return line
+              .slice(0, i)
+              .trimEnd();
+          }
+
+        }
+
+      }
+
+      return line;
+    }
+
+
+    function countIndent(
+      line
+    ) {
+
+      let count = 0;
+
+      for (
+        let i = 0;
+        i < line.length;
+        i++
+      ) {
+
+        if (line[i] === " ") {
+          count++;
+        } else {
+          break;
+        }
+
+      }
+
+      return count;
+    }
+
+
+    function formatYAML(
+      source
+    ) {
+
+      const rawLines =
+        source.replace(
+          /\r\n/g,
+          "\n"
+        ).split("\n");
+
+
+      const cleaned =
+        [];
+
+      let previousIndent = 0;
+
+      let pendingBlank = false;
+
+
+      for (
+        let index = 0;
+        index < rawLines.length;
+        index++
+      ) {
+
+        let line =
+          rawLines[index]
+            .replace(/\t/g, "  ");
+
+
+        line =
+          stripComments(line);
+
+
+        if (
+          !line.trim()
+        ) {
+
+          pendingBlank = true;
+          continue;
+        }
+
+
+        let indent =
+          countIndent(line);
+
+        let content =
+          line.trim();
+
+
+        if (
+          content.startsWith("-")
+        ) {
+
+          content =
+            content.replace(
+              /^-\s*/,
+              "- "
+            );
+
+        }
+
+
+        if (
+          content.includes(":")
+        ) {
+
+          const colon =
+            content.indexOf(":");
+
+          const key =
+            content
+              .slice(0, colon)
+              .trim();
+
+          const value =
+            content
+              .slice(colon + 1)
+              .trim();
+
+          if (
+            key &&
+            !key.startsWith("-")
+          ) {
+
+            content =
+              `${key}: ${value}`;
+
+          }
+
+        }
+
+
+        if (
+          pendingBlank &&
+          cleaned.length > 0 &&
+          indent > previousIndent
+        ) {
+
+          cleaned.push("");
+
+        }
+
+        pendingBlank = false;
+
+
+        cleaned.push(
+          " ".repeat(indent) +
+          content
+        );
+
+        previousIndent =
+          indent;
+
+      }
+
+
+      return cleaned.join("\n").trim();
+
+    }
+
+
+    function validateStructure(
+      source
+    ) {
+
+      const issues = [];
+
+      const lines =
+        source
+          .replace(/\r\n/g, "\n")
+          .split("\n");
+
+
+      let previousIndent = 0;
+
+      const stack = [];
+
+
+      lines.forEach(
+        (originalLine, index) => {
+
+          const line =
+            originalLine.replace(
+              /\t/g,
+              "  "
+            );
+
+          const trimmed =
+            line.trim();
+
+          if (!trimmed) {
+            return;
+          }
+
+
+          if (
+            trimmed.startsWith("---") ||
+            trimmed.startsWith("...")
+          ) {
+            return;
+          }
+
+
+          const indent =
+            countIndent(line);
+
+
+          if (
+            indent % 2 !== 0
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: المسافة البادئة يفضل أن تكون بمضاعفات 2.`
+            );
+
+          }
+
+
+          if (
+            indent > previousIndent + 2
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: زيادة كبيرة في المسافة البادئة.`
+            );
+
+          }
+
+
+          if (
+            trimmed.startsWith("-") &&
+            trimmed.length === 1
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: عنصر القائمة فارغ.`
+            );
+
+          }
+
+
+          if (
+            !trimmed.startsWith("-") &&
+            !trimmed.includes(":") &&
+            !trimmed.startsWith("#")
+          ) {
+
+            const isScalar =
+              /^["'].*["']$/.test(
+                trimmed
+              ) ||
+              /^(true|false|null|~|-?\d+(\.\d+)?)$/i.test(
+                trimmed
+              );
+
+            if (!isScalar) {
+
+              issues.push(
+                `السطر ${index + 1}: قد تكون البنية غير مكتملة.`
+              );
+
+            }
+
+          }
+
+
+          previousIndent =
+            indent;
+
+        }
+      );
+
+
+      return issues;
+
+    }
+
+
+    function countKeys(
+      source
+    ) {
+
+      let count = 0;
+
+      const lines =
+        source.split("\n");
+
+      lines.forEach(
+        (line) => {
+
+          const trimmed =
+            line.trim();
+
+          if (
+            !trimmed ||
+            trimmed.startsWith("#") ||
+            trimmed.startsWith("-")
+          ) {
+            return;
+          }
+
+          if (
+            /^[^:#][^:]*:\s*(.*)$/.test(
+              trimmed
+            )
+          ) {
+            count++;
+          }
+
+        }
+      );
+
+      return count;
+
+    }
+
+
+    function format() {
+
+      const source =
+        input.value;
+
+
+      if (!source.trim()) {
+
+        output.value = "";
+
+        updateOutputStats();
+
+        setStatus(
+          "لا يوجد محتوى",
+          "warning"
+        );
+
+        outputBadge.textContent =
+          "EMPTY";
+
+        statStatus.textContent =
+          "فارغ";
+
+        setResult(
+          "warning",
+          "المحرر فارغ",
+          "أدخل محتوى YAML أولاً ثم اضغط على زر التنسيق."
+        );
+
+        return;
+
+      }
+
+
+      setStatus(
+        "جارٍ التنسيق...",
+        "processing"
+      );
+
+
+      setTimeout(() => {
+
+        const issues =
+          validateStructure(source);
+
+        const formatted =
+          formatYAML(source);
+
+
+        output.value =
+          formatted;
+
+
+        updateOutputStats();
+
+
+        const keys =
+          countKeys(formatted);
+
+        statKeys.textContent =
+          keys;
+
+
+        if (issues.length === 0) {
+
+          setStatus(
+            "تم التنسيق",
+            "success"
+          );
+
+          outputBadge.textContent =
+            "VALID";
+
+          outputBadge.className =
+            "language-badge valid";
+
+          statStatus.textContent =
+            "صالح";
+
+          setResult(
+            "success",
+            "تم تنسيق YAML بنجاح",
+            "تم ترتيب المحتوى وتحسين المسافات البادئة بنجاح."
+          );
+
+        } else {
+
+          setStatus(
+            `${issues.length} تنبيه`,
+            "warning"
+          );
+
+          outputBadge.textContent =
+            "CHECK";
+
+          outputBadge.className =
+            "language-badge warning";
+
+          statStatus.textContent =
+            "تنبيه";
+
+          setResult(
+            "warning",
+            "تم التنسيق مع بعض التنبيهات",
+            issues.slice(0, 2).join(" ")
+          );
+
+        }
+
+      }, 80);
+
+    }
+
+
+    function loadExample() {
+
+      input.value =
+`name: Th.Tech
+version: "1.0.0"
+description: "Developer tools platform"
+settings:
+  theme: dark
+  language: ar
+  editor:
+    fontSize: 14
+    tabSize: 2
+tools:
+  - name: JSON Formatter
+    slug: json-formatter
+    category: JSON
+  - name: YAML Formatter
+    slug: yaml-formatter
+    category: YAML
+database:
+  host: localhost
+  port: 3306
+  enabled: true`;
+
+
+      updateStats();
+
+      format();
+
+      input.focus();
+
+    }
+
+
+    function clearAll() {
+
+      input.value = "";
+      output.value = "";
+
+      updateStats();
+      updateOutputStats();
+
+      statKeys.textContent =
+        "0";
+
+      statStatus.textContent =
+        "—";
+
+      outputBadge.textContent =
+        "READY";
+
+      outputBadge.className =
+        "language-badge";
+
+      setStatus(
+        "جاهز",
+        ""
+      );
+
+      setResult(
+        "neutral",
+        "جاهز للتنسيق",
+        "أدخل YAML ثم اضغط على «تنسيق YAML»."
+      );
+
+    }
+
+
+    async function copyOutput() {
+
+      if (!output.value.trim()) {
+
+        setStatus(
+          "لا توجد نتيجة للنسخ",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          output.value
+        );
+
+
+        const old =
+          copyBtn.innerHTML;
+
+
+        copyBtn.innerHTML =
+          `<i class="fa-solid fa-check"></i> تم النسخ`;
+
+
+        setStatus(
+          "تم النسخ",
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          copyBtn.innerHTML =
+            old;
+
+          setStatus(
+            "تم التنسيق",
+            "success"
+          );
+
+        }, 1500);
+
+
+      } catch {
+
+        output.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        setStatus(
+          "تم النسخ",
+          "success"
+        );
+
+      }
+
+    }
+
+
+    input.addEventListener(
+      "input",
+      updateStats
+    );
+
+
+    input.addEventListener(
+      "scroll",
+      () => {
+
+        lineNumbers.scrollTop =
+          input.scrollTop;
+
+      }
+    );
+
+
+    output.addEventListener(
+      "scroll",
+      () => {
+
+        outputLines.scrollTop =
+          output.scrollTop;
+
+      }
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.ctrlKey &&
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          format();
+
+        }
+
+
+        if (
+          event.key === "Tab"
+        ) {
+
+          event.preventDefault();
+
+          const start =
+            input.selectionStart;
+
+          const end =
+            input.selectionEnd;
+
+
+          input.value =
+            input.value.substring(
+              0,
+              start
+            ) +
+            "  " +
+            input.value.substring(
+              end
+            );
+
+
+          input.selectionStart =
+            input.selectionEnd =
+              start + 2;
+
+
+          updateStats();
+
+        }
+
+      }
+    );
+
+
+    formatBtn.addEventListener(
+      "click",
+      format
+    );
+
+
+    clearBtn.addEventListener(
+      "click",
+      clearAll
+    );
+
+
+    exampleBtn.addEventListener(
+      "click",
+      loadExample
+    );
+
+
+    copyBtn.addEventListener(
+      "click",
+      copyOutput
+    );
+
+
+    updateStats();
+    updateOutputStats();
+
+  })();
+</script>
+
+
+<style>
+
+  :root {
+
+    --primary: #7c3aed;
+    --primary-dark: #6d28d9;
+    --secondary: #a855f7;
+
+    --blue: #2563eb;
+    --green: #16a34a;
+    --orange: #ea580c;
+    --red: #dc2626;
+
+    --bg: #f7f8fc;
+    --card: #ffffff;
+    --soft: #f3f4f8;
+
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+
+    --shadow:
+      0 24px 70px
+      rgba(76, 29, 149, 0.08);
+  }
+
+
+  html.dark-mode {
+
+    --bg: #07060e;
+    --card: #0d0b17;
+    --soft: #121020;
+
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.12);
+
+    --primary: #a78bfa;
+    --primary-dark: #8b5cf6;
+    --secondary: #c4b5fd;
+
+    --shadow:
+      0 30px 80px
+      rgba(0, 0, 0, 0.45);
+  }
+
+
+  * {
+    box-sizing: border-box;
+  }
+
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+
+  body {
+
+    margin: 0;
+
+    background:
+      var(--bg);
+
+    color:
+      var(--text);
+
+    font-family:
+      "Cairo",
+      sans-serif;
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+
+  button,
+  textarea {
+    font-family: inherit;
+  }
+
+
+  .container {
+
+    width:
+      min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+    margin:
+      0 auto;
+  }
+
+
+  /* HERO */
+
+  .hero {
+
+    padding:
+      42px 0
+      55px;
+
+    background:
+      radial-gradient(
+        circle at 85% 20%,
+        rgba(124, 58, 237, 0.13),
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        var(--card),
+        var(--bg)
+      );
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .breadcrumb {
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 36px;
+
+    color:
+      var(--muted);
+
+    font-size: 13px;
+  }
+
+
+  .breadcrumb a {
+
+    color:
+      var(--primary);
+
+    text-decoration: none;
+
+    font-weight: 700;
+  }
+
+
+  .breadcrumb i {
+    font-size: 9px;
+  }
+
+
+  .hero-content {
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+  }
+
+
+  .hero-icon {
+
+    position: relative;
+
+    width: 112px;
+    height: 112px;
+
+    flex: 0 0 112px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 30px;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+
+    color: white;
+
+    font-size: 42px;
+
+    box-shadow:
+      0 18px 45px
+      rgba(124, 58, 237, 0.27);
+  }
+
+
+  .icon-glow {
+
+    position: absolute;
+
+    inset: -12px;
+
+    border-radius: 38px;
+
+    background:
+      rgba(124, 58, 237, 0.14);
+
+    filter: blur(18px);
+
+    z-index: -1;
+  }
+
+
+  .mini-icon {
+
+    position: absolute;
+
+    right: -8px;
+    bottom: -8px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+      var(--card);
+
+    color:
+      var(--primary);
+
+    border:
+      1px solid var(--border);
+
+    font-size: 14px;
+
+    box-shadow:
+      0 8px 20px
+      rgba(0, 0, 0, 0.12);
+  }
+
+
+  .hero-text {
+    max-width: 780px;
+  }
+
+
+  .badge {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+      7px 13px;
+
+    border-radius: 999px;
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+
+    border:
+      1px solid
+      rgba(124, 58, 237, 0.18);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    margin-bottom: 12px;
+  }
+
+
+  .hero-text h1 {
+
+    margin: 0;
+
+    font-size:
+      clamp(
+        29px,
+        5vw,
+        46px
+      );
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+  }
+
+
+  .hero-text h1 span {
+
+    display: inline-block;
+
+    margin-right: 10px;
+
+    color:
+      var(--primary);
+
+    font-size: 0.55em;
+
+    font-weight: 700;
+  }
+
+
+  .hero-text p {
+
+    max-width: 750px;
+
+    margin:
+      15px 0
+      20px;
+
+    color:
+      var(--muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+  }
+
+
+  .hero-features {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+  }
+
+
+  .hero-features span {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+      7px 11px;
+
+    border-radius: 10px;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+
+  .hero-features i {
+    color:
+      var(--primary);
+  }
+
+
+  /* TOOL */
+
+  .tool-section {
+
+    padding:
+      50px 0
+      70px;
+  }
+
+
+  .formatter-card {
+
+    overflow: hidden;
+
+    background:
+      var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 24px;
+
+    box-shadow:
+      var(--shadow);
+  }
+
+
+  .card-topbar {
+
+    min-height: 76px;
+
+    padding:
+      16px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .topbar-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+  }
+
+
+  .yaml-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .topbar-title strong,
+  .topbar-title small {
+
+    display: block;
+  }
+
+
+  .topbar-title strong {
+    font-size: 15px;
+  }
+
+
+  .topbar-title small {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 11px;
+  }
+
+
+  .status {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+  }
+
+
+  .status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background:
+      #94a3b8;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(148, 163, 184, 0.12);
+  }
+
+
+  .status-dot.success {
+
+    background:
+      #22c55e;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(34, 197, 94, 0.12);
+  }
+
+
+  .status-dot.warning {
+
+    background:
+      #f59e0b;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(245, 158, 11, 0.12);
+  }
+
+
+  .status-dot.processing {
+
+    background:
+      var(--primary);
+
+    box-shadow:
+      0 0 0 4px
+      rgba(124, 58, 237, 0.12);
+
+    animation:
+      pulse 1s infinite;
+  }
+
+
+  @keyframes pulse {
+
+    50% {
+      opacity: 0.45;
+    }
+
+  }
+
+
+  /* ACTIONBAR */
+
+  .actionbar {
+
+    padding:
+      14px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    background:
+      var(--soft);
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .action-group {
+
+    display: flex;
+
+    gap: 8px;
+  }
+
+
+  .btn {
+
+    min-height: 40px;
+
+    padding:
+      8px 14px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease;
+  }
+
+
+  .btn:hover {
+    transform:
+      translateY(-1px);
+  }
+
+
+  .btn:active {
+    transform:
+      translateY(0);
+  }
+
+
+  .btn-example {
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .btn-clear {
+
+    background:
+      rgba(220, 38, 38, 0.08);
+
+    color:
+      var(--red);
+  }
+
+
+  .btn-copy {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .btn-format {
+
+    color:
+      white;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+      );
+
+    box-shadow:
+      0 8px 22px
+      rgba(124, 58, 237, 0.22);
+  }
+
+
+  /* WORKSPACE */
+
+  .workspace {
+
+    padding:
+      22px;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    gap: 16px;
+  }
+
+
+  .editor-panel {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 17px;
+
+    background:
+      var(--card);
+  }
+
+
+  .panel-header {
+
+    min-height: 62px;
+
+    padding:
+      11px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .panel-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+  }
+
+
+  .panel-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background:
+      #a855f7;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(168, 85, 247, 0.12);
+  }
+
+
+  .output-dot {
+
+    background:
+      #22c55e;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(34, 197, 94, 0.12);
+  }
+
+
+  .panel-title strong,
+  .panel-title small {
+
+    display: block;
+  }
+
+
+  .panel-title strong {
+    font-size: 13px;
+  }
+
+
+  .panel-title small {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .language-badge {
+
+    padding:
+      5px 9px;
+
+    border-radius: 7px;
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+
+  .language-badge.valid {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .language-badge.warning {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .editor {
+
+    height: 370px;
+
+    display: grid;
+
+    grid-template-columns:
+      52px minmax(0, 1fr);
+
+    direction: ltr;
+
+    background:
+      #0f172a;
+  }
+
+
+  .line-numbers {
+
+    overflow: hidden;
+
+    padding:
+      18px 12px;
+
+    background:
+      #111827;
+
+    color:
+      #64748b;
+
+    border-right:
+      1px solid
+      rgba(148, 163, 184, 0.1);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    text-align: right;
+
+    white-space: pre;
+  }
+
+
+  .editor textarea {
+
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    padding:
+      18px;
+
+    border: 0;
+    outline: 0;
+
+    background:
+      #0f172a;
+
+    color:
+      #e9d5ff;
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    direction: ltr;
+    text-align: left;
+
+    tab-size: 2;
+  }
+
+
+  .output-panel textarea {
+    color:
+      #d1fae5;
+  }
+
+
+  .editor textarea::placeholder {
+    color:
+      #64748b;
+  }
+
+
+  .editor-footer {
+
+    min-height: 43px;
+
+    padding:
+      8px 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background:
+      var(--soft);
+
+    border-top:
+      1px solid var(--border);
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .editor-footer span:first-child {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color:
+      var(--primary);
+
+    font-weight: 700;
+  }
+
+
+  /* RESULT */
+
+  .result-bar {
+
+    padding:
+      0 22px 20px;
+  }
+
+
+  .result-box {
+
+    padding:
+      14px 16px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border:
+      1px solid transparent;
+
+    border-radius: 13px;
+  }
+
+
+  .result-box.neutral {
+
+    background:
+      rgba(100, 116, 139, 0.07);
+
+    border-color:
+      rgba(100, 116, 139, 0.12);
+  }
+
+
+  .result-box.success {
+
+    background:
+      rgba(22, 163, 74, 0.07);
+
+    border-color:
+      rgba(22, 163, 74, 0.14);
+  }
+
+
+  .result-box.warning {
+
+    background:
+      rgba(234, 88, 12, 0.07);
+
+    border-color:
+      rgba(234, 88, 12, 0.14);
+  }
+
+
+  .result-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .result-box.success .result-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .result-box.warning .result-icon {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .result-box strong {
+
+    display: block;
+
+    font-size: 12px;
+  }
+
+
+  .result-box p {
+
+    margin:
+      3px 0 0;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.7;
+  }
+
+
+  /* STATS */
+
+  .stats {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .stat {
+
+    min-height: 77px;
+
+    padding:
+      13px 17px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-left:
+      1px solid var(--border);
+  }
+
+
+  .stat:last-child {
+    border-left: 0;
+  }
+
+
+  .stat-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .stat-icon.purple {
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .stat-icon.blue {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .stat-icon.orange {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .stat-icon.green {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .stat strong,
+  .stat span {
+    display: block;
+  }
+
+
+  .stat strong {
+    font-size: 13px;
+  }
+
+
+  .stat span {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  /* SECTIONS */
+
+  .info-section,
+  .faq-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--card);
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .how-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--bg);
+  }
+
+
+  .section-heading {
+
+    max-width: 700px;
+
+    margin:
+      0 auto
+      38px;
+
+    text-align: center;
+  }
+
+
+  .section-heading > span {
+
+    color:
+      var(--primary);
+
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+
+  .section-heading h2 {
+
+    margin:
+      7px 0
+      10px;
+
+    font-size:
+      clamp(
+        24px,
+        4vw,
+        34px
+      );
+
+    line-height: 1.3;
+  }
+
+
+  .section-heading p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+
+  .info-grid {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 18px;
+  }
+
+
+  .info-card {
+
+    padding:
+      24px;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  .info-card:hover {
+
+    transform:
+      translateY(-4px);
+
+    border-color:
+      rgba(124, 58, 237, 0.3);
+  }
+
+
+  .info-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    margin-bottom: 17px;
+
+    font-size: 18px;
+  }
+
+
+  .purple-icon {
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .blue-icon {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .green-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .info-card h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 17px;
+  }
+
+
+  .info-card p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* STEPS */
+
+  .steps {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 20px;
+  }
+
+
+  .step {
+
+    position: relative;
+
+    padding:
+      26px;
+
+    background:
+      var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+      0 10px 30px
+      rgba(15, 23, 42, 0.04);
+  }
+
+
+  .step-number {
+
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+      rgba(124, 58, 237, 0.1);
+
+    color:
+      var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+
+  .step-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin:
+      5px auto
+      17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.12),
+        rgba(168, 85, 247, 0.06)
+      );
+
+    color:
+      var(--primary);
+
+    font-size: 21px;
+  }
+
+
+  .step h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 16px;
+  }
+
+
+  .step p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+  }
+
+
+  /* FAQ */
+
+  .faq-list {
+
+    max-width: 850px;
+
+    margin:
+      0 auto;
+
+    display: grid;
+
+    gap: 10px;
+  }
+
+
+  .faq-item {
+
+    overflow: hidden;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 14px;
+  }
+
+
+  .faq-item summary {
+
+    cursor: pointer;
+
+    list-style: none;
+
+    padding:
+      17px 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+
+  .faq-item summary i {
+
+    color:
+      var(--primary);
+
+    transition:
+      transform 0.2s ease;
+  }
+
+
+  .faq-item[open]
+    summary i {
+
+    transform:
+      rotate(180deg);
+  }
+
+
+  .faq-item p {
+
+    margin: 0;
+
+    padding:
+      0 19px
+      18px;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* RESPONSIVE */
+
+  @media (max-width: 900px) {
+
+    .hero-content {
+      align-items: flex-start;
+    }
+
+
+    .workspace {
+      grid-template-columns: 1fr;
+    }
+
+
+    .info-grid,
+    .steps {
+      grid-template-columns: 1fr;
+    }
+
+
+    .stats {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+
+
+    .stat:nth-child(2) {
+      border-left: 0;
+    }
+
+  }
+
+
+  @media (max-width: 720px) {
+
+    .hero {
+
+      padding:
+        30px 0
+        40px;
+    }
+
+
+    .breadcrumb {
+      margin-bottom: 25px;
+    }
+
+
+    .hero-content {
+
+      flex-direction: column;
+
+      gap: 20px;
+    }
+
+
+    .hero-icon {
+
+      width: 86px;
+      height: 86px;
+
+      flex-basis: 86px;
+
+      border-radius: 23px;
+
+      font-size: 31px;
+    }
+
+
+    .mini-icon {
+
+      width: 31px;
+      height: 31px;
+
+      font-size: 11px;
+    }
+
+
+    .hero-text h1 span {
+
+      display: block;
+
+      margin:
+        6px 0 0;
+
+      font-size: 0.54em;
+    }
+
+
+    .hero-text p {
+      font-size: 13px;
+    }
+
+
+    .tool-section {
+
+      padding:
+        30px 0
+        50px;
+    }
+
+
+    .actionbar {
+
+      flex-direction: column;
+
+      align-items: stretch;
+    }
+
+
+    .action-group {
+      width: 100%;
+    }
+
+
+    .action-group .btn {
+      flex: 1;
+    }
+
+
+    .workspace {
+      padding: 12px;
+    }
+
+
+    .editor {
+      height: 310px;
+    }
+
+
+    .result-bar {
+      padding:
+        0 12px 15px;
+    }
+
+
+    .stats {
+      grid-template-columns:
+        1fr 1fr;
+    }
+
+
+    .stat {
+      min-height: 70px;
+      padding: 12px;
+    }
+
+
+    .info-section,
+    .how-section,
+    .faq-section {
+      padding:
+        55px 0;
+    }
+
+  }
+
+
+  @media (max-width: 460px) {
+
+    .container {
+
+      width:
+        calc(100% - 22px);
+    }
+
+
+    .card-topbar {
+      padding: 13px;
+    }
+
+
+    .status {
+      font-size: 10px;
+    }
+
+
+    .actionbar {
+      padding: 11px;
+    }
+
+
+    .btn {
+
+      padding:
+        8px 9px;
+
+      font-size: 10px;
+    }
+
+
+    .editor {
+
+      grid-template-columns:
+        42px 1fr;
+
+      height: 280px;
+    }
+
+
+    .line-numbers {
+
+      padding:
+        18px 8px;
+
+      font-size: 10px;
+    }
+
+
+    .editor textarea {
+
+      padding:
+        18px 12px;
+
+      font-size: 11px;
+    }
+
+
+    .stat {
+
+      gap: 7px;
+    }
+
+
+    .stat-icon {
+
+      width: 34px;
+      height: 34px;
+
+      flex-basis: 34px;
+
+      font-size: 11px;
+    }
+
+
+    .stat strong {
+      font-size: 11px;
+    }
+
+
+    .stat span {
+      font-size: 9px;
+    }
+
+
+    .section-heading h2 {
+      font-size: 24px;
+    }
+
+  }
+
+</style>
