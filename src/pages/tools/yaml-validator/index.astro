@@ -1,0 +1,3811 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "YAML Validator - التحقق من YAML أونلاين مجاناً | Th.Tech";
+const description =
+  "أداة YAML Validator مجانية للتحقق من بنية وصحة YAML واكتشاف أخطاء المسافات والاقتباسات والبنية مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة YAML Validator؟",
+    a: "هي أداة تساعدك على فحص بنية YAML واكتشاف مجموعة من الأخطاء الشائعة قبل استخدام الملف داخل مشروعك."
+  },
+  {
+    q: "هل يتم إرسال YAML إلى الخادم؟",
+    a: "لا. تتم عملية الفحص داخل المتصفح، لذلك لا يتم إرسال محتوى YAML إلى خادم خارجي."
+  },
+  {
+    q: "ما الأخطاء التي يمكن اكتشافها؟",
+    a: "يمكن للأداة اكتشاف علامات تبويب داخل المسافات البادئة، مشاكل شائعة في الاقتباسات والأقواس، بعض مشاكل المفاتيح والبنية والمسافات."
+  },
+  {
+    q: "هل Validator بديل كامل لمحلل YAML؟",
+    a: "الأداة مناسبة للفحص السريع والأخطاء الشائعة، لكنها لا تحل محل محلل YAML متخصص عند استخدام جميع ميزات مواصفة YAML."
+  }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#0891b2" />
+
+  <link rel="icon" href={`${base}/favicon.svg`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <span>YAML Validator</span>
+        </div>
+
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+
+            <div class="icon-glow"></div>
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <span class="mini-icon">
+              <i class="fa-solid fa-check"></i>
+            </span>
+
+          </div>
+
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+
+            <h1>
+              YAML Validator
+              <span>مدقق YAML</span>
+            </h1>
+
+
+            <p>
+              تحقق من بنية YAML واكتشف الأخطاء الشائعة
+              في المسافات والاقتباسات والبنية بسرعة مباشرة من المتصفح.
+            </p>
+
+
+            <div class="hero-features">
+
+              <span>
+                <i class="fa-solid fa-shield-check"></i>
+                فحص سريع
+              </span>
+
+              <span>
+                <i class="fa-solid fa-bolt"></i>
+                فوري
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                يعمل محلياً
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+
+      <div class="container">
+
+        <div class="validator-card">
+
+          <!-- TOPBAR -->
+          <div class="card-topbar">
+
+            <div class="topbar-title">
+
+              <div class="yaml-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <div>
+                <strong>YAML Validator</strong>
+                <small>فحص صحة وبنية YAML</small>
+              </div>
+
+            </div>
+
+
+            <div class="status">
+
+              <span
+                id="statusDot"
+                class="status-dot"
+              ></span>
+
+              <span id="statusText">
+                جاهز للفحص
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONBAR -->
+          <div class="actionbar">
+
+            <div class="action-group">
+
+              <button
+                id="exampleBtn"
+                class="btn btn-example"
+              >
+                <i class="fa-solid fa-flask"></i>
+                مثال
+              </button>
+
+
+              <button
+                id="clearBtn"
+                class="btn btn-clear"
+              >
+                <i class="fa-solid fa-eraser"></i>
+                مسح
+              </button>
+
+            </div>
+
+
+            <div class="action-group">
+
+              <button
+                id="copyBtn"
+                class="btn btn-copy"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+
+
+              <button
+                id="validateBtn"
+                class="btn btn-validate"
+              >
+                <i class="fa-solid fa-shield-check"></i>
+                تحقق من YAML
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- EDITOR -->
+          <div class="editor-wrapper">
+
+            <div class="editor-panel">
+
+              <div class="panel-header">
+
+                <div class="panel-title">
+
+                  <span class="panel-dot"></span>
+
+                  <div>
+                    <strong>YAML Input</strong>
+                    <small>أدخل YAML للتحقق منه</small>
+                  </div>
+
+                </div>
+
+
+                <span class="language-badge">
+                  YAML
+                </span>
+
+              </div>
+
+
+              <div class="editor">
+
+                <div
+                  id="lineNumbers"
+                  class="line-numbers"
+                >1</div>
+
+
+                <textarea
+                  id="yamlInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="name: Th.Tech&#10;version: 1.0.0&#10;settings:&#10;  theme: dark&#10;  language: ar"
+                ></textarea>
+
+              </div>
+
+
+              <div class="editor-footer">
+
+                <span>
+                  <i class="fa-solid fa-code"></i>
+                  YAML
+                </span>
+
+                <span id="inputStats">
+                  0 سطر · 0 حرف
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- VALIDATION RESULT -->
+          <div class="validation-section">
+
+            <div class="validation-header">
+
+              <div>
+
+                <span class="section-label">
+                  VALIDATION RESULT
+                </span>
+
+                <h2 id="validationTitle">
+                  جاهز للفحص
+                </h2>
+
+              </div>
+
+
+              <div
+                id="validationBadge"
+                class="validation-badge neutral"
+              >
+                READY
+              </div>
+
+            </div>
+
+
+            <div
+              id="resultBox"
+              class="result-box neutral"
+            >
+
+              <div
+                id="resultIcon"
+                class="result-icon"
+              >
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+
+
+              <div class="result-content">
+
+                <strong id="resultMessage">
+                  أدخل YAML ثم اضغط على «تحقق من YAML».
+                </strong>
+
+                <div
+                  id="issuesList"
+                  class="issues-list"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats">
+
+            <div class="stat">
+
+              <div class="stat-icon cyan">
+                <i class="fa-solid fa-align-left"></i>
+              </div>
+
+              <div>
+                <strong id="statLines">0</strong>
+                <span>الأسطر</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <div>
+                <strong id="statChars">0</strong>
+                <span>الأحرف</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon orange">
+                <i class="fa-solid fa-key"></i>
+              </div>
+
+              <div>
+                <strong id="statKeys">0</strong>
+                <span>المفاتيح</span>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+
+              <div>
+                <strong id="statStatus">—</strong>
+                <span>الحالة</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>YAML VALIDATOR</span>
+
+          <h2>
+            اكتشف أخطاء YAML قبل استخدامها
+          </h2>
+
+          <p>
+            افحص بنية YAML بسرعة واحصل على نتيجة واضحة دون تثبيت أي برنامج.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon cyan-icon">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+
+            <h3>
+              فحص سريع
+            </h3>
+
+            <p>
+              تحقق من مجموعة من المشاكل الشائعة في بنية YAML
+              والمسافات والاقتباسات.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon blue-icon">
+              <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <h3>
+              اكتشاف الأخطاء
+            </h3>
+
+            <p>
+              تعرض الأداة الأسطر التي تحتوي على مشاكل محتملة
+              لمساعدتك على تصحيح الملف.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon green-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h3>
+              خصوصية كاملة
+            </h3>
+
+            <p>
+              تتم عملية التحقق محلياً داخل المتصفح ولا يتم
+              رفع محتوى YAML إلى خادم خارجي.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>طريقة الاستخدام</span>
+
+          <h2>
+            كيف تتحقق من YAML؟
+          </h2>
+
+          <p>
+            افحص ملف YAML في ثلاث خطوات بسيطة.
+          </p>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-paste"></i>
+            </div>
+
+            <h3>
+              أدخل YAML
+            </h3>
+
+            <p>
+              الصق أو اكتب محتوى YAML داخل المحرر.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+
+            <h3>
+              ابدأ الفحص
+            </h3>
+
+            <p>
+              اضغط على «تحقق من YAML» لفحص البنية.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div class="step-icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <h3>
+              صحح الأخطاء
+            </h3>
+
+            <p>
+              راجع التنبيهات وأصلح الأسطر التي تحتاج إلى تعديل.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+          <p>
+            معلومات مهمة حول YAML Validator.
+          </p>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details class="faq-item">
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <Footer />
+
+</body>
+</html>
+
+
+<script is:inline>
+  (() => {
+
+    const input =
+      document.getElementById("yamlInput");
+
+    const validateBtn =
+      document.getElementById("validateBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const exampleBtn =
+      document.getElementById("exampleBtn");
+
+    const copyBtn =
+      document.getElementById("copyBtn");
+
+    const lineNumbers =
+      document.getElementById("lineNumbers");
+
+    const inputStats =
+      document.getElementById("inputStats");
+
+    const statusText =
+      document.getElementById("statusText");
+
+    const statusDot =
+      document.getElementById("statusDot");
+
+    const validationTitle =
+      document.getElementById("validationTitle");
+
+    const validationBadge =
+      document.getElementById("validationBadge");
+
+    const resultBox =
+      document.getElementById("resultBox");
+
+    const resultIcon =
+      document.getElementById("resultIcon");
+
+    const resultMessage =
+      document.getElementById("resultMessage");
+
+    const issuesList =
+      document.getElementById("issuesList");
+
+    const statLines =
+      document.getElementById("statLines");
+
+    const statChars =
+      document.getElementById("statChars");
+
+    const statKeys =
+      document.getElementById("statKeys");
+
+    const statStatus =
+      document.getElementById("statStatus");
+
+
+    function updateLineNumbers() {
+
+      const count =
+        Math.max(
+          1,
+          input.value.split("\n").length
+        );
+
+      lineNumbers.textContent =
+        Array.from(
+          { length: count },
+          (_, index) => index + 1
+        ).join("\n");
+
+      return count;
+
+    }
+
+
+    function updateStats() {
+
+      const value =
+        input.value;
+
+      const lines =
+        updateLineNumbers();
+
+      inputStats.textContent =
+        `${value.trim() ? lines : 0} سطر · ${value.length} حرف`;
+
+      statLines.textContent =
+        value.trim()
+          ? lines
+          : 0;
+
+      statChars.textContent =
+        value.length;
+
+      statKeys.textContent =
+        countKeys(value);
+
+    }
+
+
+    function setStatus(
+      text,
+      type
+    ) {
+
+      statusText.textContent =
+        text;
+
+      statusDot.className =
+        "status-dot";
+
+      if (type) {
+        statusDot.classList.add(type);
+      }
+
+    }
+
+
+    function setResult(
+      type,
+      title,
+      message,
+      issues
+    ) {
+
+      resultBox.className =
+        `result-box ${type}`;
+
+      validationTitle.textContent =
+        title;
+
+      resultMessage.textContent =
+        message;
+
+
+      if (type === "success") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-check"></i>`;
+
+        validationBadge.textContent =
+          "VALID";
+
+        validationBadge.className =
+          "validation-badge valid";
+
+        statStatus.textContent =
+          "صالح";
+
+      } else if (type === "error") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-xmark"></i>`;
+
+        validationBadge.textContent =
+          "INVALID";
+
+        validationBadge.className =
+          "validation-badge invalid";
+
+        statStatus.textContent =
+          "خطأ";
+
+      } else if (type === "warning") {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-triangle-exclamation"></i>`;
+
+        validationBadge.textContent =
+          "WARNING";
+
+        validationBadge.className =
+          "validation-badge warning";
+
+        statStatus.textContent =
+          "تنبيه";
+
+      } else {
+
+        resultIcon.innerHTML =
+          `<i class="fa-solid fa-circle-info"></i>`;
+
+        validationBadge.textContent =
+          "READY";
+
+        validationBadge.className =
+          "validation-badge neutral";
+
+        statStatus.textContent =
+          "—";
+
+      }
+
+
+      issuesList.innerHTML = "";
+
+
+      if (
+        issues &&
+        issues.length
+      ) {
+
+        issues
+          .slice(0, 8)
+          .forEach(
+            (issue) => {
+
+              const item =
+                document.createElement("div");
+
+              item.className =
+                "issue-item";
+
+              item.innerHTML =
+                `<i class="fa-solid fa-circle-exclamation"></i><span>${escapeHtml(issue)}</span>`;
+
+              issuesList.appendChild(
+                item
+              );
+
+            }
+          );
+
+      }
+
+    }
+
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function countKeys(
+      source
+    ) {
+
+      let count = 0;
+
+      source
+        .replace(/\r\n/g, "\n")
+        .split("\n")
+        .forEach(
+          (line) => {
+
+            const trimmed =
+              line.trim();
+
+            if (
+              !trimmed ||
+              trimmed.startsWith("#") ||
+              trimmed.startsWith("-") ||
+              trimmed === "---" ||
+              trimmed === "..."
+            ) {
+              return;
+            }
+
+            if (
+              /^[^:#][^:]*:\s*(.*)$/.test(
+                trimmed
+              )
+            ) {
+
+              count++;
+
+            }
+
+          }
+        );
+
+      return count;
+
+    }
+
+
+    function stripComment(
+      line
+    ) {
+
+      let quote = null;
+
+      for (
+        let i = 0;
+        i < line.length;
+        i++
+      ) {
+
+        const char =
+          line[i];
+
+
+        if (quote) {
+
+          if (
+            char === quote &&
+            line[i - 1] !== "\\"
+          ) {
+
+            quote = null;
+
+          }
+
+          continue;
+
+        }
+
+
+        if (
+          char === "'" ||
+          char === '"'
+        ) {
+
+          quote = char;
+          continue;
+
+        }
+
+
+        if (
+          char === "#" &&
+          (
+            i === 0 ||
+            /\s/.test(line[i - 1])
+          )
+        ) {
+
+          return line
+            .slice(0, i);
+
+        }
+
+      }
+
+
+      return line;
+
+    }
+
+
+    function checkQuotes(
+      source,
+      issues
+    ) {
+
+      source
+        .replace(/\r\n/g, "\n")
+        .split("\n")
+        .forEach(
+          (line, index) => {
+
+            const clean =
+              stripComment(line);
+
+            let single =
+              0;
+
+            let double =
+              0;
+
+            for (
+              let i = 0;
+              i < clean.length;
+              i++
+            ) {
+
+              if (
+                clean[i] === "'" &&
+                clean[i - 1] !== "\\"
+              ) {
+                single++;
+              }
+
+              if (
+                clean[i] === '"' &&
+                clean[i - 1] !== "\\"
+              ) {
+                double++;
+              }
+
+            }
+
+
+            if (
+              single % 2 !== 0
+            ) {
+
+              issues.push(
+                `السطر ${index + 1}: اقتباس مفرد غير مغلق.`
+              );
+
+            }
+
+
+            if (
+              double % 2 !== 0
+            ) {
+
+              issues.push(
+                `السطر ${index + 1}: اقتباس مزدوج غير مغلق.`
+              );
+
+            }
+
+          }
+        );
+
+    }
+
+
+    function checkBrackets(
+      source,
+      issues
+    ) {
+
+      const stack = [];
+
+      const pairs = {
+        ")": "(",
+        "]": "[",
+        "}": "{"
+      };
+
+      source
+        .replace(/\r\n/g, "\n")
+        .split("\n")
+        .forEach(
+          (line, index) => {
+
+            const clean =
+              stripComment(line);
+
+            let quote = null;
+
+            for (
+              let i = 0;
+              i < clean.length;
+              i++
+            ) {
+
+              const char =
+                clean[i];
+
+
+              if (
+                quote
+              ) {
+
+                if (
+                  char === quote &&
+                  clean[i - 1] !== "\\"
+                ) {
+
+                  quote = null;
+
+                }
+
+                continue;
+
+              }
+
+
+              if (
+                char === "'" ||
+                char === '"'
+              ) {
+
+                quote = char;
+                continue;
+
+              }
+
+
+              if (
+                char === "(" ||
+                char === "[" ||
+                char === "{"
+              ) {
+
+                stack.push({
+                  char,
+                  line: index + 1
+                });
+
+              }
+
+
+              if (
+                char === ")" ||
+                char === "]" ||
+                char === "}"
+              ) {
+
+                if (
+                  !stack.length ||
+                  stack[stack.length - 1].char !== pairs[char]
+                ) {
+
+                  issues.push(
+                    `السطر ${index + 1}: قوس غير متطابق (${char}).`
+                  );
+
+                } else {
+
+                  stack.pop();
+
+                }
+
+              }
+
+            }
+
+          }
+        );
+
+
+      stack.forEach(
+        (item) => {
+
+          issues.push(
+            `السطر ${item.line}: القوس ${item.char} غير مغلق.`
+          );
+
+        }
+      );
+
+    }
+
+
+    function checkIndentation(
+      source,
+      issues
+    ) {
+
+      const lines =
+        source
+          .replace(/\r\n/g, "\n")
+          .split("\n");
+
+
+      let previousIndent =
+        0;
+
+      let previousContent =
+        "";
+
+
+      lines.forEach(
+        (originalLine, index) => {
+
+          if (
+            !originalLine.trim()
+          ) {
+            return;
+          }
+
+
+          const leading =
+            originalLine.match(
+              /^[ \t]*/
+            )?.[0] || "";
+
+
+          if (
+            leading.includes("\t")
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: لا تستخدم Tab في المسافة البادئة؛ استخدم المسافات.`
+            );
+
+          }
+
+
+          const spaces =
+            leading.replace(
+              /\t/g,
+              "  "
+            ).length;
+
+
+          if (
+            spaces % 2 !== 0
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: المسافة البادئة ليست من مضاعفات 2.`
+            );
+
+          }
+
+
+          if (
+            spaces > previousIndent + 2
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: المسافة البادئة زادت بأكثر من مستوى واحد.`
+            );
+
+          }
+
+
+          const content =
+            originalLine.trim();
+
+
+          if (
+            previousContent.endsWith(":") &&
+            spaces <= previousIndent &&
+            !content.startsWith("-")
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: المحتوى بعد المفتاح السابق يحتاج إلى مسافة بادئة.`
+            );
+
+          }
+
+
+          previousIndent =
+            spaces;
+
+          previousContent =
+            content;
+
+        }
+      );
+
+    }
+
+
+    function checkSyntax(
+      source,
+      issues
+    ) {
+
+      const lines =
+        source
+          .replace(/\r\n/g, "\n")
+          .split("\n");
+
+
+      lines.forEach(
+        (originalLine, index) => {
+
+          const trimmed =
+            originalLine.trim();
+
+
+          if (
+            !trimmed ||
+            trimmed.startsWith("#") ||
+            trimmed === "---" ||
+            trimmed === "..."
+          ) {
+
+            return;
+
+          }
+
+
+          const content =
+            stripComment(trimmed)
+              .trim();
+
+
+          if (
+            !content
+          ) {
+            return;
+          }
+
+
+          if (
+            content.startsWith("-")
+          ) {
+
+            if (
+              content !== "-" &&
+              !/^-\s+/.test(content) &&
+              !/^-[\[\{]/.test(content)
+            ) {
+
+              issues.push(
+                `السطر ${index + 1}: عنصر القائمة يجب أن يفصل بمسافة بعد "-".`
+              );
+
+            }
+
+            return;
+
+          }
+
+
+          if (
+            !content.includes(":")
+          ) {
+
+            const scalar =
+              /^["'].*["']$/.test(content) ||
+              /^(true|false|null|~)$/i.test(content) ||
+              /^-?\d+(\.\d+)?$/.test(content) ||
+              /^[>|]$/.test(content);
+
+            if (!scalar) {
+
+              issues.push(
+                `السطر ${index + 1}: لا يحتوي السطر على بنية مفتاح: قيمة واضحة.`
+              );
+
+            }
+
+            return;
+
+          }
+
+
+          const colon =
+            content.indexOf(":");
+
+
+          const key =
+            content
+              .slice(0, colon)
+              .trim();
+
+
+          if (!key) {
+
+            issues.push(
+              `السطر ${index + 1}: يوجد مفتاح YAML فارغ.`
+            );
+
+          }
+
+
+          if (
+            /[:#\[\]\{\},&*!|>'"%@`]/.test(
+              key
+            ) &&
+            !/^["'].*["']$/.test(key)
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: قد يحتاج اسم المفتاح إلى اقتباس.`
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    function findDuplicateKeys(
+      source,
+      issues
+    ) {
+
+      const lines =
+        source
+          .replace(/\r\n/g, "\n")
+          .split("\n");
+
+
+      const scopes = {};
+
+
+      lines.forEach(
+        (line, index) => {
+
+          const trimmed =
+            line.trim();
+
+          if (
+            !trimmed ||
+            trimmed.startsWith("#") ||
+            trimmed.startsWith("-")
+          ) {
+            return;
+          }
+
+
+          const match =
+            trimmed.match(
+              /^([^:#][^:]*):/
+            );
+
+
+          if (!match) {
+            return;
+          }
+
+
+          const key =
+            match[1].trim();
+
+          const indent =
+            countSpaces(line);
+
+
+          const scope =
+            `${indent}`;
+
+          if (!scopes[scope]) {
+            scopes[scope] = {};
+          }
+
+
+          if (
+            scopes[scope][key]
+          ) {
+
+            issues.push(
+              `السطر ${index + 1}: المفتاح "${key}" مكرر في نفس المستوى.`
+            );
+
+          }
+
+
+          scopes[scope][key] =
+            true;
+
+        }
+      );
+
+    }
+
+
+    function countSpaces(
+      line
+    ) {
+
+      let count = 0;
+
+      for (
+        let i = 0;
+        i < line.length;
+        i++
+      ) {
+
+        if (
+          line[i] === " "
+        ) {
+
+          count++;
+
+        } else {
+
+          break;
+
+        }
+
+      }
+
+      return count;
+
+    }
+
+
+    function validate() {
+
+      const source =
+        input.value;
+
+
+      if (
+        !source.trim()
+      ) {
+
+        setStatus(
+          "لا يوجد محتوى",
+          "warning"
+        );
+
+        setResult(
+          "warning",
+          "المحرر فارغ",
+          "أدخل محتوى YAML أولاً ثم ابدأ عملية التحقق.",
+          []
+        );
+
+        return;
+
+      }
+
+
+      setStatus(
+        "جارٍ الفحص...",
+        "processing"
+      );
+
+
+      validationBadge.textContent =
+        "CHECKING";
+
+      validationBadge.className =
+        "validation-badge checking";
+
+
+      setTimeout(() => {
+
+        const issues = [];
+
+
+        checkQuotes(
+          source,
+          issues
+        );
+
+
+        checkBrackets(
+          source,
+          issues
+        );
+
+
+        checkIndentation(
+          source,
+          issues
+        );
+
+
+        checkSyntax(
+          source,
+          issues
+        );
+
+
+        findDuplicateKeys(
+          source,
+          issues
+        );
+
+
+        const uniqueIssues =
+          [...new Set(issues)];
+
+
+        if (
+          uniqueIssues.length === 0
+        ) {
+
+          setStatus(
+            "YAML صالح",
+            "success"
+          );
+
+          setResult(
+            "success",
+            "YAML صالح",
+            "لم يتم العثور على أخطاء شائعة في البنية.",
+            []
+          );
+
+        } else {
+
+          setStatus(
+            `${uniqueIssues.length} مشكلة`,
+            "error"
+          );
+
+          setResult(
+            "error",
+            "تم العثور على مشاكل",
+            `تم اكتشاف ${uniqueIssues.length} مشكلة محتملة. راجع التفاصيل أدناه.`,
+            uniqueIssues
+          );
+
+        }
+
+        updateStats();
+
+      }, 100);
+
+    }
+
+
+    function loadExample() {
+
+      input.value =
+`name: Th.Tech
+version: "1.0.0"
+description: "Developer tools platform"
+
+settings:
+  theme: dark
+  language: ar
+  editor:
+    fontSize: 14
+    tabSize: 2
+
+tools:
+  - name: JSON Formatter
+    slug: json-formatter
+    category: JSON
+
+  - name: YAML Validator
+    slug: yaml-validator
+    category: YAML
+
+database:
+  host: localhost
+  port: 3306
+  enabled: true`;
+
+
+      updateStats();
+      validate();
+
+      input.focus();
+
+    }
+
+
+    function clearAll() {
+
+      input.value = "";
+
+      updateStats();
+
+      setStatus(
+        "جاهز للفحص",
+        ""
+      );
+
+      validationBadge.textContent =
+        "READY";
+
+      validationBadge.className =
+        "validation-badge neutral";
+
+      setResult(
+        "neutral",
+        "جاهز للفحص",
+        "أدخل YAML ثم اضغط على «تحقق من YAML».",
+        []
+      );
+
+    }
+
+
+    async function copyYaml() {
+
+      if (
+        !input.value.trim()
+      ) {
+
+        setStatus(
+          "لا توجد بيانات للنسخ",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          input.value
+        );
+
+
+        const old =
+          copyBtn.innerHTML;
+
+
+        copyBtn.innerHTML =
+          `<i class="fa-solid fa-check"></i> تم النسخ`;
+
+
+        setStatus(
+          "تم النسخ",
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          copyBtn.innerHTML =
+            old;
+
+          setStatus(
+            "جاهز للفحص",
+            ""
+          );
+
+        }, 1500);
+
+
+      } catch {
+
+        input.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        setStatus(
+          "تم النسخ",
+          "success"
+        );
+
+      }
+
+    }
+
+
+    input.addEventListener(
+      "input",
+      updateStats
+    );
+
+
+    input.addEventListener(
+      "scroll",
+      () => {
+
+        lineNumbers.scrollTop =
+          input.scrollTop;
+
+      }
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.ctrlKey &&
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          validate();
+
+        }
+
+
+        if (
+          event.key === "Tab"
+        ) {
+
+          event.preventDefault();
+
+          const start =
+            input.selectionStart;
+
+          const end =
+            input.selectionEnd;
+
+
+          input.value =
+            input.value.substring(
+              0,
+              start
+            ) +
+            "  " +
+            input.value.substring(
+              end
+            );
+
+
+          input.selectionStart =
+            input.selectionEnd =
+              start + 2;
+
+
+          updateStats();
+
+        }
+
+      }
+    );
+
+
+    validateBtn.addEventListener(
+      "click",
+      validate
+    );
+
+
+    exampleBtn.addEventListener(
+      "click",
+      loadExample
+    );
+
+
+    clearBtn.addEventListener(
+      "click",
+      clearAll
+    );
+
+
+    copyBtn.addEventListener(
+      "click",
+      copyYaml
+    );
+
+
+    updateStats();
+
+  })();
+</script>
+
+
+<style>
+
+  :root {
+
+    --primary: #0891b2;
+    --primary-dark: #0e7490;
+    --secondary: #22d3ee;
+
+    --blue: #2563eb;
+    --green: #16a34a;
+    --orange: #ea580c;
+    --red: #dc2626;
+
+    --bg: #f6fafb;
+    --card: #ffffff;
+    --soft: #f0f8fa;
+
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+
+    --shadow:
+      0 25px 70px
+      rgba(8, 145, 178, 0.09);
+  }
+
+
+  html.dark-mode {
+
+    --bg: #070b0e;
+    --card: #0c1216;
+    --soft: #101a20;
+
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.12);
+
+    --primary: #22d3ee;
+    --primary-dark: #0891b2;
+    --secondary: #67e8f9;
+
+    --shadow:
+      0 30px 80px
+      rgba(0, 0, 0, 0.48);
+  }
+
+
+  * {
+    box-sizing: border-box;
+  }
+
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+
+  body {
+
+    margin: 0;
+
+    background:
+      var(--bg);
+
+    color:
+      var(--text);
+
+    font-family:
+      "Cairo",
+      sans-serif;
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+
+  button,
+  textarea {
+    font-family: inherit;
+  }
+
+
+  .container {
+
+    width:
+      min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+    margin:
+      0 auto;
+  }
+
+
+  /* HERO */
+
+  .hero {
+
+    padding:
+      42px 0
+      55px;
+
+    background:
+      radial-gradient(
+        circle at 85% 20%,
+        rgba(8, 145, 178, 0.13),
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        var(--card),
+        var(--bg)
+      );
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .breadcrumb {
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 36px;
+
+    color:
+      var(--muted);
+
+    font-size: 13px;
+  }
+
+
+  .breadcrumb a {
+
+    color:
+      var(--primary);
+
+    text-decoration: none;
+
+    font-weight: 700;
+  }
+
+
+  .breadcrumb i {
+    font-size: 9px;
+  }
+
+
+  .hero-content {
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+  }
+
+
+  .hero-icon {
+
+    position: relative;
+
+    width: 112px;
+    height: 112px;
+
+    flex: 0 0 112px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 30px;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+      );
+
+    color: white;
+
+    font-size: 42px;
+
+    box-shadow:
+      0 18px 45px
+      rgba(8, 145, 178, 0.27);
+  }
+
+
+  .icon-glow {
+
+    position: absolute;
+
+    inset: -12px;
+
+    border-radius: 38px;
+
+    background:
+      rgba(8, 145, 178, 0.14);
+
+    filter: blur(18px);
+
+    z-index: -1;
+  }
+
+
+  .mini-icon {
+
+    position: absolute;
+
+    right: -8px;
+    bottom: -8px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+      var(--card);
+
+    color:
+      var(--primary);
+
+    border:
+      1px solid var(--border);
+
+    font-size: 14px;
+
+    box-shadow:
+      0 8px 20px
+      rgba(0, 0, 0, 0.12);
+  }
+
+
+  .hero-text {
+    max-width: 780px;
+  }
+
+
+  .badge {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+      7px 13px;
+
+    border-radius: 999px;
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+
+    border:
+      1px solid
+      rgba(8, 145, 178, 0.18);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    margin-bottom: 12px;
+  }
+
+
+  .hero-text h1 {
+
+    margin: 0;
+
+    font-size:
+      clamp(
+        29px,
+        5vw,
+        46px
+      );
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+  }
+
+
+  .hero-text h1 span {
+
+    display: inline-block;
+
+    margin-right: 10px;
+
+    color:
+      var(--primary);
+
+    font-size: 0.55em;
+
+    font-weight: 700;
+  }
+
+
+  .hero-text p {
+
+    max-width: 750px;
+
+    margin:
+      15px 0
+      20px;
+
+    color:
+      var(--muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+  }
+
+
+  .hero-features {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+  }
+
+
+  .hero-features span {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+      7px 11px;
+
+    border-radius: 10px;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+
+  .hero-features i {
+    color:
+      var(--primary);
+  }
+
+
+  /* TOOL */
+
+  .tool-section {
+
+    padding:
+      50px 0
+      70px;
+  }
+
+
+  .validator-card {
+
+    overflow: hidden;
+
+    background:
+      var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 24px;
+
+    box-shadow:
+      var(--shadow);
+  }
+
+
+  .card-topbar {
+
+    min-height: 76px;
+
+    padding:
+      16px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .topbar-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+  }
+
+
+  .yaml-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .topbar-title strong,
+  .topbar-title small {
+
+    display: block;
+  }
+
+
+  .topbar-title strong {
+    font-size: 15px;
+  }
+
+
+  .topbar-title small {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 11px;
+  }
+
+
+  .status {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+  }
+
+
+  .status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background:
+      #94a3b8;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(148, 163, 184, 0.12);
+  }
+
+
+  .status-dot.success {
+
+    background:
+      #22c55e;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(34, 197, 94, 0.12);
+  }
+
+
+  .status-dot.error {
+
+    background:
+      #ef4444;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(239, 68, 68, 0.12);
+  }
+
+
+  .status-dot.warning {
+
+    background:
+      #f59e0b;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(245, 158, 11, 0.12);
+  }
+
+
+  .status-dot.processing {
+
+    background:
+      var(--primary);
+
+    box-shadow:
+      0 0 0 4px
+      rgba(8, 145, 178, 0.12);
+
+    animation:
+      pulse 1s infinite;
+  }
+
+
+  @keyframes pulse {
+
+    50% {
+      opacity: 0.45;
+    }
+
+  }
+
+
+  /* ACTIONBAR */
+
+  .actionbar {
+
+    padding:
+      14px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    background:
+      var(--soft);
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .action-group {
+
+    display: flex;
+
+    gap: 8px;
+  }
+
+
+  .btn {
+
+    min-height: 40px;
+
+    padding:
+      8px 14px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease;
+  }
+
+
+  .btn:hover {
+    transform:
+      translateY(-1px);
+  }
+
+
+  .btn:active {
+    transform:
+      translateY(0);
+  }
+
+
+  .btn-example {
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .btn-clear {
+
+    background:
+      rgba(220, 38, 38, 0.08);
+
+    color:
+      var(--red);
+  }
+
+
+  .btn-copy {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .btn-validate {
+
+    color:
+      white;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+      );
+
+    box-shadow:
+      0 8px 22px
+      rgba(8, 145, 178, 0.22);
+  }
+
+
+  /* EDITOR */
+
+  .editor-wrapper {
+
+    padding:
+      22px;
+  }
+
+
+  .editor-panel {
+
+    overflow: hidden;
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 17px;
+
+    background:
+      var(--card);
+  }
+
+
+  .panel-header {
+
+    min-height: 62px;
+
+    padding:
+      11px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+
+  .panel-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+  }
+
+
+  .panel-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background:
+      #22d3ee;
+
+    box-shadow:
+      0 0 0 4px
+      rgba(34, 211, 238, 0.12);
+  }
+
+
+  .panel-title strong,
+  .panel-title small {
+
+    display: block;
+  }
+
+
+  .panel-title strong {
+    font-size: 13px;
+  }
+
+
+  .panel-title small {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .language-badge {
+
+    padding:
+      5px 9px;
+
+    border-radius: 7px;
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+
+  .editor {
+
+    height: 380px;
+
+    display: grid;
+
+    grid-template-columns:
+      52px minmax(0, 1fr);
+
+    direction: ltr;
+
+    background:
+      #0b1720;
+  }
+
+
+  .line-numbers {
+
+    overflow: hidden;
+
+    padding:
+      18px 12px;
+
+    background:
+      #0f2029;
+
+    color:
+      #64748b;
+
+    border-right:
+      1px solid
+      rgba(148, 163, 184, 0.1);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    text-align: right;
+
+    white-space: pre;
+  }
+
+
+  .editor textarea {
+
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    padding:
+      18px;
+
+    border: 0;
+    outline: 0;
+
+    background:
+      #0b1720;
+
+    color:
+      #a5f3fc;
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    direction: ltr;
+    text-align: left;
+
+    tab-size: 2;
+  }
+
+
+  .editor textarea::placeholder {
+    color:
+      #64748b;
+  }
+
+
+  .editor-footer {
+
+    min-height: 43px;
+
+    padding:
+      8px 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background:
+      var(--soft);
+
+    border-top:
+      1px solid var(--border);
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  .editor-footer span:first-child {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color:
+      var(--primary);
+
+    font-weight: 700;
+  }
+
+
+  /* VALIDATION */
+
+  .validation-section {
+
+    padding:
+      0 22px
+      22px;
+  }
+
+
+  .validation-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 12px;
+  }
+
+
+  .section-label {
+
+    color:
+      var(--primary);
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+
+  .validation-header h2 {
+
+    margin:
+      4px 0 0;
+
+    font-size: 18px;
+  }
+
+
+  .validation-badge {
+
+    padding:
+      7px 12px;
+
+    border-radius: 8px;
+
+    font-family:
+      "JetBrains Mono",
+      monospace;
+
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+
+  .validation-badge.neutral {
+
+    background:
+      rgba(100, 116, 139, 0.08);
+
+    color:
+      var(--muted);
+  }
+
+
+  .validation-badge.valid {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .validation-badge.invalid {
+
+    background:
+      rgba(220, 38, 38, 0.1);
+
+    color:
+      var(--red);
+  }
+
+
+  .validation-badge.warning {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .validation-badge.checking {
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .result-box {
+
+    padding:
+      16px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    border:
+      1px solid transparent;
+
+    border-radius: 14px;
+  }
+
+
+  .result-box.neutral {
+
+    background:
+      rgba(100, 116, 139, 0.07);
+
+    border-color:
+      rgba(100, 116, 139, 0.12);
+  }
+
+
+  .result-box.success {
+
+    background:
+      rgba(22, 163, 74, 0.07);
+
+    border-color:
+      rgba(22, 163, 74, 0.14);
+  }
+
+
+  .result-box.error {
+
+    background:
+      rgba(220, 38, 38, 0.07);
+
+    border-color:
+      rgba(220, 38, 38, 0.14);
+  }
+
+
+  .result-icon {
+
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .result-box.success .result-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .result-box.error .result-icon {
+
+    background:
+      rgba(220, 38, 38, 0.1);
+
+    color:
+      var(--red);
+  }
+
+
+  .result-content {
+
+    min-width: 0;
+  }
+
+
+  .result-content > strong {
+
+    display: block;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+  }
+
+
+  .issues-list {
+
+    margin-top: 10px;
+
+    display: grid;
+
+    gap: 6px;
+  }
+
+
+  .issue-item {
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 7px;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.7;
+  }
+
+
+  .issue-item i {
+
+    margin-top: 4px;
+
+    color:
+      var(--red);
+
+    font-size: 8px;
+  }
+
+
+  /* STATS */
+
+  .stats {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .stat {
+
+    min-height: 77px;
+
+    padding:
+      13px 17px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-left:
+      1px solid var(--border);
+  }
+
+
+  .stat:last-child {
+    border-left: 0;
+  }
+
+
+  .stat-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .stat-icon.cyan {
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .stat-icon.blue {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .stat-icon.orange {
+
+    background:
+      rgba(234, 88, 12, 0.1);
+
+    color:
+      var(--orange);
+  }
+
+
+  .stat-icon.green {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .stat strong,
+  .stat span {
+    display: block;
+  }
+
+
+  .stat strong {
+    font-size: 13px;
+  }
+
+
+  .stat span {
+
+    margin-top: 2px;
+
+    color:
+      var(--muted);
+
+    font-size: 10px;
+  }
+
+
+  /* SECTIONS */
+
+  .info-section,
+  .faq-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--card);
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .how-section {
+
+    padding:
+      75px 0;
+
+    background:
+      var(--bg);
+  }
+
+
+  .section-heading {
+
+    max-width: 700px;
+
+    margin:
+      0 auto
+      38px;
+
+    text-align: center;
+  }
+
+
+  .section-heading > span {
+
+    color:
+      var(--primary);
+
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+
+  .section-heading h2 {
+
+    margin:
+      7px 0
+      10px;
+
+    font-size:
+      clamp(
+        24px,
+        4vw,
+        34px
+      );
+
+    line-height: 1.3;
+  }
+
+
+  .section-heading p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+
+  .info-grid {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 18px;
+  }
+
+
+  .info-card {
+
+    padding:
+      24px;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+
+  .info-card:hover {
+
+    transform:
+      translateY(-4px);
+
+    border-color:
+      rgba(8, 145, 178, 0.3);
+  }
+
+
+  .info-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    margin-bottom: 17px;
+
+    font-size: 18px;
+  }
+
+
+  .cyan-icon {
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+  }
+
+
+  .blue-icon {
+
+    background:
+      rgba(37, 99, 235, 0.1);
+
+    color:
+      var(--blue);
+  }
+
+
+  .green-icon {
+
+    background:
+      rgba(22, 163, 74, 0.1);
+
+    color:
+      var(--green);
+  }
+
+
+  .info-card h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 17px;
+  }
+
+
+  .info-card p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* STEPS */
+
+  .steps {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 20px;
+  }
+
+
+  .step {
+
+    position: relative;
+
+    padding:
+      26px;
+
+    background:
+      var(--card);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+      0 10px 30px
+      rgba(15, 23, 42, 0.04);
+  }
+
+
+  .step-number {
+
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+      rgba(8, 145, 178, 0.1);
+
+    color:
+      var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+
+  .step-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin:
+      5px auto
+      17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(8, 145, 178, 0.12),
+        rgba(34, 211, 238, 0.06)
+      );
+
+    color:
+      var(--primary);
+
+    font-size: 21px;
+  }
+
+
+  .step h3 {
+
+    margin:
+      0 0 8px;
+
+    font-size: 16px;
+  }
+
+
+  .step p {
+
+    margin: 0;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+  }
+
+
+  /* FAQ */
+
+  .faq-list {
+
+    max-width: 850px;
+
+    margin:
+      0 auto;
+
+    display: grid;
+
+    gap: 10px;
+  }
+
+
+  .faq-item {
+
+    overflow: hidden;
+
+    background:
+      var(--soft);
+
+    border:
+      1px solid var(--border);
+
+    border-radius: 14px;
+  }
+
+
+  .faq-item summary {
+
+    cursor: pointer;
+
+    list-style: none;
+
+    padding:
+      17px 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+
+  .faq-item summary i {
+
+    color:
+      var(--primary);
+
+    transition:
+      transform 0.2s ease;
+  }
+
+
+  .faq-item[open]
+    summary i {
+
+    transform:
+      rotate(180deg);
+  }
+
+
+  .faq-item p {
+
+    margin: 0;
+
+    padding:
+      0 19px
+      18px;
+
+    color:
+      var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* RESPONSIVE */
+
+  @media (max-width: 900px) {
+
+    .hero-content {
+      align-items: flex-start;
+    }
+
+
+    .info-grid,
+    .steps {
+      grid-template-columns: 1fr;
+    }
+
+
+    .stats {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+
+
+    .stat:nth-child(2) {
+      border-left: 0;
+    }
+
+  }
+
+
+  @media (max-width: 720px) {
+
+    .hero {
+
+      padding:
+        30px 0
+        40px;
+    }
+
+
+    .breadcrumb {
+      margin-bottom: 25px;
+    }
+
+
+    .hero-content {
+
+      flex-direction: column;
+
+      gap: 20px;
+    }
+
+
+    .hero-icon {
+
+      width: 86px;
+      height: 86px;
+
+      flex-basis: 86px;
+
+      border-radius: 23px;
+
+      font-size: 31px;
+    }
+
+
+    .mini-icon {
+
+      width: 31px;
+      height: 31px;
+
+      font-size: 11px;
+    }
+
+
+    .hero-text h1 span {
+
+      display: block;
+
+      margin:
+        6px 0 0;
+
+      font-size: 0.54em;
+    }
+
+
+    .hero-text p {
+      font-size: 13px;
+    }
+
+
+    .tool-section {
+
+      padding:
+        30px 0
+        50px;
+    }
+
+
+    .actionbar {
+
+      flex-direction: column;
+
+      align-items: stretch;
+    }
+
+
+    .action-group {
+      width: 100%;
+    }
+
+
+    .action-group .btn {
+      flex: 1;
+    }
+
+
+    .editor-wrapper {
+      padding: 12px;
+    }
+
+
+    .editor {
+      height: 310px;
+    }
+
+
+    .validation-section {
+      padding:
+        0 12px
+        16px;
+    }
+
+
+    .stats {
+      grid-template-columns:
+        1fr 1fr;
+    }
+
+
+    .stat {
+      min-height: 70px;
+      padding: 12px;
+    }
+
+
+    .info-section,
+    .how-section,
+    .faq-section {
+      padding:
+        55px 0;
+    }
+
+  }
+
+
+  @media (max-width: 460px) {
+
+    .container {
+
+      width:
+        calc(100% - 22px);
+    }
+
+
+    .card-topbar {
+      padding: 13px;
+    }
+
+
+    .status {
+      font-size: 10px;
+    }
+
+
+    .actionbar {
+      padding: 11px;
+    }
+
+
+    .btn {
+
+      padding:
+        8px 9px;
+
+      font-size: 10px;
+    }
+
+
+    .editor {
+
+      grid-template-columns:
+        42px 1fr;
+
+      height: 280px;
+    }
+
+
+    .line-numbers {
+
+      padding:
+        18px 8px;
+
+      font-size: 10px;
+    }
+
+
+    .editor textarea {
+
+      padding:
+        18px 12px;
+
+      font-size: 11px;
+    }
+
+
+    .validation-header h2 {
+      font-size: 15px;
+    }
+
+
+    .validation-badge {
+      padding:
+        6px 8px;
+
+      font-size: 9px;
+    }
+
+
+    .stat {
+
+      gap: 7px;
+    }
+
+
+    .stat-icon {
+
+      width: 34px;
+      height: 34px;
+
+      flex-basis: 34px;
+
+      font-size: 11px;
+    }
+
+
+    .stat strong {
+      font-size: 11px;
+    }
+
+
+    .stat span {
+      font-size: 9px;
+    }
+
+
+    .section-heading h2 {
+      font-size: 24px;
+    }
+
+  }
+
+</style>
